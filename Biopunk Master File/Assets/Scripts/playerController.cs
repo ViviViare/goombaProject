@@ -5,6 +5,7 @@
 // This script handles player movement. Basic FPS controls; nothing too special.
 
 // Edits since script completion:
+// 22/02/24: Added dashing and jumping.
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,18 @@ public class playerController : MonoBehaviour
 
     [SerializeField] private float _playerSpeed = 5f;
 
+    [SerializeField] private float _dashCooldown = 2f;
+    [SerializeField] private float _dashSpeed = 20f;
+    [SerializeField] private float _dashLength = 0.4f;
+    [SerializeField] public bool _isDashing = false;
+    [SerializeField] public bool _canDash = true;
+
+    [SerializeField] private bool _playerGrounded = true;
+    [SerializeField] private float _jumpSpeed = 8f;
+
+    [SerializeField] private float _playerGravity = 9.8f;
+    [SerializeField] private float _verticalVelocity = 0f;
+
     // When first ran, this script locks the mouse cursor and gets references for objects and variables that are needed for the script to allow for player movement.
 
     private void Start()
@@ -36,6 +49,10 @@ public class playerController : MonoBehaviour
     {
         PlayerMove();
         this.gameObject.GetComponent<playerStats>()._playerSpeed = _playerSpeed;
+        if(_playerController.isGrounded)
+        {
+            _verticalVelocity = 0f;
+        }
     }
 
     /*
@@ -54,15 +71,52 @@ public class playerController : MonoBehaviour
     // and are easily modifiable instead of having to potentially reference and modify both "playerStats.cs" and "playerController.cs" when obtaining an item that changes both the
     // player's speed and, say, the player's damage.
     */
-
+    //public void PlayerJump()
+    //{
+    //    if(_playerController.isGrounded)
+    //    {
+    //        _verticalVelocity = _jumpSpeed;
+    //    }
+    //}
     private void PlayerMove()
     {
         Vector2 direction = _moveAction.ReadValue<Vector2>();
         Vector3 movement = new Vector3(direction.x, 0, direction.y) * _playerSpeed * Time.deltaTime;
         movement = _playerCameraTransform.forward * movement.z + _playerCameraTransform.right * movement.x;
+        //_verticalVelocity -= _playerGravity * Time.deltaTime;
+        //movement.y = _verticalVelocity;
         movement.Normalize();
-        movement.y = 0;
         _playerController.SimpleMove(movement * _playerSpeed);
 
+    }
+
+    // The below handles our new dashing system. It essentially changes the player's speed for a very short amount of time, and disables the player's ability to take damage while the player is dashing.
+    // This emulates a dash mechanic without having to play around with AddForce on the player's rigidbody.
+    public void PlayerDash()
+    {
+        if(!_isDashing && _canDash)
+        {
+            StartCoroutine(DashCoroutine());
+        }
+    }
+    private IEnumerator DashCoroutine()
+    {
+        if(!_isDashing)
+        {
+            float OriginalSpeed = _playerSpeed;
+            _playerSpeed = _dashSpeed;
+            _isDashing = true;
+            yield return new WaitForSeconds(_dashLength);
+            _playerSpeed = OriginalSpeed;
+            _isDashing = false;
+            StartCoroutine(DashCooldown());
+        }
+    }
+
+    private IEnumerator DashCooldown()
+    {
+        _canDash = false;
+        yield return new WaitForSeconds(_dashCooldown);
+        _canDash = true;
     }
 }

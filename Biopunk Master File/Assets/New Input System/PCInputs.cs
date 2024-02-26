@@ -43,17 +43,41 @@ public class @PCInputs : IInputActionCollection, IDisposable
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""TestSpawn"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
-                    ""id"": ""6e35f6df-3bbe-4c15-8a91-b8dc02b884d5"",
+                    ""id"": ""bdcc5152-d235-426c-ba83-df286bbc6d0b"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
                 },
                 {
-                    ""name"": ""TestDespawn"",
+                    ""name"": ""Dash"",
                     ""type"": ""Button"",
-                    ""id"": ""bbd9e29e-5634-4a1a-851d-90ea27ebdcf1"",
+                    ""id"": ""dd1e0f55-694f-4b43-8c39-e65427bc1a16"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""ea34fddf-1249-4f50-96b1-dcca46a3f145"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Left Weapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""edfd3102-259f-45be-ada2-79e85d19f54e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Right Weapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b88fb9c-5652-4e73-90cd-e2e6ea9afe22"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
@@ -117,28 +141,6 @@ public class @PCInputs : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""969cfcec-224f-4985-b9dc-7c422b5064d6"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1db3fef7-09ef-48ca-9be8-36058f0539f1"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""fa5ae38f-77f6-4f5d-afc8-6d8d5a81c53d"",
                     ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
@@ -161,23 +163,56 @@ public class @PCInputs : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""9b46792c-48b1-4262-9380-651ed66d9fe2"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""id"": ""e19abae1-6744-4f2d-b335-8f1816244519"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
-                    ""action"": ""TestSpawn"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""31e90a78-5f14-4bf2-926e-d9554eab4d1a"",
-                    ""path"": ""<Keyboard>/v"",
+                    ""id"": ""871d13be-d70c-43ee-b7db-f9b279f20c0e"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0a8a8c45-5951-4139-9942-d75007b55151"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fac76bc3-9176-458c-a394-cd26a1f881a1"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""PC"",
-                    ""action"": ""TestDespawn"",
+                    ""action"": ""Left Weapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""47ec9078-9942-4971-9854-bd88ff88e12c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -208,8 +243,11 @@ public class @PCInputs : IInputActionCollection, IDisposable
         m_PlayerActions_Move = m_PlayerActions.FindAction("Move", throwIfNotFound: true);
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_Look = m_PlayerActions.FindAction("Look", throwIfNotFound: true);
-        m_PlayerActions_TestSpawn = m_PlayerActions.FindAction("TestSpawn", throwIfNotFound: true);
-        m_PlayerActions_TestDespawn = m_PlayerActions.FindAction("TestDespawn", throwIfNotFound: true);
+        m_PlayerActions_Pause = m_PlayerActions.FindAction("Pause", throwIfNotFound: true);
+        m_PlayerActions_Dash = m_PlayerActions.FindAction("Dash", throwIfNotFound: true);
+        m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerActions_LeftWeapon = m_PlayerActions.FindAction("Left Weapon", throwIfNotFound: true);
+        m_PlayerActions_RightWeapon = m_PlayerActions.FindAction("Right Weapon", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -262,8 +300,11 @@ public class @PCInputs : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerActions_Move;
     private readonly InputAction m_PlayerActions_Interact;
     private readonly InputAction m_PlayerActions_Look;
-    private readonly InputAction m_PlayerActions_TestSpawn;
-    private readonly InputAction m_PlayerActions_TestDespawn;
+    private readonly InputAction m_PlayerActions_Pause;
+    private readonly InputAction m_PlayerActions_Dash;
+    private readonly InputAction m_PlayerActions_Jump;
+    private readonly InputAction m_PlayerActions_LeftWeapon;
+    private readonly InputAction m_PlayerActions_RightWeapon;
     public struct PlayerActionsActions
     {
         private @PCInputs m_Wrapper;
@@ -271,8 +312,11 @@ public class @PCInputs : IInputActionCollection, IDisposable
         public InputAction @Move => m_Wrapper.m_PlayerActions_Move;
         public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
         public InputAction @Look => m_Wrapper.m_PlayerActions_Look;
-        public InputAction @TestSpawn => m_Wrapper.m_PlayerActions_TestSpawn;
-        public InputAction @TestDespawn => m_Wrapper.m_PlayerActions_TestDespawn;
+        public InputAction @Pause => m_Wrapper.m_PlayerActions_Pause;
+        public InputAction @Dash => m_Wrapper.m_PlayerActions_Dash;
+        public InputAction @Jump => m_Wrapper.m_PlayerActions_Jump;
+        public InputAction @LeftWeapon => m_Wrapper.m_PlayerActions_LeftWeapon;
+        public InputAction @RightWeapon => m_Wrapper.m_PlayerActions_RightWeapon;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -291,12 +335,21 @@ public class @PCInputs : IInputActionCollection, IDisposable
                 @Look.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLook;
-                @TestSpawn.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTestSpawn;
-                @TestSpawn.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTestSpawn;
-                @TestSpawn.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTestSpawn;
-                @TestDespawn.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTestDespawn;
-                @TestDespawn.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTestDespawn;
-                @TestDespawn.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTestDespawn;
+                @Pause.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
+                @Dash.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDash;
+                @Jump.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
+                @LeftWeapon.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLeftWeapon;
+                @LeftWeapon.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLeftWeapon;
+                @LeftWeapon.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLeftWeapon;
+                @RightWeapon.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightWeapon;
+                @RightWeapon.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightWeapon;
+                @RightWeapon.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightWeapon;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -310,12 +363,21 @@ public class @PCInputs : IInputActionCollection, IDisposable
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
-                @TestSpawn.started += instance.OnTestSpawn;
-                @TestSpawn.performed += instance.OnTestSpawn;
-                @TestSpawn.canceled += instance.OnTestSpawn;
-                @TestDespawn.started += instance.OnTestDespawn;
-                @TestDespawn.performed += instance.OnTestDespawn;
-                @TestDespawn.canceled += instance.OnTestDespawn;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
+                @LeftWeapon.started += instance.OnLeftWeapon;
+                @LeftWeapon.performed += instance.OnLeftWeapon;
+                @LeftWeapon.canceled += instance.OnLeftWeapon;
+                @RightWeapon.started += instance.OnRightWeapon;
+                @RightWeapon.performed += instance.OnRightWeapon;
+                @RightWeapon.canceled += instance.OnRightWeapon;
             }
         }
     }
@@ -334,7 +396,10 @@ public class @PCInputs : IInputActionCollection, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
-        void OnTestSpawn(InputAction.CallbackContext context);
-        void OnTestDespawn(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnLeftWeapon(InputAction.CallbackContext context);
+        void OnRightWeapon(InputAction.CallbackContext context);
     }
 }
