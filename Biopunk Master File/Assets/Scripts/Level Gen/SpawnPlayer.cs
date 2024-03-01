@@ -35,6 +35,10 @@ public class SpawnPlayer : MonoBehaviour
         // Get the spawn point from the start room
         Transform spawnPoint = Level_Generator._instance._startRoom._roomData.GetComponent<SpawnRoom>()._playerSpawnPoint;
 
+        RoomStatus spawnStatus = Level_Generator._instance._startRoom._roomData.GetComponent<RoomStatus>();
+
+        //spawnStatus.PlayerEntered();
+
         // Instantiate a new player at this position
         Instantiate(_playerPrefab, spawnPoint.position, Quaternion.identity);
     }
