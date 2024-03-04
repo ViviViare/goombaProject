@@ -1104,7 +1104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: c09dc37bf3bdda2439c5482bdb1a6bc3,
+  m_Actions: {fileID: -944628639613478452, guid: 65f07251361d0a345b0fb1c73345866b,
     type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
@@ -2886,6 +2886,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6130443761724093901}
     m_Modifications:
+    - target: {fileID: 1968052900902882344, guid: c92709aa8f9e16849bfc8985cb7a6dc5,
+        type: 3}
+      propertyPath: ZAxis
+      value: 
+      objectReference: {fileID: 3562930166973952522, guid: 65f07251361d0a345b0fb1c73345866b,
+        type: 3}
+    - target: {fileID: 1968052900902882344, guid: c92709aa8f9e16849bfc8985cb7a6dc5,
+        type: 3}
+      propertyPath: XYAxis
+      value: 
+      objectReference: {fileID: 3562930166973952522, guid: 65f07251361d0a345b0fb1c73345866b,
+        type: 3}
     - target: {fileID: 1968052900902882349, guid: c92709aa8f9e16849bfc8985cb7a6dc5,
         type: 3}
       propertyPath: m_Name

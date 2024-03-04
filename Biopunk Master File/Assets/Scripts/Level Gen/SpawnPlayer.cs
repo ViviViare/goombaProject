@@ -17,8 +17,8 @@ using UnityEngine;
 
 public class SpawnPlayer : MonoBehaviour
 {
-    
-    // Note this will have to change 
+
+    // Note this will have to change
     [SerializeField] private GameObject _playerPrefab;
 
     private void OnEnable()
@@ -29,18 +29,14 @@ public class SpawnPlayer : MonoBehaviour
     {
         Level_Generator._spawnPlayer -= SpawnPlayerInLevel;
     }
-    
+
     private void SpawnPlayerInLevel()
     {
         // Get the spawn point from the start room
         Transform spawnPoint = Level_Generator._instance._startRoom._roomData.GetComponent<SpawnRoom>()._playerSpawnPoint;
 
-        RoomStatus spawnStatus = Level_Generator._instance._startRoom._roomData.GetComponent<RoomStatus>();
-
-        //spawnStatus.PlayerEntered();
-
         // Instantiate a new player at this position
         Instantiate(_playerPrefab, spawnPoint.position, Quaternion.identity);
     }
-    
+
 }

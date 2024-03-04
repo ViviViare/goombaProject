@@ -21,10 +21,10 @@ public class Door
     [ShowOnly] public GameObject _doorGo;
 
     // _isSet is used for if there is any doors on this direction
-    public bool _isValid;
+    [ShowOnly] public bool _isValid;
 
     // _isIrregularConnector is used for if the wall does not exist in this direction
-    public bool _isIrregularConnector;
+    [ShowOnly] public bool _isIrregularConnector;
 
     // _isSet is used for if the door is being used to connect to something
     [ShowOnly] public bool _isSetAsUsed;

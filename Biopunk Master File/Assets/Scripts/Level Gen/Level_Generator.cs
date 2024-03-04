@@ -59,7 +59,7 @@ public class Level_Generator : MonoBehaviour
     [SerializeField] private int _irregularDenominator;
     [Tooltip("If enabled then every add on room script that is attatched to this script will spawn")]
     [SerializeField] private bool _useAddOns;
-    
+
     [Header("Regular Room Prefabs")]
     [SerializeField] private List<GameObject> _spawnRoomPrefabs;
     [SerializeField] private List<GameObject>  _bossRoomPrefabs;
@@ -84,7 +84,7 @@ public class Level_Generator : MonoBehaviour
     private const int C_REGULAR_COST = 1;
     private const int C_MINE_COST = 9;
     private const int C_Y_COST = 90;
-    
+
     [Space]
     [Header("Testing Parameters")]
     [SerializeField] private bool _showDebugObjects;
@@ -399,7 +399,7 @@ public class Level_Generator : MonoBehaviour
 
         // Generate add-on rooms (if extant)
         if (_useAddOns) _addOnGenerateReserves?.Invoke();
-        
+
         Debug.Log("Finished spawning <color=#f5bd3b><b>rooms</b></color> after " + GetElapsedTime() + " seconds.");
         _spawnPlayer();
     }
@@ -444,7 +444,7 @@ public class Level_Generator : MonoBehaviour
             ExtendOnThisFloor(i, totalExtension);
         }
 
-        Debug.Log("Finished generating <color=#ffffff><b>level</b></color> layout after " + GetElapsedTime() + " seconds.");        
+        Debug.Log("Finished generating <color=#ffffff><b>level</b></color> layout after " + GetElapsedTime() + " seconds.");
     }
 
     private void ExtendOnThisFloor(int floor, int amountOfTimes)
@@ -638,6 +638,7 @@ public class Level_Generator : MonoBehaviour
         RoomData chosenRoomData = newRoom.GetComponent<RoomData>();
         chosenRoomData._cellPosition = thisCell._positionInGrid;
         chosenRoomData.UpdateRoomDictionary();
+        chosenRoomData.UpdateRoomDoorDictionary();
 
         thisCell._roomData = chosenRoomData;
         thisCell._roomSetup = true;
@@ -880,7 +881,7 @@ public class Level_Generator : MonoBehaviour
     private bool ConvertRoomToDouble(GridCell thisCell)
     {
         // Find all neighbours which are not start or end rooms
-        List<GridCell> floorNeighbours = GetCellNeighbours2D(thisCell).FindAll(valid => valid != _endRoom && valid != _startRoom 
+        List<GridCell> floorNeighbours = GetCellNeighbours2D(thisCell).FindAll(valid => valid != _endRoom && valid != _startRoom
         && !valid._setAsIrregular && !valid._setAsAddOn);
 
         // If this room has no neighbours to convert then it cannot be an irregular room
@@ -937,7 +938,7 @@ public class Level_Generator : MonoBehaviour
 
         return true;
     }
-    
+
     private void SetupIrregularDuo(GridCell originCell, GameObject originGo, GridCell newCell, GameObject newGo, int irregularType = 0)
     {
         originCell._setAsIrregular = true;
@@ -949,7 +950,7 @@ public class Level_Generator : MonoBehaviour
         IrregularRoomData originDataClone = new IrregularRoomData();
 
         if (originCell._roomData is IrregularRoomData) originDataClone = (IrregularRoomData)originCell._roomData;
-        
+
         // Delete the previous GameObject that this room was
         GameObject oldGameObject = originCell._roomData.gameObject;
         Destroy(oldGameObject);
@@ -997,7 +998,7 @@ public class Level_Generator : MonoBehaviour
             }
 
             irregularCache = (IrregularRoomData)irregularSource._roomData;
-        }  
+        }
 
         switch (irregularType)
         {
@@ -1014,7 +1015,7 @@ public class Level_Generator : MonoBehaviour
             case 1:
                 // Add the L Cell to the cache of the irregular cells.
                 irregularCache._connectedCells._LCell = newCell;
-               
+
                 newRoomData._connectedCells = irregularCache._connectedCells;
                 originRoomData._connectedCells = irregularCache._connectedCells;
                 break;
@@ -1025,7 +1026,7 @@ public class Level_Generator : MonoBehaviour
                 newRoomData._connectedCells = irregularCache._connectedCells;
                 originRoomData._connectedCells = irregularCache._connectedCells;
 
-                break;         
+                break;
         }
 
         if (!newCell._requiredDoorsSet)
@@ -1043,7 +1044,7 @@ public class Level_Generator : MonoBehaviour
         if (newCell._verticalityType == Verticality.UP) newRoomData._setAsUp = true;
         else if (newCell._verticalityType == Verticality.DOWN) newRoomData._setAsDown = true;
         else if (newCell._verticalityType == Verticality.BOTH) {newRoomData._setAsUp = true; newRoomData._setAsDown = true;}
-    
+
         // Update the partner's room data
         newRoomData.UpdateIrregularDictionary();
         newRoomData.UpdateRoomDoorDictionary();
@@ -1066,7 +1067,7 @@ public class Level_Generator : MonoBehaviour
     private void UpdateIrregularRoomPosition(GridCell referencePoint, GridCell toChange)
     {
         Vector3Int thisPosDifference = referencePoint._positionInGrid - toChange._positionInGrid;
-        
+
         // Neighbour cell is left of the current
         if (thisPosDifference == Vector3.left)
         {
@@ -1094,7 +1095,7 @@ public class Level_Generator : MonoBehaviour
         }
 
     }
-    
+
     private bool ConvertRoomTo_L(IrregularRoomData originData)
     {
         GridCell originCell = originData._connectedCells._originCell;
@@ -1162,7 +1163,7 @@ public class Level_Generator : MonoBehaviour
         // Filter valid L rooms
         List<GameObject> validLRooms = _deadEndRoomPrefabs.FindAll(valid => valid.GetComponent<IrregularRoomData>()._verticality == LCell._verticalityType);
 
-        // Check if there are any valid rooms 
+        // Check if there are any valid rooms
         if (validCornerRooms.Count == 0 || validLRooms.Count == 0)
         {
             DisableIrregularDoors(existingConnection);
@@ -1179,7 +1180,7 @@ public class Level_Generator : MonoBehaviour
         // Reposition the new irregular room part (L)
         UpdateIrregularRoomPosition(existingConnection, LCell);
         SetupIrregularDuo(existingConnection, chosenCorner, LCell, chosenL, 1);
-        
+
         // Check to see if this room should become a T room
         int chanceOfBecomingT = UnityEngine.Random.Range(0, Mathf.CeilToInt(_irregularDenominator / 2 ));
 
@@ -1218,7 +1219,7 @@ public class Level_Generator : MonoBehaviour
         // Filter valid T rooms
         List<GameObject> validTRooms = _deadEndRoomPrefabs.FindAll(valid => valid.GetComponent<IrregularRoomData>()._verticality == TCell._verticalityType);
 
-        // Check if there are any valid rooms 
+        // Check if there are any valid rooms
         if (validThreeWayRooms.Count == 0 || validTRooms.Count == 0)
         {
             DisableIrregularDoors(cornerCell);
@@ -1235,7 +1236,7 @@ public class Level_Generator : MonoBehaviour
         // Reposition the new irregular room part (L)
         UpdateIrregularRoomPosition(cornerCell, TCell);
         SetupIrregularDuo(cornerCell, chosenThreeWay, TCell, chosenT, 2);
-        
+
         return true;
     }
 
@@ -1286,7 +1287,7 @@ public class Level_Generator : MonoBehaviour
                     roomGO.name = roomGenerated + roomInfo;
                 }
                 break;
-                
+
             case true:
                 // Only increment the irregular rooms generated per full irregular room, not per part.
                 IrregularRoomData convertedData = (IrregularRoomData)roomData;
@@ -1592,7 +1593,7 @@ public class Level_Generator : MonoBehaviour
         Vector3Int cellPos = new Vector3Int(x, y, z);
 
         if (_cellDictionary.Keys.Contains(cellPos)) return _cellDictionary[cellPos];
-        
+
         return null;
     }
 
