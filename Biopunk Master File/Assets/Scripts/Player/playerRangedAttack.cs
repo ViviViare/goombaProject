@@ -22,12 +22,12 @@ public class playerRangedAttack : MonoBehaviour
     [SerializeField] public float _gunBulletSize;
 
     [Header("Gun Cooldowns")]
-    [SerializeField] private float _gunCoolDown;
-    [SerializeField] private float _reloadCooldown;
+    [SerializeField] public float _gunCoolDown;
+    [SerializeField] public float _reloadCooldown;
 
     [Header("Magazine Size")]
-    [SerializeField] private int _shotsFired = 0;
-    [SerializeField] private int _magSize = 5;
+    [SerializeField] public int _shotsFired = 0;
+    [SerializeField] public int _magSize = 5;
 
 
     [SerializeField] Camera _playerCam;
