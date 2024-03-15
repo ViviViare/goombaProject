@@ -161,7 +161,8 @@ MonoBehaviour:
   _canAttack: 1
   _currentlyAttacking: 0
   _enemyAgent: {fileID: 2179454519306423057}
-  _damageTrail: {fileID: 0}
+  _damageTrail: {fileID: 7388481729232769809, guid: 79ab996b38f7e3a48876a172b0538576,
+    type: 3}
   _damageTrailSpawnCooldown: 1.5
 --- !u!1 &2179454521190576478
 GameObject:

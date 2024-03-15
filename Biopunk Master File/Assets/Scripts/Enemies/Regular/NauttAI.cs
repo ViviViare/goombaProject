@@ -15,11 +15,17 @@ public class NauttAI : enemyBaseAI, IDamageable
     [SerializeField] public GameObject _sauorfPrefab;
     [SerializeField] public GameObject _edvardPrefab;
 
+    [SerializeField] public bool _died = false;
+
+    public void Start()
+    {
+        //_enemyAgent;
+    }
 
     public void Update()
     {
-        if (_isActive)
-        {
+        if (!_isActive) return; 
+
             _enemyAgent.destination = _target.GetComponent<Transform>().position;
             float distanceToPlayer = Vector3.Distance(_target.GetComponent<Transform>().position, this.GetComponent<Transform>().position);
             if (distanceToPlayer <= _enemyRange && _canAttack)
@@ -34,7 +40,7 @@ public class NauttAI : enemyBaseAI, IDamageable
                 _canAttack = true;
                 StopCoroutine(attackCoroutine);
             }
-        }
+        
     }
 
     IEnumerator EnemyAttack()
@@ -50,12 +56,16 @@ public class NauttAI : enemyBaseAI, IDamageable
         }
     }
 
+
+
     public void Damage(int damageAmount)
     {
         _enemyHealth -= damageAmount;
         if (_enemyHealth <= 0)
         {
             _isActive = false;
+            if (_died) return;
+            _died = true;
             ObjectPooler.Spawn(_edvardPrefab, _edvardSpawnPoint.transform.position, Quaternion.identity);
             ObjectPooler.Spawn(_suanonPrefab, _suanonSpawnPoint.transform.position, Quaternion.identity);
             ObjectPooler.Spawn(_sauorfPrefab, _sauorfSpawnPoint.transform.position, Quaternion.identity);

@@ -20,8 +20,13 @@ public class EdvardAI : enemyBaseAI, IDamageable
 
     IEnumerator SpawnDamageTrail()
     {
-        while (true && _isActive)
+        while (true)
         {
+            if (!_isActive) 
+            {
+                yield return new WaitForSeconds(_damageTrailSpawnCooldown);
+                continue;
+            };
             ObjectPooler.Spawn(_damageTrail, transform.position, transform.rotation);
             yield return new WaitForSeconds(_damageTrailSpawnCooldown);
         }

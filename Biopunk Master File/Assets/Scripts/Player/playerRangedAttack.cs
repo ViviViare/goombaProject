@@ -5,6 +5,7 @@
 // Updated ranged attack script from our December prototype, debloated and polished up to work with our new systems (new input system, object pooler)
 
 // Edits since script completion:
+// 05/03/24: Updated to use actions instead of the original firing method.
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -39,6 +40,17 @@ public class playerRangedAttack : MonoBehaviour
     [SerializeField] public Vector3 _targetPoint;
     [SerializeField] public bool _useTargetPoint;
 
+    public LeftOrRight _weaponsSide;
+
+    private void OnEnable()
+    {
+        playerWeaponHandler._triggerAction += FireRangedWeapon;
+    }
+    private void OnDisable()
+    {
+        playerWeaponHandler._triggerAction -= FireRangedWeapon;
+    }
+
     // Grabs a referance to the player's camera and the weapon gameobject's gun barrel object, to fire bullets from.
     void Start()
     {
@@ -46,9 +58,9 @@ public class playerRangedAttack : MonoBehaviour
         _gunBarrel = this.gameObject.transform.GetChild(0).gameObject;
     }
 
-    public void FireRangedWeapon()
+    public virtual void FireRangedWeapon(LeftOrRight direction)
     {
-        if (_canFire)
+        if (_canFire && _weaponsSide == direction)
         {
             StartCoroutine(RangedCoroutine());
         }

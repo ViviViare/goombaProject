@@ -5,6 +5,7 @@
 // A smaller script that inherits from the playerRangedAttack script. This is used for our "Rusty Quadra" weapon, and handles its unique firing method.
 
 // Edits since script completion:
+// 05/03/24: Updated to use actions instead of the original firing method.
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -29,13 +30,12 @@ public class playerQuadra : playerRangedAttack
         }
     }
 
-    private void OnEnable()
+    public override void FireRangedWeapon(LeftOrRight direction)
     {
-        playerWeaponHandler._triggerLeft += FireQuarda;
-    }
-    private void OnDisable()
-    {
-        playerWeaponHandler._triggerLeft -= FireQuarda;
+        if(_weaponsSide == direction)
+        {
+            FireQuarda();
+        }
     }
 
     // When called, and if the player can shoot, this method essentially loops through the default RangedCoroutine on the playerRangedAttack script

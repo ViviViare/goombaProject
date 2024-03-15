@@ -6,6 +6,7 @@
 // This script has been updated to both be neater, reduce bloat, and to work with our new systems (object pooling and new input system).
 
 // Edits since script completion:
+// 05/03/24: Updated to use actions instead of the original firing method.
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -26,6 +27,18 @@ public class playerBaseMelee : MonoBehaviour
 
     [SerializeField] private float _swingCooldown = 2f;
 
+    public LeftOrRight _weaponsSide;
+
+
+    private void OnEnable()
+    {
+        playerWeaponHandler._triggerAction += SwingMeleeWeapon;
+    }
+    private void OnDisable()
+    {
+        playerWeaponHandler._triggerAction -= SwingMeleeWeapon;
+    }
+
     // Start is called before the first frame update. This automatically sets the script's required variables and objects at runtime.
     void Start()
     {
@@ -34,9 +47,9 @@ public class playerBaseMelee : MonoBehaviour
     }
 
     // The below three methods all work in tandem with eachother, using animation events and triggers to perform a melee swing from the weapon.
-    public void SwingMeleeWeapon()
+    public void SwingMeleeWeapon(LeftOrRight direction)
     {
-        if(_canSwing)
+        if(_canSwing && _weaponsSide == direction)
         {
             _meleeAnimator.SetBool("attack", true);
             _isAttacking = true;

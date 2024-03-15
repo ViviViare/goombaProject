@@ -28,4 +28,12 @@ public class enemyBaseAI : MonoBehaviour
         _enemyAgent.stoppingDistance = _enemyRange;
         _canAttack = true;
     }
+
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(this.transform.position, _enemyRange);
+    }
 }

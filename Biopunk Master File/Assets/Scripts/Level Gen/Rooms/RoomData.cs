@@ -183,6 +183,7 @@ public class RoomData : MonoBehaviour
     private void OnDrawGizmos()
     {
         // Only show connected rooms if this is on
+        if (!Application.isPlaying) return;
         if (!Level_Generator._instance._showRoomConnections) return;
 
         foreach (Door door in GetValidDoors())

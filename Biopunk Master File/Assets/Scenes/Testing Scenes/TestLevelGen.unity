@@ -187,6 +187,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4712953882168720353, guid: c7eaae80b5de2ab4ea21a074244a2bc4,
         type: 3}
+      propertyPath: _gridBounds.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4712953882168720353, guid: c7eaae80b5de2ab4ea21a074244a2bc4,
+        type: 3}
+      propertyPath: _showDebugObjects
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4712953882168720353, guid: c7eaae80b5de2ab4ea21a074244a2bc4,
+        type: 3}
       propertyPath: _useIrregularRooms
       value: 0
       objectReference: {fileID: 0}
@@ -227,7 +237,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54aa7bdfe5147414eadf7bad5ca63a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab: {fileID: 6130443760680255164, guid: 7b1a50ab6d79880479bf0e4bd0ef57c2,
+  _playerPrefab: {fileID: 2092423294196237310, guid: 78e202347641f554684f968d9e15955c,
     type: 3}
 --- !u!4 &652075062
 Transform:

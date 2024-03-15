@@ -5,6 +5,7 @@
 // A script for the player's projectiles that tells them what stats to inherit, when to do damage and when to despawn themselves.
 
 // Edits since script completion:
+// 05/03/24: Updated to use actions and enums.
 */
 using System.Collections;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ public class bulletLogic : MonoBehaviour
     void OnEnable()
     {
         _player = GameObject.FindGameObjectWithTag("Player");
-        if (_player.GetComponent<playerWeaponHandler>()._leftOrRight == playerWeaponHandler.LeftOrRight.Left)
+        if (_player.GetComponent<playerWeaponHandler>()._leftOrRight == LeftOrRight.Left)
         {
             GameObject leftGun = GameObject.FindGameObjectWithTag("Left Gun");
             playerRangedAttack leftGunStats = leftGun.GetComponent<playerRangedAttack>();
@@ -63,6 +64,7 @@ public class bulletLogic : MonoBehaviour
         {
             GameObject rightGun = GameObject.FindGameObjectWithTag("Right Gun");
             playerRangedAttack rightGunStats = rightGun.GetComponent<playerRangedAttack>();
+            Debug.Log($"{rightGun} and {rightGunStats}");
             
             _bulletSpeed = rightGunStats._gunBulletSpeed;
             _bulletDamage = rightGunStats._gunDamage;
@@ -85,9 +87,9 @@ public class bulletLogic : MonoBehaviour
 
     // Below method checks to see if the collided object has an IDamageable component; if so, it deals damage based on the _bulletDamage stat and despawns itself.
     // If the collided object doesn't have an IDamageable component, the bullet simply despawns.
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter (Collider other)
     {
-        IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
+        IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {
             damageable.Damage(_bulletDamage);
@@ -106,9 +108,12 @@ public class bulletLogic : MonoBehaviour
     }
     void OnDisable()
     {
-        Debug.Log("why");
         this.GetComponent<Rigidbody>().velocity = Vector3.zero;
         this.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+        _bulletDamage = 0;
+        _bulletSize = 0;
+        _bulletSpeed = 0;
+        _player = null;
     }
 
 }
