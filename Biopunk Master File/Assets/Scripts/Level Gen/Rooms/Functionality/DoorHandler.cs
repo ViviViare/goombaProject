@@ -23,11 +23,15 @@ public class DoorHandler : MonoBehaviour
     [Header("Door Data")]
     public RoomData _roomData;
     public Door _doorData;
+    [Header("Connection Data")]
+    private bool _connectionSet;
+    private Vector3Int _connectedCellPosition;
     private GridCell _connectedCell;
-    private RoomData _connectedRoom;
-    private Door _connectedDoor;
+    public RoomData _connectedRoom;
+    public Door _connectedDoor;
     private Compass _inverseDirection;
     private Vector3Int vectorToConnected  = Vector3Int.zero;
+    
     private void Awake()
     {
         _doorExit = GetComponent<BoxCollider>();
@@ -58,13 +62,48 @@ public class DoorHandler : MonoBehaviour
             vectorToConnected = Vector3Int.left;
             _inverseDirection = Compass.East;
         }
+        
+        _connectedCellPosition = _roomData._cellPosition + vectorToConnected;
+    
+        // Check to see if this door is valid
+        if (!IsDoorValid() )
+        {
+            gameObject.SetActive(false);
+            return;
+        }
 
-        _connectedCell = Level_Generator._instance._cellDictionary[_roomData._cellPosition + vectorToConnected];
+        _connectedCell = Level_Generator._instance._cellDictionary[_connectedCellPosition];
         _connectedRoom = _connectedCell._roomData;
+        
         // Get the opposite door that is connected to this door
-        _connectedDoor = _connectedRoom._roomDoors.Values.ToList().Find(valid => valid._direction == _inverseDirection);
+        _connectedDoor = _connectedRoom._roomDoors.Values.ToList().Find(valid => valid._direction == _inverseDirection && valid._isValid);
     }
 
+    private bool IsDoorValid()
+    {
+        GridCell cellToCheck = Level_Generator._instance.GetGridCell(_connectedCellPosition.x, _connectedCellPosition.y, _connectedCellPosition.z);
+
+        // Check to see if the cell exists or is set as a room
+        if (cellToCheck == null || !cellToCheck._setAsRoom)
+        {
+            return false;
+        }
+
+        // Check to see if this door is an end room connection
+        if (cellToCheck == Level_Generator._instance._endRoom && !Level_Generator._instance._cellDictionary[_roomData._cellPosition]._endRoomConnection)
+        {
+            return false;
+        }
+
+        // Check to see if there is a valid door connecting to this one
+        if ((cellToCheck._roomData._roomDoors.Values.ToList().Find(valid => valid._direction == _inverseDirection && valid._isValid) == null))
+        {
+            return false;
+        }
+        
+
+        return true;
+    }
     
     public void ToggleDoor()
     {
@@ -81,7 +120,7 @@ public class DoorHandler : MonoBehaviour
 
         Transform player = collider.gameObject.transform;
 
-        // teleport the player to the opposite rooms connected door with an offset
+        // Teleport the player to the opposite rooms connected door with an offset
         player.position = _connectedDoor._doorGo.transform.position + ((Vector3)vectorToConnected * DoorTeleportOffset._offset);
         _connectedRoom.GetComponent<RoomStatus>()?.PlayerEntered();
 

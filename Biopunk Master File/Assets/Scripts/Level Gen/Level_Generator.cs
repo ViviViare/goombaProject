@@ -972,6 +972,7 @@ public class Level_Generator : MonoBehaviour
 
         // Update this cell's room data
         originRoomData.UpdateIrregularDictionary();
+        originRoomData.UpdateRoomDictionary();
         originRoomData.UpdateRoomDoorDictionary();
 
         List<Compass> originDoorsNeeded = GetDoorConfiguration(originCell);
@@ -1047,6 +1048,7 @@ public class Level_Generator : MonoBehaviour
 
         // Update the partner's room data
         newRoomData.UpdateIrregularDictionary();
+        newRoomData.UpdateRoomDictionary();
         newRoomData.UpdateRoomDoorDictionary();
 
         List<Compass> partnerDoorsNeeded = GetDoorConfiguration(newCell);
@@ -1588,7 +1590,7 @@ public class Level_Generator : MonoBehaviour
         return validNeighbours;
     }
 
-    private GridCell GetGridCell(int x, int y, int z)
+    public GridCell GetGridCell(int x, int y, int z)
     {
         Vector3Int cellPos = new Vector3Int(x, y, z);
 

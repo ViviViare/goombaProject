@@ -92,7 +92,10 @@ public class bulletLogic : MonoBehaviour
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {
-            damageable.Damage(_bulletDamage);
+            _player = GameObject.FindGameObjectWithTag("Player");
+            int calculatedDamage = (int)(_bulletDamage * _player.GetComponent<playerStats>()._playerDamageMultiplier);
+            damageable.Damage(calculatedDamage);
+            damageable.Damage(calculatedDamage);
             ObjectPooler.Despawn(this.gameObject);
         }
         else

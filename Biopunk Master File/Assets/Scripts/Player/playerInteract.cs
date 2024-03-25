@@ -25,7 +25,7 @@ public class playerInteract : MonoBehaviour
         RaycastHit interactable;
         if (Physics.Raycast(rayOrigin, Camera.main.transform.forward, out interactable, _interactRange))
         {
-             if(interactable.collider.gameObject.GetComponent<rangedPickup>() != null || interactable.collider.gameObject.GetComponent<meleePickup>() != null)
+            if (interactable.collider.gameObject.GetComponent<rangedPickup>() != null || interactable.collider.gameObject.GetComponent<meleePickup>() != null)
             {
                 _currentInteractable = interactable.collider.gameObject;
                 _interactCanvas.SetActive(true);
@@ -33,12 +33,19 @@ public class playerInteract : MonoBehaviour
                 Time.timeScale = 0;
                 _playerCam.enabled = false;
             }
+            else if (interactable.collider.gameObject.GetComponent<activePickup>() != null)
+            {
+                this.gameObject.GetComponent<playerActiveItem>()._currentItem = interactable.collider.GetComponent<activePickup>()._activeType;
+                this.gameObject.GetComponent<playerActiveItem>()._activeItemMaxCharge = interactable.collider.GetComponent<activePickup>()._activeMaxCharge;
+                this.gameObject.GetComponent<playerActiveItem>()._activeItemCharge = interactable.collider.GetComponent<activePickup>()._activeMaxCharge;
+                ObjectPooler.Despawn(interactable.collider.gameObject);
+            }
         }
     }
 
     public void SwapLeftWeapon()
     {
-        if(_currentInteractable.GetComponent<rangedPickup>() != null)
+        if (_currentInteractable.GetComponent<rangedPickup>() != null)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;

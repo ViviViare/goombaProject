@@ -48,7 +48,6 @@ public class playerController : MonoBehaviour
     private void Update()
     {
         PlayerMove();
-        this.gameObject.GetComponent<playerStats>()._playerSpeed = _playerSpeed;
         if(_playerController.isGrounded)
         {
             _verticalVelocity = 0f;
@@ -86,7 +85,8 @@ public class playerController : MonoBehaviour
         //_verticalVelocity -= _playerGravity * Time.deltaTime;
         //movement.y = _verticalVelocity;
         movement.Normalize();
-        _playerController.SimpleMove(movement * _playerSpeed);
+        float calculatedSpeed = _playerSpeed * this.gameObject.GetComponent<playerStats>()._playerSpeedMultiplier;
+        _playerController.SimpleMove(movement * calculatedSpeed);
 
     }
 
@@ -105,10 +105,12 @@ public class playerController : MonoBehaviour
         {
             float OriginalSpeed = _playerSpeed;
             _playerSpeed = _dashSpeed;
+            this.GetComponent<playerHealth>()._canBeDamaged = false;
             _isDashing = true;
             yield return new WaitForSeconds(_dashLength);
             _playerSpeed = OriginalSpeed;
             _isDashing = false;
+            this.GetComponent<playerHealth>()._canBeDamaged = true;
             StartCoroutine(DashCooldown());
         }
     }

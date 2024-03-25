@@ -18,26 +18,19 @@ public class playerBaseMelee : MonoBehaviour
     [SerializeField] public Camera _playerCam;
 
     [Header("Melee Stats")]
-    [SerializeField] public int _meleeSwingSpeed;
-    [SerializeField] public int _meleeDamage;
-    [SerializeField] public int _meleeRange;
+    [SerializeField] public float _meleeSwingSpeed;
+    [SerializeField] public float _meleeDamage;
+    [SerializeField] public float _meleeRange;
 
     [SerializeField] private bool _isAttacking;
     [SerializeField] private bool _canSwing = true;
 
     [SerializeField] private float _swingCooldown = 2f;
 
+    [SerializeField] public GameObject _player;
+
     public LeftOrRight _weaponsSide;
 
-
-    private void OnEnable()
-    {
-        playerWeaponHandler._triggerAction += SwingMeleeWeapon;
-    }
-    private void OnDisable()
-    {
-        playerWeaponHandler._triggerAction -= SwingMeleeWeapon;
-    }
 
     // Start is called before the first frame update. This automatically sets the script's required variables and objects at runtime.
     void Start()
@@ -72,7 +65,8 @@ public class playerBaseMelee : MonoBehaviour
             
             if (damageable != null)
             {
-                damageable.Damage(_meleeDamage * (int)playerStats._playerDamage);
+                int calculatedDamage = (int)(_meleeDamage * _player.GetComponent<playerStats>()._playerDamageMultiplier);
+                damageable.Damage(calculatedDamage);
             }
         }
         StartCoroutine(MeleeCooldown());

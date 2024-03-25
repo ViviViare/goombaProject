@@ -5,11 +5,14 @@
 // This script handles player health, death and other associated variables, such as armour plating.
 
 // Edits since script completion:
+// 19/03/24: Re-updated health script to implement immunity timers.
 */
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class playerHealth : MonoBehaviour, IDamageable
 {
@@ -18,15 +21,27 @@ public class playerHealth : MonoBehaviour, IDamageable
     [SerializeField] public int _playerMaxHealth = 100;
     [SerializeField] public int _playerArmourStacks = 0;
 
+    [SerializeField] public bool _canBeDamaged = true;
+    [SerializeField] public float _immunityTime = 1.5f;
+
+    [SerializeField] public GameObject _playerHealthBar;
+    [SerializeField] public GameObject _playerHealthText;
+
+    void Start()
+    {
+        _playerHealthBar = GameObject.FindGameObjectWithTag("Healthbar");
+        _playerHealthBar.GetComponent<Slider>().maxValue = _playerMaxHealth;
+        _playerHealthBar.GetComponent<Slider>().value = _playerHealth;
+         
+        _playerHealthText = GameObject.FindGameObjectWithTag("Healthtext");
+        _playerHealthText.GetComponent<TextMeshProUGUI>().text = ("Health: " + _playerHealth + "/" + _playerMaxHealth);
+
+    }
+
     // Checks constantly to both see if a player's health is at 0 (which triggers the DeathSequence() method) and to clamp the player's health to their _playerMaxHealth variable.
     // This clamping also prevents the player's health from dropping below 0; both of these should hopefully prevent unexpected issues from popping up (such as integer over/underflows)
     void Update()
     {
-        if (_playerHealth <= 0)
-        {
-            DeathSequence();
-        }
-
         _playerHealth = Mathf.Clamp(_playerHealth, 0, _playerMaxHealth);
     }
 
@@ -40,6 +55,29 @@ public class playerHealth : MonoBehaviour, IDamageable
     // This method is from the IDamageable interface. When called by another script, it will reduce the _playerHealth variable by whatever damageAmount is passed into the method.
     public void Damage(int damageAmount)
     {
-        _playerHealth -= damageAmount;
+        if (_canBeDamaged == false) return;
+        if(_playerArmourStacks > 0)
+        {
+            StartCoroutine(ImmunityTimer());
+            _playerArmourStacks--;
+        }
+        else
+        {
+            StartCoroutine(ImmunityTimer());
+            _playerHealth -= damageAmount;
+            _playerHealthBar.GetComponent<Slider>().value = _playerHealth;
+            _playerHealthText.GetComponent<TextMeshProUGUI>().text = ("Health: " + _playerHealth + "/" + _playerMaxHealth);
+            if (_playerHealth <= 0)
+            {
+                DeathSequence();
+            }
+        }
+    }
+
+    IEnumerator ImmunityTimer()
+    {
+        _canBeDamaged = false;
+        yield return new WaitForSeconds(_immunityTime);
+        _canBeDamaged = true;
     }
 }

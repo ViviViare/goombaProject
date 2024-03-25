@@ -16,10 +16,10 @@ using UnityEngine;
 public class playerStats : MonoBehaviour
 {
     [Header("Weapon Stats & Multipliers")]
-    [SerializeField] public static float _playerDamage= 1f;
-    [SerializeField] public float _playerAttackSpeed = 1f;
+    [SerializeField] public float _playerDamageMultiplier = 1f;
+    [SerializeField] public float _playerAttackSpeedMultiplier = 1f;
 
     [Header("Player Stats")]
-    [SerializeField] public float _playerSpeed = 1f;
+    [SerializeField] public float _playerSpeedMultiplier = 1f;
 
 }

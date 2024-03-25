@@ -224,6 +224,7 @@ public class LevelGen_AddOn : MonoBehaviour
         RoomData chosenRoomData = newRoom.GetComponent<RoomData>();
         chosenRoomData._cellPosition = thisCell._positionInGrid;
         chosenRoomData.UpdateRoomDictionary();
+        chosenRoomData.UpdateRoomDoorDictionary();
 
         thisCell._roomData = chosenRoomData;
         thisCell._roomSetup = true;

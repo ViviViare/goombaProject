@@ -12,10 +12,6 @@ public class pauseMenu : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera _playerCam;
 
-    [SerializeField] private Canvas _playerMenu;
-    [SerializeField] private TextMeshProUGUI _headerText;
-    [SerializeField] private GameObject _resumeButton;
-    [SerializeField] private GameObject _restartButton;
 
     private PlayerInput _playerInput;
     private InputAction _pauseAction;
@@ -28,7 +24,7 @@ public class pauseMenu : MonoBehaviour
     {
         _playerInput = GetComponent<PlayerInput>();
         _pauseAction = _playerInput.actions.FindAction("Pause");
-        _playerMenu.enabled = false;
+        GlobalVariables._playerMenu.enabled = false;
     }
 
     void Update()
@@ -45,12 +41,12 @@ public class pauseMenu : MonoBehaviour
         Time.timeScale = 0;
 
         _playerCam.enabled = false;
-        _playerMenu.enabled = true;
+        GlobalVariables._playerMenu.enabled = true;
 
-        _resumeButton.SetActive(true);
-        _restartButton.SetActive(false);
+        GlobalVariables._resumeButton.SetActive(true);
+        GlobalVariables._restartButton.SetActive(false);
 
-        _headerText.text = "Paused";
+        GlobalVariables._headerText.text = "Paused";
     }
 
     public void ClosePauseMenu()
@@ -59,7 +55,7 @@ public class pauseMenu : MonoBehaviour
         Time.timeScale = 1;
 
         _playerCam.enabled = true;
-        _playerMenu.enabled = false;
+        GlobalVariables._playerMenu.enabled = false;
     }
  
     public void OpenDeathMenu()
@@ -71,12 +67,12 @@ public class pauseMenu : MonoBehaviour
         _playerDead = true;
 
         _playerCam.enabled = false;
-        _playerMenu.enabled = true;
+        GlobalVariables._playerMenu.enabled = true;
 
-        _resumeButton.SetActive(false);
-        _restartButton.SetActive(true);
+        GlobalVariables._resumeButton.SetActive(false);
+        GlobalVariables._restartButton.SetActive(true);
 
-        _headerText.text = "You have died";
+        GlobalVariables._headerText.text = "You have died";
     }
 
     public void ExitToDesktop()

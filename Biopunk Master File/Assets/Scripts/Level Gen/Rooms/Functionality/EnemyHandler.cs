@@ -86,11 +86,11 @@ public class EnemyHandler : MonoBehaviour
     
     private void GenerateAnEnemy()
     {
-        Debug.Log("Trying");
+
         List<EnemySpawnData> filteredEnemies = _enemyPool.FindAll(valid => !IsOverdraft(valid._enemyWeight, _currentWeight, _maxWeight));
         // If the filtered enemies list comes back as 0 then bomb out of this code
         if (filteredEnemies.Count == 0) return;
-        Debug.Log("his");
+
         // Get a new list of enemies adjusting for weight preference
         List<EnemySpawnData> newFilteredList = new List<EnemySpawnData>();
         int attempts = 0;
@@ -103,7 +103,7 @@ public class EnemyHandler : MonoBehaviour
         } while (newFilteredList.Count < Mathf.CeilToInt(filteredEnemies.Count * 0.2f) || attempts >= _maxSpawnAttempts);
 
         if (newFilteredList.Count == 0) return;
-        Debug.Log("best");
+        
         // Get a random enemy out of the enemy pool
         int chosenEnemy = Random.Range(0, newFilteredList.Count);
         EnemySpawnData newEnemy = newFilteredList[chosenEnemy];
@@ -160,6 +160,9 @@ public class EnemyHandler : MonoBehaviour
 
     public void EnableEnemies()
     {
+        GlobalVariables._inCombat = true;
+        GlobalVariables._musicManager.GetComponent<MusicManager>().FadeToSecondary();
+
         foreach (GameObject enemy in _enemies)
         {
             enemy.GetComponent<EnemySpawnData>()._activatedAi = true;

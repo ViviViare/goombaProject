@@ -22,9 +22,12 @@ public class RoomData : MonoBehaviour
     [Header("Spawn Constraints")]
     public float _genreBias;
     public bool _isLaboratory;
+    [Space]
     [ShowOnly] public bool _setAsUp;
     [ShowOnly] public bool _setAsDown;
+    [Space]
     public Verticality _verticality;
+    public LadderHandler _ladderObject;
 
     public Dictionary<Compass, Door> _roomDoors = new Dictionary<Compass, Door>() {
         {Compass.North, new Door(Compass.North)},
@@ -34,6 +37,7 @@ public class RoomData : MonoBehaviour
     };
 
     public DoorGameObjects _doorGameObjects;
+    [Space]
 
     // Hold Data for what direction each local door is pointing towards (3D directions)
     public DoorConfiguration _doorConfiguration;
@@ -90,43 +94,6 @@ public class RoomData : MonoBehaviour
         }
 
         return validDoors;
-    }
-
-    public void DisableUnusedDoors(GridCell thisCell, List<GridCell> neighbours)
-    {
-        List<Compass> noRoomNeighbours = new List<Compass>();
-
-        foreach (GridCell neighbour in neighbours)
-        {
-            Vector3Int posDiff = thisCell._positionInGrid - neighbour._positionInGrid;
-
-            // If the neighbour is a valid room, skip it
-            if (neighbour._setAsRoom) continue;
-
-            // Neighbour cell is left of the current
-            if (posDiff == Vector3.left) noRoomNeighbours.Add(Compass.West);
-
-            // Neighbour cell is right of the current
-            else if (posDiff == Vector3.right) noRoomNeighbours.Add(Compass.East);
-
-            // Neighbour cell is in front of the current
-            else if (posDiff == Vector3.forward) noRoomNeighbours.Add(Compass.North);
-
-            // Neighbour cell is behind of the current
-            else if (posDiff == Vector3.back) noRoomNeighbours.Add(Compass.South);
-        }
-
-        for (int i = 0; i < noRoomNeighbours.Count; i++)
-        {
-            foreach (Door door in _roomDoors.Values)
-            {
-                if (door._direction == noRoomNeighbours[i] && door._doorGo != null)
-                {
-                    door._doorGo.SetActive(false);
-                }
-            }
-
-        }
     }
 
     public void UpdateRoomDictionary()

@@ -26,7 +26,7 @@ public class RoomStatus : MonoBehaviour
 
     // References
     private EnemyHandler _enemyHandler;
-    private LootHandler _lootHandler;
+    private PickupHandler _pickupHandler;
     private List<Door> _validDoors;
 
     // Parameters
@@ -45,7 +45,7 @@ public class RoomStatus : MonoBehaviour
         if (_data is IrregularRoomData) _isIrregular = true;
 
         _enemyHandler = GetComponent<EnemyHandler>();
-        _lootHandler = GetComponent<LootHandler>();
+        _pickupHandler = GetComponent<PickupHandler>();
 
         _validDoors = _data._roomDoors.Values.ToList().FindAll(valid => valid._isValid && valid._doorGo != null);
 
@@ -59,28 +59,82 @@ public class RoomStatus : MonoBehaviour
 
             doorTeleport._isOpen = false;
         }
+
+        // Override so that the player is considered to have entered the room if the room is the start
         if (_cell == Level_Generator._instance._startRoom) PlayerEntered();
+
+        // If the room has verticality, then set the ladder's data correctly
+        _data._ladderObject?.SetRoomData(_data);
     }
 
     public void PlayerEntered()
+    {
+        // Check if this room is part of an irregular connection network
+        if (_data is IrregularRoomData)
+        {
+            IrregularRoomData trueData = (IrregularRoomData)_data;
+
+            trueData._connectedCells._originCell._roomData?.GetComponent<RoomStatus>().ValidateRoom();
+            trueData._connectedCells._doubleCell._roomData?.GetComponent<RoomStatus>().ValidateRoom();
+            trueData._connectedCells._LCell._roomData?.GetComponent<RoomStatus>().ValidateRoom();
+            trueData._connectedCells._TCell._roomData?.GetComponent<RoomStatus>().ValidateRoom();
+
+        }
+        else
+        {
+            ValidateRoom();
+        }
+    }
+
+    private void ValidateRoom()
     {
         _isActive = true;
         _beenVisited = true;
 
         _enemyHandler?.EnableEnemies();
         PrepareNeighbours();
-
-        if (_enemyHandler == null) NoEnemiesRemaining();
+        
+        if (_enemyHandler == null || _enemyHandler.enabled == false) NoEnemiesRemaining();
     }
 
     public void NoEnemiesRemaining()
     {
         ToggleDoors();
+        GlobalVariables._roomsCleared++;
+
+        if (GlobalVariables._inCombat)
+        {
+            GlobalVariables._musicManager.GetComponent<MusicManager>().FadeToSecondary();
+        }
+
+        GlobalVariables._inCombat = false;
+
+        _pickupHandler?.GeneratePickups();
     }
     
     public void PlayerLeft()
     {
+        // Check if this room is part of an irregular connection network
+        if (_data is IrregularRoomData)
+        {
+            IrregularRoomData trueData = (IrregularRoomData)_data;
+
+            trueData._connectedCells._originCell._roomData?.GetComponent<RoomStatus>().DeactivateRoom();
+            trueData._connectedCells._doubleCell._roomData?.GetComponent<RoomStatus>().DeactivateRoom();
+            trueData._connectedCells._LCell._roomData?.GetComponent<RoomStatus>().DeactivateRoom();
+            trueData._connectedCells._TCell._roomData?.GetComponent<RoomStatus>().DeactivateRoom();
+
+        }
+        else
+        {
+            DeactivateRoom();
+        }
+    }
+
+    private void DeactivateRoom()
+    {
         _isActive = false;
+        ToggleDoors();
     }
 
     private void ToggleDoors()
@@ -90,6 +144,9 @@ public class RoomStatus : MonoBehaviour
         {
             door._doorGo.GetComponent<DoorHandler>().ToggleDoor();
         }
+        
+        // If the room has verticality, then toggle that rooms ladder
+        _data._ladderObject?.ToggleLadder();
     }
 
     private void PrepareNeighbours()
@@ -99,7 +156,6 @@ public class RoomStatus : MonoBehaviour
         // Enable enemies in neighbouring rooms if that room has an enemy handler
         foreach (GridCell neighbour in neighbours)
         {
-            Debug.Log("FUck off eat shit");
             neighbour._roomData.GetComponent<RoomStatus>()._adjacentVisited = true;
 
             // If there is an EnemyHandler script on the adjacent rooms then generate their enemies.
