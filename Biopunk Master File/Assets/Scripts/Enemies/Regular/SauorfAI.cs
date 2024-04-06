@@ -8,7 +8,7 @@ public class SauorfAI : enemyBaseAI, IDamageable
 
     public void Update()
     {
-        if (_isActive)
+        if (_spawnData._activatedAi)
         {
             _enemyAgent.destination = _target.GetComponent<Transform>().position;
             float distanceToPlayer = Vector3.Distance(_target.GetComponent<Transform>().position, this.GetComponent<Transform>().position);
@@ -43,10 +43,11 @@ public class SauorfAI : enemyBaseAI, IDamageable
     public void Damage(int damageAmount)
     {
         _enemyHealth -= damageAmount;
-        if (_enemyHealth <= 0)
+        if (_enemyHealth <= 0 && _spawnData._activatedAi)
         {
-            _isActive = false;
+            _spawnData?.EnemyDied();
             ObjectPooler.Despawn(this.gameObject);
+            
         }
     }
 }

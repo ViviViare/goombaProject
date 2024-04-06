@@ -28,20 +28,22 @@ public static class ObjectPooler
 
     // Should there not be a corresponding object pool for an object in the first place, the method below will create a new object pool for the object and begin to fill it when required.
     */
-    public static void Spawn(GameObject gameObject, Vector3 spawnPosition, Quaternion spawnRotation)
+    public static GameObject Spawn(GameObject gameObject, Vector3 spawnPosition, Quaternion spawnRotation)
     {
         GameObject obj;
         string key = gameObject.name.Replace("(Clone)", "");
+        GameObject objectUsed;
 
         if (_pools.ContainsKey(key))
         {
             if (_pools[key]._inactiveObjects.Count == 0)
             {
-                Object.Instantiate(gameObject, spawnPosition, spawnRotation, _pools[key]._parentObject.transform);
+                objectUsed = Object.Instantiate(gameObject, spawnPosition, spawnRotation, _pools[key]._parentObject.transform);
+
             }
             else
             {
-                obj = _pools[key]._inactiveObjects.Pop();
+                objectUsed = obj = _pools[key]._inactiveObjects.Pop();
                 obj.transform.position = spawnPosition;
                 obj.transform.rotation = spawnRotation;
                 obj.SetActive(true);
@@ -50,10 +52,12 @@ public static class ObjectPooler
         else
         {
             GameObject newParent = new GameObject($"{key}_POOL");
-            Object.Instantiate(gameObject, spawnPosition, spawnRotation, newParent.transform);
+            objectUsed = Object.Instantiate(gameObject, spawnPosition, spawnRotation, newParent.transform);
             ObjectPool newPool = new ObjectPool(newParent);
             _pools.Add(key, newPool);
         }
+
+        return(objectUsed);
     }
 
     // The below method handles despawning of objects in an object pool.

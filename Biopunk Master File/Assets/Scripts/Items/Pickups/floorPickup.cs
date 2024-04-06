@@ -10,7 +10,8 @@ public class floorPickup : MonoBehaviour
     [SerializeField] public int _armourAmount = 1;
 
     [SerializeField] public int _effectDuration;
-    public int _pickupWeight;
+
+    [SerializeField] public int _pickupWeight;
 
     private void OnTriggerEnter(Collider other)
     {

@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3271380714166940178
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3271380714166940176}
+  - component: {fileID: 3271380714166940179}
+  m_Layer: 0
+  m_Name: LVLGEN_AddOns
+  m_TagString: Untagged
+  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3271380714166940176
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3271380714166940178}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3271380714166940179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3271380714166940178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d46e567fd61d6b54d855aebafeedd02a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Item Rooms
+  _roomsMade: 0
+  _roomsToMake: 5
+  _roomPrefabs:
+  - {fileID: 5680823303517794701, guid: b9f2da3169f352e4e8d4e94266f95971, type: 3}
+  - {fileID: 4717500800588845045, guid: f872ff26e3f0d4348b883d55d4fc3114, type: 3}
+  - {fileID: 6390523443881131292, guid: 7318ff587f5614f40a27c4833704e4c5, type: 3}
+  - {fileID: 946108640565723074, guid: 3d06c160c117e8640b31e67730ff510a, type: 3}
+  - {fileID: 946108640565723074, guid: 7538e549bcf82194db6bc2ed6917ac0d, type: 3}
+  _maxNeighbours: 4
+  _distanceFrom:
+    _denyNearStart: 1
+    _minDistanceFromStart: 3
+    _maxDistanceFromStart: 2147483647
+    _denyNearEnd: 1
+    _minDistanceFromEnd: 3
+    _maxDistanceFromEnd: 2147483647
+    _denyNearSelf: 1
+    _minDistanceFromSelf: 3
+    _maxDistanceFromSelf: 2147483647
+  _allowAllFloors: 1
+  _allowMultipleOnFloor: 1
+  _allowedFloors: 
+  _maxAttemptsPerSlot: 40
+  _debugColour: {r: 0.8962264, g: 0.7251385, b: 0.114142045, a: 1}

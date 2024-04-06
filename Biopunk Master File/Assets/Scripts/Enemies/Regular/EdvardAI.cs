@@ -8,13 +8,20 @@ public class EdvardAI : enemyBaseAI, IDamageable
     [SerializeField] public GameObject _damageTrail;
     [SerializeField] public float _damageTrailSpawnCooldown = 1.5f;
 
+    [SerializeField] public float _initialTrailSpawnCooldown;
+
     [SerializeField] private Coroutine attackCoroutine;
 
-
-    public void Awake()
+    void OnEnable()
     {
         StartCoroutine(SpawnDamageTrail());
         _enemyAgent.speed = _enemySpeed;
+        _initialTrailSpawnCooldown = _damageTrailSpawnCooldown;
+    }
+
+    void OnDisable()
+    {
+        _damageTrailSpawnCooldown = _initialTrailSpawnCooldown;
     }
 
 
@@ -22,19 +29,23 @@ public class EdvardAI : enemyBaseAI, IDamageable
     {
         while (true)
         {
-            if (!_isActive) 
+            if (!_spawnData._activatedAi) 
             {
                 yield return new WaitForSeconds(_damageTrailSpawnCooldown);
                 continue;
-            };
-            ObjectPooler.Spawn(_damageTrail, transform.position, transform.rotation);
-            yield return new WaitForSeconds(_damageTrailSpawnCooldown);
+            }
+            else
+            {
+                ObjectPooler.Spawn(_damageTrail, transform.position, transform.rotation);
+                yield return new WaitForSeconds(_damageTrailSpawnCooldown);
+            }
+            
         }
     }
 
     public void Update()
     {
-        if(_isActive)
+        if (_spawnData._activatedAi)
         {
             _enemyAgent.destination = _target.GetComponent<Transform>().position;
             float distanceToPlayer = Vector3.Distance(_target.GetComponent<Transform>().position, this.GetComponent<Transform>().position);
@@ -69,10 +80,11 @@ public class EdvardAI : enemyBaseAI, IDamageable
     public void Damage(int damageAmount)
     {
         _enemyHealth -= damageAmount;
-        if (_enemyHealth <= 0)
+        if (_enemyHealth <= 0 && _spawnData._activatedAi)
         {
-            _isActive = false;
+            _spawnData?.EnemyDied();
             ObjectPooler.Despawn(this.gameObject);
+            
         }
     }
 }

@@ -94,7 +94,7 @@ public class RoomStatus : MonoBehaviour
         _enemyHandler?.EnableEnemies();
         PrepareNeighbours();
         
-        if (_enemyHandler == null || _enemyHandler.enabled == false) NoEnemiesRemaining();
+        if (_enemyHandler == null || _enemyHandler.enabled == false || _enemyHandler._livingEnemies <= 0 && _enemyHandler._hasGenerated) NoEnemiesRemaining();
     }
 
     public void NoEnemiesRemaining()
@@ -152,14 +152,14 @@ public class RoomStatus : MonoBehaviour
     private void PrepareNeighbours()
     {
         List<GridCell> neighbours = Level_Generator._instance.GetNeighbouringRooms(_cell);
-
         // Enable enemies in neighbouring rooms if that room has an enemy handler
         foreach (GridCell neighbour in neighbours)
         {
-            neighbour._roomData.GetComponent<RoomStatus>()._adjacentVisited = true;
-
+            RoomStatus neighbourStatus = neighbour._roomData.GetComponent<RoomStatus>();
+            neighbourStatus._adjacentVisited = true;
+            
             // If there is an EnemyHandler script on the adjacent rooms then generate their enemies.
-            EnemyHandler enemyHandler = GetComponent<EnemyHandler>();
+            EnemyHandler enemyHandler = neighbourStatus.GetComponent<EnemyHandler>();
             if (enemyHandler != null && !enemyHandler._hasGenerated) enemyHandler.GenerateEnemies();
         }
 

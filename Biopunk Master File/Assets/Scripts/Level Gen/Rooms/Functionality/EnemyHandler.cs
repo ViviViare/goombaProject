@@ -22,7 +22,7 @@ public class EnemyHandler : MonoBehaviour
     [SerializeField] private int _maxWeight = 15;
     private int _currentWeight;
     [Tooltip("The lower this value, the weaker the preference will be towards enemies spawned.")]
-    [SerializeField] [Range(0,1)] private float _weightPreference;
+    [SerializeField] [Range(0.02f, 1)] private float _weightPreference;
  
     [Header("Enemy status")]
     [ShowOnly] public bool _enemiesEnabled;
@@ -39,6 +39,7 @@ public class EnemyHandler : MonoBehaviour
     private void Start()
     {
         _status = GetComponent<RoomStatus>();
+        
     }
     
     public void GenerateEnemies()
@@ -51,19 +52,18 @@ public class EnemyHandler : MonoBehaviour
         // A recursion handler variable is good when making a while loop.
         int attempts = 0;
 
-        Debug.Log("Brother");
         if (_enemyPool.Count == 0)
         {
             Debug.LogError($"There is no enemies to generate for {gameObject.name}");
             return;
         }
-        Debug.Log("Sister");
+
         if (_totalSpawnPoints.Count == 0)
         {
             Debug.LogError($"There are no valid spawn points for {gameObject.name}");
             return;
         }
-        Debug.Log("Coffin of andy and leyley");
+
         // Only attempt to spawn enough enemies to fill the total spawn points
         for (int i = 0; i < _totalSpawnPoints.Count; i++)
         {
@@ -86,24 +86,18 @@ public class EnemyHandler : MonoBehaviour
     
     private void GenerateAnEnemy()
     {
-
         List<EnemySpawnData> filteredEnemies = _enemyPool.FindAll(valid => !IsOverdraft(valid._enemyWeight, _currentWeight, _maxWeight));
         // If the filtered enemies list comes back as 0 then bomb out of this code
         if (filteredEnemies.Count == 0) return;
 
         // Get a new list of enemies adjusting for weight preference
         List<EnemySpawnData> newFilteredList = new List<EnemySpawnData>();
-        int attempts = 0;
+
         // Make sure that the new filtered list has at least 20% of the amount of possible enemies that the original filtered list has
-        do
-        {
-            attempts++;
-            newFilteredList = GetAdjustedEnemyList(filteredEnemies);
-
-        } while (newFilteredList.Count < Mathf.CeilToInt(filteredEnemies.Count * 0.2f) || attempts >= _maxSpawnAttempts);
-
-        if (newFilteredList.Count == 0) return;
         
+        newFilteredList = GetAdjustedEnemyList(filteredEnemies);
+        
+        if (newFilteredList.Count == 0) return;
         // Get a random enemy out of the enemy pool
         int chosenEnemy = Random.Range(0, newFilteredList.Count);
         EnemySpawnData newEnemy = newFilteredList[chosenEnemy];
@@ -126,9 +120,9 @@ public class EnemyHandler : MonoBehaviour
         newEnemy._enemyHandler = this;
 
         // Spawn the enemy
-        ObjectPooler.Spawn(newEnemyGo, newSpawn.position, Quaternion.identity);
+        ObjectPooler.Spawn(newEnemyGo, newSpawn.position + (Vector3.up * 4f), Quaternion.identity);
 
-        _generatedEnemies++;
+        _generatedEnemies += newEnemy._enemyWorth;
     }
 
     private List<EnemySpawnData> GetAdjustedEnemyList(List<EnemySpawnData> originalFilter)
@@ -165,7 +159,8 @@ public class EnemyHandler : MonoBehaviour
 
         foreach (GameObject enemy in _enemies)
         {
-            enemy.GetComponent<EnemySpawnData>()._activatedAi = true;
+            EnemySpawnData thisEnemy = enemy.GetComponent<EnemySpawnData>();
+            thisEnemy.EnableEnemy();
         }
     }
 

@@ -35,9 +35,18 @@ public class playerInteract : MonoBehaviour
             }
             else if (interactable.collider.gameObject.GetComponent<activePickup>() != null)
             {
-                this.gameObject.GetComponent<playerActiveItem>()._currentItem = interactable.collider.GetComponent<activePickup>()._activeType;
+                if (interactable.collider.gameObject.GetComponent<activePickup>()._activeIndex == _player.gameObject.GetComponent<playerActiveInventory>()._currentActiveIndex) return;
+                playerActiveInventory actInv = _player.GetComponent<playerActiveInventory>();
+                actInv._currentActive.SetActive(false);
+                actInv._currentActive = actInv._playerActives[interactable.collider.gameObject.GetComponent<activePickup>()._activeIndex];
+                actInv._currentActive.SetActive(true);
+                actInv._currentActiveIndex = interactable.collider.gameObject.GetComponent<activePickup>()._activeIndex;
+
+
                 this.gameObject.GetComponent<playerActiveItem>()._activeItemMaxCharge = interactable.collider.GetComponent<activePickup>()._activeMaxCharge;
                 this.gameObject.GetComponent<playerActiveItem>()._activeItemCharge = interactable.collider.GetComponent<activePickup>()._activeMaxCharge;
+                this.gameObject.GetComponent<playerActiveItem>()._hasActiveItem = true;
+
                 ObjectPooler.Despawn(interactable.collider.gameObject);
             }
         }

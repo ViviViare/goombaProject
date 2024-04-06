@@ -14,12 +14,26 @@ public class SuanonAI : enemyBaseAI, IDamageable
     [SerializeField] public int _shotsBeforeReload;
     [SerializeField] public int _reloadTime;
 
+    [SerializeField] public int _initialReloadTime;
+    [SerializeField] public float _initialFleeDistance;
+
+    void OnEnable()
+    {
+        _initialReloadTime = _reloadTime;
+        _initialFleeDistance = _enemyFleeDistance;
+    }
+
+    void OnDisable()
+    {
+        _reloadTime = _initialReloadTime;
+        _enemyFleeDistance = _initialFleeDistance;
+    }
 
     void Update()
     {
-        transform.LookAt(_target.transform);
-        if (_isActive)
+        if (_spawnData._activatedAi)
         {
+            transform.LookAt(_target.transform);
             _enemyAgent.destination = _target.GetComponent<Transform>().position;
             float distanceToPlayer = Vector3.Distance(_target.GetComponent<Transform>().position, this.GetComponent<Transform>().position);
             if (distanceToPlayer <= _enemyRange && _canAttack)
@@ -63,10 +77,11 @@ public class SuanonAI : enemyBaseAI, IDamageable
     public void Damage(int damageAmount)
     {
         _enemyHealth -= damageAmount;
-        if (_enemyHealth <= 0)
+        if (_enemyHealth <= 0 && _spawnData._activatedAi)
         {
-            _isActive = false;
+            _spawnData?.EnemyDied();
             ObjectPooler.Despawn(this.gameObject);
+            
         }
     }
 }

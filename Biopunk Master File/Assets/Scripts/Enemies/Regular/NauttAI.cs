@@ -17,6 +17,13 @@ public class NauttAI : enemyBaseAI, IDamageable
 
     [SerializeField] public bool _died = false;
 
+
+    void OnDisable()
+    {
+        _died = false;
+    }
+
+
     public void Start()
     {
         //_enemyAgent;
@@ -24,8 +31,8 @@ public class NauttAI : enemyBaseAI, IDamageable
 
     public void Update()
     {
-        if (!_isActive) return; 
-
+        if (_spawnData._activatedAi) 
+        {
             _enemyAgent.destination = _target.GetComponent<Transform>().position;
             float distanceToPlayer = Vector3.Distance(_target.GetComponent<Transform>().position, this.GetComponent<Transform>().position);
             if (distanceToPlayer <= _enemyRange && _canAttack)
@@ -40,7 +47,7 @@ public class NauttAI : enemyBaseAI, IDamageable
                 _canAttack = true;
                 StopCoroutine(attackCoroutine);
             }
-        
+        }        
     }
 
     IEnumerator EnemyAttack()
@@ -61,14 +68,20 @@ public class NauttAI : enemyBaseAI, IDamageable
     public void Damage(int damageAmount)
     {
         _enemyHealth -= damageAmount;
-        if (_enemyHealth <= 0)
+        if (_enemyHealth <= 0 && _spawnData._activatedAi)
         {
-            _isActive = false;
             if (_died) return;
             _died = true;
-            ObjectPooler.Spawn(_edvardPrefab, _edvardSpawnPoint.transform.position, Quaternion.identity);
-            ObjectPooler.Spawn(_suanonPrefab, _suanonSpawnPoint.transform.position, Quaternion.identity);
-            ObjectPooler.Spawn(_sauorfPrefab, _sauorfSpawnPoint.transform.position, Quaternion.identity);
+            _spawnData?.EnemyDied();
+
+            GameObject newEdvard = ObjectPooler.Spawn(_edvardPrefab, _edvardSpawnPoint.transform.position, Quaternion.identity);
+            newEdvard.GetComponent<EnemySpawnData>().EnableEnemy();
+            
+            GameObject newSuanon = ObjectPooler.Spawn(_suanonPrefab, _suanonSpawnPoint.transform.position, Quaternion.identity);
+            newSuanon.GetComponent<EnemySpawnData>().EnableEnemy();
+            
+            GameObject newSuaorf = ObjectPooler.Spawn(_sauorfPrefab, _sauorfSpawnPoint.transform.position, Quaternion.identity);
+            newSuaorf.GetComponent<EnemySpawnData>().EnableEnemy();
             ObjectPooler.Despawn(this.gameObject);
         }
     }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class activePickup : MonoBehaviour
 {
-    [SerializeField] public string _activeType;
+    [SerializeField] public int _activeIndex;
     [SerializeField] public int _activeMaxCharge;
-
 }

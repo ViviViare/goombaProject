@@ -402,6 +402,7 @@ public class Level_Generator : MonoBehaviour
 
         Debug.Log("Finished spawning <color=#f5bd3b><b>rooms</b></color> after " + GetElapsedTime() + " seconds.");
         _spawnPlayer();
+        GlobalVariables.GenerateNavMesh();
     }
 
     private void CreateLinearPath()
