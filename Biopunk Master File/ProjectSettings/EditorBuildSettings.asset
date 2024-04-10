@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Testing Scenes/TestLevelGen.unity
     guid: ae9c8d33617d44e4eb2d37e001ecfa1f
+  - enabled: 0
+    path: Assets/Scenes/Testing Scenes/TestBoss.unity
+    guid: 48f81ec965ba92b49843cc693f96e16a
   m_configObjects: {}

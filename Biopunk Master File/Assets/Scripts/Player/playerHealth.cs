@@ -19,6 +19,8 @@ public class playerHealth : MonoBehaviour, IDamageable
     [Header("Health and Armour")]
     [SerializeField] public int _playerHealth = 100;
     [SerializeField] public int _playerMaxHealth = 100;
+
+    [SerializeField] public int _playerMaxArmourStacks = 3;
     [SerializeField] public int _playerArmourStacks = 0;
 
     [SerializeField] public bool _canBeDamaged = true;
@@ -26,6 +28,9 @@ public class playerHealth : MonoBehaviour, IDamageable
 
     [SerializeField] public GameObject _playerHealthBar;
     [SerializeField] public GameObject _playerHealthText;
+
+    [SerializeField] public GameObject _playerArmourBar;
+    [SerializeField] public GameObject _playerArmourText;
 
     void Start()
     {
@@ -36,6 +41,9 @@ public class playerHealth : MonoBehaviour, IDamageable
         _playerHealthText = GameObject.FindGameObjectWithTag("Healthtext");
         _playerHealthText.GetComponent<TextMeshProUGUI>().text = ("Health: " + _playerHealth + "/" + _playerMaxHealth);
 
+        _playerArmourBar = GameObject.FindGameObjectWithTag("Armourbar");
+        _playerArmourBar.GetComponent<Slider>().maxValue = _playerMaxArmourStacks;
+        _playerArmourBar.GetComponent<Slider>().value = _playerArmourStacks;
     }
 
     // Checks constantly to both see if a player's health is at 0 (which triggers the DeathSequence() method) and to clamp the player's health to their _playerMaxHealth variable.
@@ -43,12 +51,14 @@ public class playerHealth : MonoBehaviour, IDamageable
     void Update()
     {
         _playerHealth = Mathf.Clamp(_playerHealth, 0, _playerMaxHealth);
+        _playerArmourStacks = Mathf.Clamp(_playerArmourStacks, 0, _playerMaxArmourStacks);
     }
 
     // Uses the Unity Scene Manager to reload the current scene upon the player's health reaching zero.
     // Likely will be updated to instead bring up a death screen when the required UI elements are implemented.
     private void DeathSequence()
     {
+        ObjectPooler.ClearAllPools();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -60,6 +70,7 @@ public class playerHealth : MonoBehaviour, IDamageable
         {
             StartCoroutine(ImmunityTimer());
             _playerArmourStacks--;
+            _playerArmourBar.GetComponent<Slider>().value = _playerArmourStacks;
         }
         else
         {

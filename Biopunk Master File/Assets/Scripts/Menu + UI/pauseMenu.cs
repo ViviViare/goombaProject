@@ -35,7 +35,7 @@ public class pauseMenu : MonoBehaviour
         }
     }
 
-    private void OpenPauseMenu(InputAction.CallbackContext obj)
+    public void OpenPauseMenu(InputAction.CallbackContext obj)
     {
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 0;

@@ -6,9 +6,14 @@ public class EdvardDamageTrail : MonoBehaviour
 {
     [SerializeField] public int _trailDamage = 10;
     [SerializeField] public float _trailLifespan = 4f;
-    private void Awake()
+    private void OnEnable()
     {
         StartCoroutine(DespawnDamageTrail());
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
     }
 
     private void OnTriggerEnter(Collider other)

@@ -83,4 +83,9 @@ public static class ObjectPooler
             gameObject.SetActive(false);
         }
     }
+
+    public static void ClearAllPools()
+    {
+        _pools.Clear();
+    }
 }

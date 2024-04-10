@@ -21,7 +21,15 @@ public class GlobalVariables : MonoBehaviour
     [SerializeField] public GameObject _ResumeButton;
     [SerializeField] public GameObject _RestartButton;
 
+    [SerializeField] public static GameObject _pickupCanvas;
+    [SerializeField] public GameObject _PickupCanvas;
+
     [SerializeField] public static GameObject _player;
+    [SerializeField] public GameObject _Player;
+
+
+    [SerializeField] public static GameObject _stimulant;
+    [SerializeField] public GameObject _Stimulant;
 
 
     private void Awake()
@@ -31,15 +39,12 @@ public class GlobalVariables : MonoBehaviour
         _resumeButton = _ResumeButton;
         _restartButton = _RestartButton;
         _navMeshSurface = GetComponent<NavMeshSurface>();
+        _pickupCanvas = _PickupCanvas;
+        _player = _Player;
+        _stimulant = _Stimulant;
 
         _musicManager = GameObject.FindGameObjectWithTag("Musicmanager");
     }
-
-    public static void SetPlayer(GameObject plr)
-    {
-        _player = plr;
-    }
-
     public static void GenerateNavMesh()
     {
         _navMeshSurface.BuildNavMesh();

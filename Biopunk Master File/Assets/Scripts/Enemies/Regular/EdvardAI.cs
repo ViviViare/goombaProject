@@ -29,7 +29,7 @@ public class EdvardAI : enemyBaseAI, IDamageable
     {
         while (true)
         {
-            if (!_spawnData._activatedAi) 
+            if (!_aiActivated) 
             {
                 yield return new WaitForSeconds(_damageTrailSpawnCooldown);
                 continue;
@@ -45,23 +45,25 @@ public class EdvardAI : enemyBaseAI, IDamageable
 
     public void Update()
     {
-        if (_spawnData._activatedAi)
+        // Do not run AI code if the enemy's AI has not been activated
+        if (!_aiActivated) return;
+
+        _enemyAgent.destination = _target.GetComponent<Transform>().position;
+        
+        float distanceToPlayer = Vector3.Distance(_target.GetComponent<Transform>().position, this.GetComponent<Transform>().position);
+        if (distanceToPlayer <= _enemyRange && _canAttack)
         {
-            _enemyAgent.destination = _target.GetComponent<Transform>().position;
-            float distanceToPlayer = Vector3.Distance(_target.GetComponent<Transform>().position, this.GetComponent<Transform>().position);
-            if (distanceToPlayer <= _enemyRange && _canAttack)
-            {
-                attackCoroutine = StartCoroutine(EnemyAttack());
-                _canAttack = false;
-                _currentlyAttacking = true;
-            }
-            else if (distanceToPlayer > _enemyRange && _currentlyAttacking == true)
-            {
-                _currentlyAttacking = false;
-                _canAttack = true;
-                StopCoroutine(attackCoroutine);
-            }
+            attackCoroutine = StartCoroutine(EnemyAttack());
+            _canAttack = false;
+            _currentlyAttacking = true;
         }
+        else if (distanceToPlayer > _enemyRange && _currentlyAttacking == true)
+        {
+            _currentlyAttacking = false;
+            _canAttack = true;
+            StopCoroutine(attackCoroutine);
+        }
+        
     }
 
     IEnumerator EnemyAttack()
@@ -80,8 +82,9 @@ public class EdvardAI : enemyBaseAI, IDamageable
     public void Damage(int damageAmount)
     {
         _enemyHealth -= damageAmount;
-        if (_enemyHealth <= 0 && _spawnData._activatedAi)
+        if (_enemyHealth <= 0 && _aiActivated)
         {
+            Debug.Log(_spawnData);
             _spawnData?.EnemyDied();
             ObjectPooler.Despawn(this.gameObject);
             

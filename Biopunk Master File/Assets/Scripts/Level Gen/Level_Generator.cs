@@ -452,15 +452,18 @@ public class Level_Generator : MonoBehaviour
     {
         for (int cell = 0; cell < amountOfTimes; cell++)
         {
-            List<GridCell> thisFloor = _totalPath.FindAll(valid => valid._positionInGrid.y == floor);
-            if (thisFloor.Count == 0) return;
+            List<GridCell> cellOnThisFloor = _totalPath.FindAll(valid => valid._positionInGrid.y == floor);
+            if (cellOnThisFloor.Count == 0) return;
 
             // Room the end room if it is in current list of floors.
             // This means that a room cannot be next to the end room unless it is also next to another room
-            if (thisFloor.Contains(_endRoom)) thisFloor.Remove(_endRoom);
+            if (cellOnThisFloor.Contains(_endRoom)) cellOnThisFloor.Remove(_endRoom);
 
-            int rand = UnityEngine.Random.Range(0, thisFloor.Count);
-            GridCell cellExtendingFrom = thisFloor[rand]; // NOTE: ERROR HAPPENS HERE. "ArgumentOutOfRangeException: Index was out of range"
+            int rand = UnityEngine.Random.Range(0, cellOnThisFloor.Count);
+            //Debug.Log($"Current floor is: {floor}. Random cell is: <b>{rand}</b>. The total number of cells on this floor are: <b>{cellOnThisFloor.Count}</b>");
+            
+            if (cellOnThisFloor.Count == 0) Abort();
+            GridCell cellExtendingFrom = cellOnThisFloor[rand]; // NOTE: ERROR HAPPENS HERE. "ArgumentOutOfRangeException: Index was out of range"
 
             List<GridCell> cellNeighbours = GetCellNeighbours2D(cellExtendingFrom).FindAll(valid => !valid._setAsRoom);
 
@@ -514,8 +517,7 @@ public class Level_Generator : MonoBehaviour
             {
                 // Temporary fix until the problem has been addressed.
                 Debug.LogError("<b>VALID FLOOR ROOMS ON FLOOR: " + i + " IS 0.\n\tABORTING PLAY TEST.</b>");
-                UnityEditor.EditorApplication.isPlaying = false;
-                Application.Quit();
+                Abort();
             }
             GridCell validCell = validFloorRooms[randCell];
 
@@ -530,6 +532,14 @@ public class Level_Generator : MonoBehaviour
             validAboveCell._verticalityType = Verticality.DOWN;
         }
 
+    }
+
+    private void Abort()
+    {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+        Application.Quit();
     }
 
     private void ImplementAddOnReserves(List<GridCell> reservedCells)
@@ -1295,6 +1305,8 @@ public class Level_Generator : MonoBehaviour
                 // Only increment the irregular rooms generated per full irregular room, not per part.
                 IrregularRoomData convertedData = (IrregularRoomData)roomData;
                 if (!convertedData.CheckIfConnectedPart(_lastCheckedCell)) _irregularRoomsGenerated++;
+
+                convertedData._irregularRoomNumber = _irregularRoomsGenerated;
 
                 _lastCheckedCell = thisCell;
                 roomGO.name = roomGenerated + "[I-" + _irregularRoomsGenerated + "] " + roomInfo;

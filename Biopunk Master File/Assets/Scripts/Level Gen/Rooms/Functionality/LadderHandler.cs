@@ -14,8 +14,8 @@ public class LadderHandler : MonoBehaviour
     [Header("Ladder Data")]
     public RoomData _roomData;
     private GridCell _connectedCell;
-    private RoomData _connectedRoom;
-    private LadderHandler _connectedLadder;
+    public RoomData _connectedRoom;
+    public LadderHandler _connectedLadder;
     
     private void Awake()
     {

@@ -7,6 +7,7 @@ public class IrregularRoomData : RoomData
     #region Variables
     [Header("Irregular Room Data")]
     // The other irregular room cells that this one is connected to
+    public int _irregularRoomNumber;
     public IrregularRoomConnections _connectedCells;
 
     [Serializable]

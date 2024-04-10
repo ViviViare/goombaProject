@@ -64,7 +64,6 @@ public class bulletLogic : MonoBehaviour
         {
             GameObject rightGun = GameObject.FindGameObjectWithTag("Right Gun");
             playerRangedAttack rightGunStats = rightGun.GetComponent<playerRangedAttack>();
-            Debug.Log($"{rightGun} and {rightGunStats}");
             
             _bulletSpeed = rightGunStats._gunBulletSpeed;
             _bulletDamage = rightGunStats._gunDamage;

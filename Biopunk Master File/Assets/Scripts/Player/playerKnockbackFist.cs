@@ -14,24 +14,31 @@ public class playerKnockbackFist : playerBaseMelee
 {
     [SerializeField] private float _knockbackForce = 10f;
 
+
     // This is called by an animation event in the Knockback Fist's attacking animation; it simply fires a raycast and damages an object if it has an IDamageable component
     // but with the added effect of applying a knockback force based on where the enemy was hit relative to the player.
 
     public void KnockbackRaycast()
     {
-        Vector3 rayOrigin = _playerCam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
-        RaycastHit wepSwing;
-        if (Physics.Raycast(rayOrigin, _playerCam.transform.forward, out wepSwing, _meleeRange))
+        Collider[] HitColliders = Physics.OverlapSphere(_meleeHitSphereCenter.transform.position, _meleeRange);
+        foreach (var HitCollider in HitColliders)
         {
-            IDamageable damageable = wepSwing.collider.GetComponent<IDamageable>();
-            if (damageable != null)
+            if (HitCollider.gameObject.tag == "Player") continue;
+            if (HitCollider.gameObject.GetComponent<IDamageable>() != null)
             {
                 int calculatedDamage = (int)(_meleeDamage * _player.GetComponent<playerStats>()._playerDamageMultiplier);
-                damageable.Damage(calculatedDamage);
-                Rigidbody objectRigidbody = wepSwing.collider.GetComponent<Rigidbody>();
+                HitCollider.gameObject.GetComponent<IDamageable>().Damage(calculatedDamage);
+                Rigidbody objectRigidbody = HitCollider.GetComponent<Rigidbody>();
                 objectRigidbody.AddRelativeForce(_player.transform.forward * _knockbackForce);
             }
         }
         StartCoroutine(MeleeCooldown());
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(_meleeHitSphereCenter.transform.position, _meleeRange);
     }
 }

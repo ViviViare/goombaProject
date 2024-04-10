@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class enemyBaseAI : MonoBehaviour
 {
+    [Header("Main Stats")]
     [SerializeField] public int _enemyHealth;
     [SerializeField] public int _enemyDamage;
 
@@ -13,32 +14,48 @@ public class enemyBaseAI : MonoBehaviour
     [SerializeField] public float _enemyRange;
     [SerializeField] public float _attackCooldown;
 
-    [SerializeField] public int _initialHealth;
-    [SerializeField] public int _initialDamage;
+    [Header("Cached Variables")]
+    protected int _initialHealth;
+    protected int _initialDamage;
+    protected float _initialSpeed;
+    protected float _initialSpawnWeight;
+    protected float _initialRange;
+    protected float _initialAttackCooldown;
 
-    [SerializeField] public float _initialSpeed;
-    [SerializeField] public float _initialSpawnWeight;
-    [SerializeField] public float _initialRange;
-    [SerializeField] public float _initialAttackCooldown;
-
-
-    [SerializeField] public GameObject _target;
-
+    [Header("AI")]
+    protected GameObject _target;
     protected EnemySpawnData _spawnData;
 
-    [SerializeField] public bool _canAttack = true;
-    [SerializeField] public bool _currentlyAttacking;
+    protected bool _canAttack = true;
+    protected bool _currentlyAttacking;
 
-    [SerializeField] public NavMeshAgent _enemyAgent;
+    protected NavMeshAgent _enemyAgent;
+
+    [ShowOnly] public bool _aiActivated = false;
+    [ShowOnly] public bool _aiSetup = false;
+
+    [Header("Textures")]
+    private Material _mainTexture;
+    private bool _isShiny;    
+    [SerializeField] private Material _shinyTexture;
+    [SerializeField] private GameObject _enemyModel;
+    
+    private void Awake()
+    {
+        _spawnData = GetComponent<EnemySpawnData>();
+        _enemyAgent = this.gameObject.GetComponent<NavMeshAgent>();
+        _target = GlobalVariables._player;
+        _enemyAgent.stoppingDistance = _enemyRange;
+        _mainTexture = _enemyModel.GetComponentInChildren<Renderer>(true).material;
+    }
 
     public void SetupEnemy()
     {
-        _spawnData = GetComponent<EnemySpawnData>();
-        _target = GlobalVariables._player;
-        _enemyAgent = this.gameObject.GetComponent<NavMeshAgent>();
-        _enemyAgent.stoppingDistance = _enemyRange;
-        _canAttack = true;
+        _aiSetup = true;
 
+        _canAttack = true;
+        _aiActivated = false;
+        
         // Cache all of its stats
         _initialDamage = _enemyDamage;
         _initialAttackCooldown = _attackCooldown;
@@ -48,14 +65,42 @@ public class enemyBaseAI : MonoBehaviour
         _initialSpeed = _enemySpeed;
     }
 
-    void OnDisable()
+    public void EnableEnemy()
     {
+        // Reset all of the enemy's stats
         _enemyDamage = _initialDamage;
         _attackCooldown = _initialAttackCooldown;
         _enemyHealth = _initialHealth;
         _enemyRange = _initialRange;
         _enemySpawnWeight = _initialSpawnWeight;
         _enemySpeed = _initialSpeed;
+
+        _aiActivated = true;
+        Shiny();
+    }
+
+    private void Shiny()
+    {
+        // Decide if this enemy should be a shiny
+        int shinyChance = Random.Range(0, 10);
+        Material textureToUse = _mainTexture;
+        if (shinyChance <= 0 && _shinyTexture != null) textureToUse = _shinyTexture;
+
+        // If this enemy is not to be shiny and was not shiny already, stop running the code
+        if (textureToUse == _mainTexture && !_isShiny) return;
+
+        // Change the material on the enemy to be either shiny or revert from shiny back to normal
+        foreach (Renderer child in _enemyModel.GetComponentsInChildren<Renderer>() )
+        {
+            child.material = _shinyTexture;
+        }
+    }
+    
+
+    public void DeactivateAI()
+    {
+        // Disable the enemies AI by default
+        _aiActivated = false;
     }
 
     private void OnDrawGizmos()

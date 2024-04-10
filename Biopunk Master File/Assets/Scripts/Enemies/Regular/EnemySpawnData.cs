@@ -12,26 +12,20 @@ public class EnemySpawnData : MonoBehaviour
     [ShowOnly] public EnemyHandler _enemyHandler;
     public enemyBaseAI _baseAi;
 
-    public bool _activatedAi = false;
-
-    private void Start()
+    private void Awake()
     {
         _baseAi = GetComponent<enemyBaseAI>();
     }
 
-    private void OnDisable()
-    {
-        _activatedAi = false;
-    }
-
     public void EnableEnemy()
     {
-        _activatedAi = true;
-        _baseAi.SetupEnemy();
+        if (!_baseAi._aiSetup) _baseAi.SetupEnemy();
+        _baseAi.EnableEnemy();
     }
 
     public void EnemyDied()
     {
+        _baseAi.DeactivateAI();
         _enemyHandler.EnemyDied(gameObject);
     }
 

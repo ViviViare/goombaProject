@@ -8,8 +8,6 @@ public class playerInteract : MonoBehaviour
     [SerializeField] public float _interactRange = 5f;
     [SerializeField] public GameObject _currentInteractable;
 
-    [SerializeField] public GameObject _interactCanvas;
-
     [SerializeField] public GameObject _player;
 
     [SerializeField] private CinemachineVirtualCamera _playerCam;
@@ -28,7 +26,7 @@ public class playerInteract : MonoBehaviour
             if (interactable.collider.gameObject.GetComponent<rangedPickup>() != null || interactable.collider.gameObject.GetComponent<meleePickup>() != null)
             {
                 _currentInteractable = interactable.collider.gameObject;
-                _interactCanvas.SetActive(true);
+                GlobalVariables._pickupCanvas.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
                 Time.timeScale = 0;
                 _playerCam.enabled = false;
@@ -58,7 +56,7 @@ public class playerInteract : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
-            _interactCanvas.SetActive(false);
+            GlobalVariables._pickupCanvas.SetActive(false);
             _playerCam.enabled = true;
             _currentInteractable.GetComponent<rangedPickup>().SwapLeft(_player);
         }
@@ -66,7 +64,7 @@ public class playerInteract : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
-            _interactCanvas.SetActive(false);
+            GlobalVariables._pickupCanvas.SetActive(false);
             _playerCam.enabled = true;
             _currentInteractable.GetComponent<meleePickup>().SwapLeft(_player);
         }
@@ -78,7 +76,7 @@ public class playerInteract : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
-            _interactCanvas.SetActive(false);
+            GlobalVariables._pickupCanvas.SetActive(false);
             _playerCam.enabled = true;
             _currentInteractable.GetComponent<rangedPickup>().SwapRight(_player);
         }
@@ -86,7 +84,7 @@ public class playerInteract : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
-            _interactCanvas.SetActive(false);
+            GlobalVariables._pickupCanvas.SetActive(false);
             _playerCam.enabled = true;
             _currentInteractable.GetComponent<meleePickup>().SwapRight(_player);
         }

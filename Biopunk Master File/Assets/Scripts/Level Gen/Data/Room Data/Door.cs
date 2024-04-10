@@ -18,7 +18,7 @@ public class Door
 {
     // _direction is used for the direction that this door is facing (Can be edited by a script to rotate rooms as nessissary)
     [ShowOnly] public Compass _direction;
-    [ShowOnly] public GameObject _doorGo;
+    public GameObject _doorGo;
 
     // _isSet is used for if there is any doors on this direction
     [ShowOnly] public bool _isValid;

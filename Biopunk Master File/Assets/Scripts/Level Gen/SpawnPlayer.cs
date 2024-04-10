@@ -34,10 +34,10 @@ public class SpawnPlayer : MonoBehaviour
     {
         // Get the spawn point from the start room
         Transform spawnPoint = Level_Generator._instance._startRoom._roomData.GetComponent<SpawnRoom>()._playerSpawnPoint;
+        GameObject player = GlobalVariables._player;
+        player.transform.position = spawnPoint.position;
+        player.SetActive(true);
 
-        // Instantiate a new player at this position
-        GameObject player = Instantiate(_playerPrefab, spawnPoint.position, Quaternion.identity);
-        GlobalVariables.SetPlayer(player);
     }
 
 }

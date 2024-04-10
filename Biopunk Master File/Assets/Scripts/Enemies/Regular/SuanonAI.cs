@@ -31,29 +31,32 @@ public class SuanonAI : enemyBaseAI, IDamageable
 
     void Update()
     {
-        if (_spawnData._activatedAi)
-        {
-            transform.LookAt(_target.transform);
-            _enemyAgent.destination = _target.GetComponent<Transform>().position;
-            float distanceToPlayer = Vector3.Distance(_target.GetComponent<Transform>().position, this.GetComponent<Transform>().position);
-            if (distanceToPlayer <= _enemyRange && _canAttack)
-            {
-                _canAttack = false;
-                _currentlyAttacking = true;
-                _rangedCoroutine = StartCoroutine(RangedAttack());
-            }
-            else if (distanceToPlayer > _enemyRange && _currentlyAttacking == true)
-            {
-                _currentlyAttacking = false;
-                _canAttack = true;
-                StopCoroutine(_rangedCoroutine);
-            }
-            if (distanceToPlayer <= _enemyFleeDistance)
-            {
-                transform.Translate(UnityEngine.Vector3.back * _enemySpeed * 1.5f * Time.deltaTime);
-            }
+        if (!_aiActivated) return;
 
+        transform.LookAt(_target.transform);
+
+        _enemyAgent.destination = _target.GetComponent<Transform>().position;
+
+        float distanceToPlayer = Vector3.Distance(_target.GetComponent<Transform>().position, this.GetComponent<Transform>().position);
+        if (distanceToPlayer <= _enemyRange && _canAttack)
+        {
+            _canAttack = false;
+            _currentlyAttacking = true;
+            _rangedCoroutine = StartCoroutine(RangedAttack());
         }
+        else if (distanceToPlayer > _enemyRange && _currentlyAttacking == true)
+        {
+            _currentlyAttacking = false;
+            _canAttack = true;
+            StopCoroutine(_rangedCoroutine);
+        }
+
+        if (distanceToPlayer <= _enemyFleeDistance)
+        {
+            transform.Translate(UnityEngine.Vector3.back * _enemySpeed * 1.5f * Time.deltaTime);
+        }
+
+        
     }
 
     IEnumerator RangedAttack()
@@ -77,7 +80,7 @@ public class SuanonAI : enemyBaseAI, IDamageable
     public void Damage(int damageAmount)
     {
         _enemyHealth -= damageAmount;
-        if (_enemyHealth <= 0 && _spawnData._activatedAi)
+        if (_enemyHealth <= 0 && _aiActivated)
         {
             _spawnData?.EnemyDied();
             ObjectPooler.Despawn(this.gameObject);

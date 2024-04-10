@@ -10,6 +10,7 @@ public class MusicManager : MonoBehaviour
     [SerializeField] public AudioClip _labExploreMusic;
     [SerializeField] public AudioClip _labCombatMusic;
 
+    [SerializeField] public float _fadeDuration = 3f;
 
     [SerializeField] public AudioSource _primarySource;
     [SerializeField] public AudioSource _secondarySource;
@@ -35,7 +36,7 @@ public class MusicManager : MonoBehaviour
 
     public void FadeToSecondary()
     {
-        StartCoroutine(StartFade(_audioSources[_currentlyActiveSource], 1, 0));
+        StartCoroutine(StartFade(_audioSources[_currentlyActiveSource], _fadeDuration, 0));
         if(_currentlyActiveSource == 0)
         {
             _currentlyActiveSource = 1;
@@ -44,7 +45,7 @@ public class MusicManager : MonoBehaviour
         {
             _currentlyActiveSource = 0;
         }
-        StartCoroutine(StartFade(_audioSources[_currentlyActiveSource], 1, 100));
+        StartCoroutine(StartFade(_audioSources[_currentlyActiveSource], _fadeDuration, 100));
     }
 
     public static IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)

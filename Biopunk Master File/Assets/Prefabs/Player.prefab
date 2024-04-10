@@ -143,8 +143,8 @@ MonoBehaviour:
   _gunDamage: 10
   _bulletLifetime: 0.3
   _gunBulletSize: 0.165
-  _gunCoolDown: 1.2
-  _reloadCooldown: 2.5
+  _gunCoolDown: 0.5
+  _reloadCooldown: 1
   _shotsFired: 0
   _magSize: 12
   _playerCam: {fileID: 2092423293376654514}
@@ -295,6 +295,7 @@ MonoBehaviour:
   _isAttacking: 0
   _canSwing: 0
   _swingCooldown: 0
+  _player: {fileID: 0}
   _weaponsSide: 0
 --- !u!1 &2092423292829437815
 GameObject:
@@ -436,6 +437,7 @@ MonoBehaviour:
   _isAttacking: 0
   _canSwing: 0
   _swingCooldown: 0
+  _player: {fileID: 0}
   _weaponsSide: 0
 --- !u!1 &2092423292942465745
 GameObject:
@@ -957,9 +959,9 @@ MonoBehaviour:
   _isAttacking: 0
   _canSwing: 1
   _swingCooldown: 2
+  _player: {fileID: 2092423293376654512}
   _weaponsSide: 0
   _knockbackForce: 1000
-  _player: {fileID: 2092423293376654512}
 --- !u!1 &2092423293299772248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1485,9 +1487,9 @@ MonoBehaviour:
   _gunBulletSpeed: 25
   _gunDamage: 10
   _bulletLifetime: 3
-  _gunBulletSize: 0.2
-  _gunCoolDown: 0.8
-  _reloadCooldown: 2
+  _gunBulletSize: 0.36
+  _gunCoolDown: 0.2
+  _reloadCooldown: 0.7
   _shotsFired: 0
   _magSize: 5
   _playerCam: {fileID: 0}
@@ -1927,9 +1929,9 @@ MonoBehaviour:
   _isAttacking: 0
   _canSwing: 1
   _swingCooldown: 2
+  _player: {fileID: 2092423293376654512}
   _weaponsSide: 0
   _knockbackForce: 1000
-  _player: {fileID: 2092423293376654512}
 --- !u!1 &2092423294080679615
 GameObject:
   m_ObjectHideFlags: 0
@@ -2285,6 +2287,10 @@ MonoBehaviour:
   _playerHealth: 100
   _playerMaxHealth: 100
   _playerArmourStacks: 0
+  _canBeDamaged: 1
+  _immunityTime: 1.5
+  _playerHealthBar: {fileID: 0}
+  _playerHealthText: {fileID: 0}
 --- !u!114 &2092423294196237249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2297,8 +2303,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8972dad48b974854b81a3344ab5368e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerAttackSpeed: 1
-  _playerSpeed: 1
+  _playerDamageMultiplier: 1
+  _playerAttackSpeedMultiplier: 1
+  _playerSpeedMultiplier: 1
 --- !u!114 &2092423294196237251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2334,10 +2341,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerCam: {fileID: 2092423294021162027}
-  _playerMenu: {fileID: 0}
-  _headerText: {fileID: 0}
-  _resumeButton: {fileID: 0}
-  _restartButton: {fileID: 0}
   _playerDead: 0
 --- !u!114 &2092423293738497826
 MonoBehaviour:

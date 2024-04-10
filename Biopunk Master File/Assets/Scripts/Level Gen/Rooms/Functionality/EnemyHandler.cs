@@ -7,10 +7,14 @@ public class EnemyHandler : MonoBehaviour
     #region Variables
 
     [Header("Enemies Generated")]
+    [ShowOnly] public bool _hasGenerated;
+    [ShowOnly] public bool _enemiesEnabled;
+    [Space]
     [ShowOnly] public int _generatedEnemies;
     [ShowOnly] public int _livingEnemies;
-    [ShowOnly] public bool _hasGenerated;
-    private List<GameObject> _enemies = new List<GameObject>();
+    [ShowOnly] public bool _allEnemiesDead = false;
+    [Space]
+    public List<GameObject> _enemies = new List<GameObject>();
 
     [Header("Generation Parameters")]
     [SerializeField] private List<EnemySpawnData> _enemyPool = new List<EnemySpawnData>();
@@ -24,10 +28,6 @@ public class EnemyHandler : MonoBehaviour
     [Tooltip("The lower this value, the weaker the preference will be towards enemies spawned.")]
     [SerializeField] [Range(0.02f, 1)] private float _weightPreference;
  
-    [Header("Enemy status")]
-    [ShowOnly] public bool _enemiesEnabled;
-    [ShowOnly] private bool _allEnemiesDead;
-
     [Header("Room References")]
     private RoomStatus _status;
     
@@ -45,9 +45,13 @@ public class EnemyHandler : MonoBehaviour
     public void GenerateEnemies()
     {
         SetSpawnPoints();
-        _hasGenerated = true;
 
-        int maxEnemies = (_enemyPool.Count + _totalSpawnPoints.Count) / 2;
+        _unusedSpawnPoints = _totalSpawnPoints;
+
+        _hasGenerated = true;
+        float randRemoval = Random.Range(0, 1);
+        
+        int maxEnemies = _totalSpawnPoints.Count - Mathf.CeilToInt(_totalSpawnPoints.Count * randRemoval);
         
         // A recursion handler variable is good when making a while loop.
         int attempts = 0;
@@ -81,7 +85,6 @@ public class EnemyHandler : MonoBehaviour
         {
             _totalSpawnPoints.Add(child);
         }
-        _unusedSpawnPoints = _totalSpawnPoints;
     }
     
     private void GenerateAnEnemy()
@@ -100,8 +103,8 @@ public class EnemyHandler : MonoBehaviour
         if (newFilteredList.Count == 0) return;
         // Get a random enemy out of the enemy pool
         int chosenEnemy = Random.Range(0, newFilteredList.Count);
-        EnemySpawnData newEnemy = newFilteredList[chosenEnemy];
-        GameObject newEnemyGo = newEnemy.gameObject;
+        EnemySpawnData chosenEnemyData = newFilteredList[chosenEnemy];
+        GameObject chosenEnemyGo = chosenEnemyData.gameObject;
 
         // Get a random spawn point out of valid spawn points
         int chosenSpawn = Random.Range(0, _unusedSpawnPoints.Count);
@@ -109,20 +112,41 @@ public class EnemyHandler : MonoBehaviour
         // Remove this spawn point from the unused spawn points list
         _unusedSpawnPoints.Remove(newSpawn);
 
-        // Add this enemy to the enemy list
-        _enemies.Add(newEnemyGo);
-
         // Update the enemy handlers current weight 
-        _currentWeight += newEnemy._enemyWeight;
-
-        // Configure the new enemy to be able to communicate correctly
-        newEnemy._connectedRoom = _status;
-        newEnemy._enemyHandler = this;
+        _currentWeight += chosenEnemyData._enemyWeight;
 
         // Spawn the enemy
-        ObjectPooler.Spawn(newEnemyGo, newSpawn.position + (Vector3.up * 4f), Quaternion.identity);
+        GameObject newEnemySpawned = ObjectPooler.Spawn(chosenEnemyGo, newSpawn.position + (Vector3.up * 4f), Quaternion.identity);
+        EnemySpawnData newEnemyData = newEnemySpawned.GetComponent<EnemySpawnData>();
 
-        _generatedEnemies += newEnemy._enemyWorth;
+        // Configure the new enemy to be able to communicate correctly
+        newEnemyData._connectedRoom = _status;
+        newEnemyData._enemyHandler = this;
+
+        // Add this enemy to the enemy list
+        _enemies.Add(newEnemySpawned);
+
+        _generatedEnemies += newEnemyData._enemyWorth;
+    }
+
+    public void DegenerateEnemies()
+    {
+        _hasGenerated = false;
+        _generatedEnemies = 0;
+        _livingEnemies = 0;
+        _currentWeight = 0;
+        _totalSpawnPoints.Clear();
+        _unusedSpawnPoints.Clear();
+
+        // Disable all enemy gameobjects
+        foreach (GameObject enemy in _enemies)
+        {
+            ObjectPooler.Despawn(enemy);
+        }
+
+        _enemies.Clear();
+        Debug.Log($"Cleared enemies at: {gameObject.name}");
+        
     }
 
     private List<EnemySpawnData> GetAdjustedEnemyList(List<EnemySpawnData> originalFilter)
@@ -154,9 +178,12 @@ public class EnemyHandler : MonoBehaviour
 
     public void EnableEnemies()
     {
+        if (_allEnemiesDead) return;
+
         GlobalVariables._inCombat = true;
         GlobalVariables._musicManager.GetComponent<MusicManager>().FadeToSecondary();
 
+        _enemiesEnabled = true;
         foreach (GameObject enemy in _enemies)
         {
             EnemySpawnData thisEnemy = enemy.GetComponent<EnemySpawnData>();
@@ -169,8 +196,10 @@ public class EnemyHandler : MonoBehaviour
         _enemies.Remove(deadEnemy);
         _livingEnemies--;
 
-        if (_livingEnemies <= 0)
+        if (_livingEnemies <= 0 && !_allEnemiesDead)
         {
+            _allEnemiesDead = true;
+            Debug.Log($"All enemies in {gameObject.name} have died");
             _status.NoEnemiesRemaining();
         }
     }

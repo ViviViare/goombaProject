@@ -7,20 +7,14 @@ public class playerStatusEffects : MonoBehaviour
     [SerializeField] float _amplifierMultiplier = 0.4f;
     [SerializeField] float _serumMultiplier = 0.4f;
 
-    [SerializeField] int _amplifierDuration;
-    [SerializeField] int _serumDuration;
+    [SerializeField] public int _amplifierDuration;
+    [SerializeField] public int _serumDuration;
 
     [SerializeField] bool _ampActive = false;
     [SerializeField] bool _serumActive = false;
 
     private void Update()
     {
-        if (GlobalVariables._roomsCleared == GlobalVariables._roomsCleared + 1)
-        {
-            _amplifierDuration--;
-            _serumDuration--;
-        }
-
         if (_amplifierDuration == 0 && _ampActive)
         {
             _ampActive = false;

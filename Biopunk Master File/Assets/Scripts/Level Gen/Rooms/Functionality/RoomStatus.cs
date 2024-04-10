@@ -23,16 +23,19 @@ public class RoomStatus : MonoBehaviour
     private RoomData _data;
     private GridCell _cell;
     private bool _isIrregular;
+    private List<GridCell> _roomNeighbours = new List<GridCell>();
 
     // References
     private EnemyHandler _enemyHandler;
     private PickupHandler _pickupHandler;
+    private ItemHandler _itemHandler;
     private List<Door> _validDoors;
 
     // Parameters
     [ShowOnly] public bool _isActive;
     [ShowOnly] public bool _beenVisited;
     [ShowOnly] public bool _adjacentVisited;
+    public bool _isItemRoom;
 
     #endregion
 
@@ -46,6 +49,7 @@ public class RoomStatus : MonoBehaviour
 
         _enemyHandler = GetComponent<EnemyHandler>();
         _pickupHandler = GetComponent<PickupHandler>();
+        _itemHandler = GetComponent<ItemHandler>();
 
         _validDoors = _data._roomDoors.Values.ToList().FindAll(valid => valid._isValid && valid._doorGo != null);
 
@@ -92,9 +96,10 @@ public class RoomStatus : MonoBehaviour
         _beenVisited = true;
 
         _enemyHandler?.EnableEnemies();
+        _itemHandler?.GenerateItems();
         PrepareNeighbours();
         
-        if (_enemyHandler == null || _enemyHandler.enabled == false || _enemyHandler._livingEnemies <= 0 && _enemyHandler._hasGenerated) NoEnemiesRemaining();
+        if (_enemyHandler == null || _enemyHandler.enabled == false || _enemyHandler._allEnemiesDead) NoEnemiesRemaining();
     }
 
     public void NoEnemiesRemaining()
@@ -108,6 +113,11 @@ public class RoomStatus : MonoBehaviour
         }
 
         GlobalVariables._inCombat = false;
+
+        GlobalVariables._player.GetComponent<playerActiveItem>()._activeItemCharge++;
+        GlobalVariables._player.GetComponent<playerStatusEffects>()._amplifierDuration--;
+        GlobalVariables._player.GetComponent<playerStatusEffects>()._serumDuration--;
+        GlobalVariables._stimulant.GetComponent<StimulantScript>()._stimulantTimer++;
 
         _pickupHandler?.GeneratePickups();
     }
@@ -129,12 +139,15 @@ public class RoomStatus : MonoBehaviour
         {
             DeactivateRoom();
         }
+        
+        
     }
 
     private void DeactivateRoom()
     {
         _isActive = false;
         ToggleDoors();
+        UnprepareNeighbours();
     }
 
     private void ToggleDoors()
@@ -149,19 +162,86 @@ public class RoomStatus : MonoBehaviour
         _data._ladderObject?.ToggleLadder();
     }
 
-    private void PrepareNeighbours()
+    private void UnprepareNeighbours()
     {
-        List<GridCell> neighbours = Level_Generator._instance.GetNeighbouringRooms(_cell);
-        // Enable enemies in neighbouring rooms if that room has an enemy handler
-        foreach (GridCell neighbour in neighbours)
+        // Remove all enemies from rooms which are not chosen.
+        foreach (GridCell neighbour in _roomNeighbours)
         {
             RoomStatus neighbourStatus = neighbour._roomData.GetComponent<RoomStatus>();
-            neighbourStatus._adjacentVisited = true;
             
+            // Do not affect neighbours which are part of the same irregular room set.
+            if (neighbourStatus._data is IrregularRoomData)
+            {
+                IrregularRoomData convertedNeighbourData = (IrregularRoomData)neighbourStatus._data;
+                IrregularRoomData convertedOwnData = (IrregularRoomData)_data;
+
+                if (convertedNeighbourData._irregularRoomNumber == convertedOwnData._irregularRoomNumber) continue;
+            }
+            
+            // Only affect the neighbours that are not the newly activated one
+            // Do not affect neighbours which have already been visited
+            if (neighbourStatus._isActive || neighbourStatus._beenVisited) continue;
+
+            neighbourStatus.GetComponent<EnemyHandler>()?.DegenerateEnemies();
+        }
+
+        if (_data._verticality == Verticality.NONE) return;
+
+        LadderHandler ladderHandler = _data._ladderObject.GetComponent<LadderHandler>();
+        RoomData ladderConnection = ladderHandler._connectedRoom;
+        RoomStatus ladderStatus = ladderConnection.GetComponent<RoomStatus>();
+
+        EnemyHandler ladderEnemyHandler = ladderConnection.GetComponent<EnemyHandler>();
+
+        if (ladderStatus._isActive || ladderStatus._beenVisited) return;
+
+        ladderEnemyHandler.DegenerateEnemies();
+
+
+    }
+
+    private void PrepareNeighbours()
+    {
+        _roomNeighbours = Level_Generator._instance.GetNeighbouringRooms(_cell);
+
+        // Enable enemies in neighbouring rooms if that room has an enemy handler
+        foreach (GridCell neighbour in _roomNeighbours)
+        {
+            RoomStatus neighbourStatus = neighbour._roomData.GetComponent<RoomStatus>();
+            
+            // Do not affect neighbours which are part of the same irregular room set.
+            if (neighbourStatus._data is IrregularRoomData)
+            {
+                IrregularRoomData convertedNeighbourData = (IrregularRoomData)neighbourStatus._data;
+                IrregularRoomData convertedOwnData = (IrregularRoomData)_data;
+
+                if (convertedNeighbourData._irregularRoomNumber == convertedOwnData._irregularRoomNumber) continue;
+            }
+
+            neighbourStatus._adjacentVisited = true;
+
             // If there is an EnemyHandler script on the adjacent rooms then generate their enemies.
             EnemyHandler enemyHandler = neighbourStatus.GetComponent<EnemyHandler>();
-            if (enemyHandler != null && !enemyHandler._hasGenerated) enemyHandler.GenerateEnemies();
+            
+            if (enemyHandler == null || enemyHandler._hasGenerated || neighbourStatus._beenVisited) continue;
+
+            Debug.Log($"Generating enemies for {neighbourStatus.name}");
+            enemyHandler.GenerateEnemies();
         }
+
+        if (_data._verticality == Verticality.NONE) return;
+
+        LadderHandler ladderHandler = _data._ladderObject.GetComponent<LadderHandler>();
+        RoomData ladderConnection = ladderHandler._connectedRoom;
+        RoomStatus ladderStatus = ladderConnection.GetComponent<RoomStatus>();
+
+        EnemyHandler ladderEnemyHandler = ladderConnection.GetComponent<EnemyHandler>();
+
+        if (ladderEnemyHandler == null || ladderEnemyHandler._hasGenerated || ladderStatus._beenVisited) return;
+
+        Debug.Log($"Generating enemies for {ladderStatus.name}");
+        ladderEnemyHandler.GenerateEnemies();
+
 
     }
 

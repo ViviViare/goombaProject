@@ -18,6 +18,7 @@ public class DoorHandler : MonoBehaviour
     [ShowOnly] public bool _isOpen = false;
 
     [Header("References")]
+    public Transform _spawnPoint;
     private BoxCollider _doorExit;
 
     [Header("Door Data")]
@@ -121,7 +122,7 @@ public class DoorHandler : MonoBehaviour
         Transform player = collider.gameObject.transform;
 
         // Teleport the player to the opposite rooms connected door with an offset
-        player.position = _connectedDoor._doorGo.transform.position + ((Vector3)vectorToConnected * DoorTeleportOffset._offset);
+        player.position = _connectedDoor._doorGo.GetComponent<DoorHandler>()._spawnPoint.position;
         _connectedRoom.GetComponent<RoomStatus>()?.PlayerEntered();
 
         // Let the room this door is attatched to know that the player has left.

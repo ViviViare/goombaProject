@@ -1554,7 +1554,7 @@ SphereCollider:
   m_GameObject: {fileID: 2593595099142190271}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -1682,7 +1682,7 @@ SphereCollider:
   m_GameObject: {fileID: 3030425051413528830}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -2567,7 +2567,7 @@ SphereCollider:
   m_GameObject: {fileID: 5642247211575906733}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -2665,6 +2665,7 @@ MonoBehaviour:
   _setAsUp: 0
   _setAsDown: 0
   _verticality: 0
+  _ladderObject: {fileID: 0}
   _doorGameObjects:
     _northDoor: {fileID: 7909938144109445918}
     _eastDoor: {fileID: 0}
@@ -2706,6 +2707,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _generatedEnemies: 0
   _livingEnemies: 0
+  _hasGenerated: 0
   _enemyPool:
   - {fileID: 6419739650780078166, guid: 4f40565ceaec80846981c7420417b5f0, type: 3}
   - {fileID: 8884830622843585176, guid: 042e033ad73601c428aef0d523e748a4, type: 3}
@@ -3170,7 +3172,7 @@ SphereCollider:
   m_GameObject: {fileID: 6409083770113141268}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -3623,7 +3625,7 @@ SphereCollider:
   m_GameObject: {fileID: 8178867163060809775}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}

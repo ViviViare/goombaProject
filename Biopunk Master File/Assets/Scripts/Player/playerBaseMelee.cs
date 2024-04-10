@@ -29,9 +29,18 @@ public class playerBaseMelee : MonoBehaviour
 
     [SerializeField] public GameObject _player;
 
+    [SerializeField] public GameObject _meleeHitSphereCenter;
+
+
     public LeftOrRight _weaponsSide;
-
-
+    private void OnEnable()
+    {
+        playerWeaponHandler._triggerAction += SwingMeleeWeapon;
+    }
+    private void OnDisable()
+    {
+        playerWeaponHandler._triggerAction -= SwingMeleeWeapon;
+    }
     // Start is called before the first frame update. This automatically sets the script's required variables and objects at runtime.
     void Start()
     {
@@ -56,19 +65,17 @@ public class playerBaseMelee : MonoBehaviour
 
     public void MeleeRaycast()
     {
-        Vector3 rayOrigin = _playerCam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
-        RaycastHit wepSwing;
-        
-        if (Physics.Raycast(rayOrigin, _playerCam.transform.forward, out wepSwing, _meleeRange))
+        Collider[] HitColliders = Physics.OverlapSphere(_meleeHitSphereCenter.transform.position, _meleeRange);
+        foreach (var HitCollider in HitColliders)
         {
-            IDamageable damageable = wepSwing.collider.GetComponent<IDamageable>();
-            
-            if (damageable != null)
+            if (HitCollider.gameObject.tag == "Player") continue;
+            if (HitCollider.gameObject.GetComponent<IDamageable>() != null)
             {
                 int calculatedDamage = (int)(_meleeDamage * _player.GetComponent<playerStats>()._playerDamageMultiplier);
-                damageable.Damage(calculatedDamage);
+                HitCollider.gameObject.GetComponent<IDamageable>().Damage(calculatedDamage);
             }
         }
+
         StartCoroutine(MeleeCooldown());
     }
 
