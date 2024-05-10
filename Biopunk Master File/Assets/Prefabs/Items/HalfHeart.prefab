@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 7119618797269393038}
   - component: {fileID: 7119618797269393037}
   - component: {fileID: 7119618797269393010}
-  m_Layer: 0
+  - component: {fileID: 2186722049267357384}
+  m_Layer: 10
   m_Name: HalfHeart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,6 +134,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2186722049267357384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7119618797269393036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48e58f4160731fe468b307eeec05acc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Half Heart
+  _details: Heal 15 health points
+  _fluff: 
 --- !u!1001 &6195964056839545776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -219,6 +235,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Half a Human Heart Model
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28abf458261819c47ab51a195c9c4f4c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28abf458261819c47ab51a195c9c4f4c, type: 3}

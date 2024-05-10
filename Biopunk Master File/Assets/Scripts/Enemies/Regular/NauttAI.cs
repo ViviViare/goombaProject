@@ -66,20 +66,20 @@ public class NauttAI : enemyBaseAI, IDamageable
             if (_died) return;
             _died = true;
             _spawnData?.EnemyDied();
-            
-            GameObject newEdvard = ObjectPooler.Spawn(_edvardPrefab, _edvardSpawnPoint.position, Quaternion.identity);
+
+            GameObject newEdvard = ObjectPooler.Spawn(_edvardPrefab, _edvardSpawnPoint.position, gameObject.transform.rotation);
             EnemySpawnData edvardData = newEdvard.GetComponent<EnemySpawnData>();
             edvardData.EnableEnemy();
             edvardData._enemyHandler = _spawnData._enemyHandler;
             _spawnData._enemyHandler._enemies.Add(newEdvard);
             
-            GameObject newSuanon = ObjectPooler.Spawn(_suanonPrefab, _suanonSpawnPoint.position, Quaternion.identity);
+            GameObject newSuanon = ObjectPooler.Spawn(_suanonPrefab, _suanonSpawnPoint.position, gameObject.transform.rotation);
             EnemySpawnData suanonData = newSuanon.GetComponent<EnemySpawnData>();
             suanonData.EnableEnemy();
             suanonData._enemyHandler = _spawnData._enemyHandler;
             _spawnData._enemyHandler._enemies.Add(newSuanon);
             
-            GameObject newSuaorf = ObjectPooler.Spawn(_sauorfPrefab, _sauorfSpawnPoint.position, Quaternion.identity);
+            GameObject newSuaorf = ObjectPooler.Spawn(_sauorfPrefab, _sauorfSpawnPoint.position, gameObject.transform.rotation);
             EnemySpawnData suaorfData = newSuaorf.GetComponent<EnemySpawnData>();
             suaorfData.EnableEnemy();
             suaorfData._enemyHandler = _spawnData._enemyHandler;

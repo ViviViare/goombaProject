@@ -22,6 +22,9 @@ public class bulletLogic : MonoBehaviour
 
     [SerializeField] private GameObject _player;
 
+    [SerializeField] private GameObject _environmentHitVFX;
+    [SerializeField] private GameObject _enemyHitVFX;
+
     /*
     // Traditional variable inheritance, as created for the December prototype, is not achievable with our new Object Pooler; as instead of creating a local instance of a bullet in
     // the firing method (which can then be fed variables from the player's weapon) it is spawned seperately via the new Object Pooler script. This would require a bit of work 
@@ -91,14 +94,15 @@ public class bulletLogic : MonoBehaviour
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {
+            //ObjectPooler.Spawn(_enemyHitVFX, this.gameObject.transform.position, Quaternion.identity);
             _player = GameObject.FindGameObjectWithTag("Player");
             int calculatedDamage = (int)(_bulletDamage * _player.GetComponent<playerStats>()._playerDamageMultiplier);
-            damageable.Damage(calculatedDamage);
             damageable.Damage(calculatedDamage);
             ObjectPooler.Despawn(this.gameObject);
         }
         else
         {
+            ObjectPooler.Spawn(_environmentHitVFX, this.gameObject.transform.position, Quaternion.identity);
             ObjectPooler.Despawn(this.gameObject);
         }
     }

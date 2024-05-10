@@ -25,9 +25,6 @@ public class ItemHandler : MonoBehaviour
         _hasGenerated = true;
         float randRemoval = Random.Range(0, 1);
 
-        // A recursion handler variable is good when making a while loop.
-        int attempts = 0;
-
         if (_itemPool.Count == 0)
         {
             Debug.LogError($"There is no enemies to generate for {gameObject.name}");

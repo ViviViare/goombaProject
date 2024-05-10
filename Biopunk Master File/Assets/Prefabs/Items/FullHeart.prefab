@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 6295646422944041297}
   - component: {fileID: 6295646422944041298}
   - component: {fileID: 6295646422944041389}
-  m_Layer: 0
+  - component: {fileID: 3778562015743096906}
+  m_Layer: 10
   m_Name: FullHeart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,6 +134,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3778562015743096906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6295646422944041299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48e58f4160731fe468b307eeec05acc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Full Heart
+  _details: Heal 30 health points
+  _fluff: 
 --- !u!1001 &6948819997876814280
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -219,6 +235,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Human heart Model
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ea2a6271f50adb645826dcce032cc20c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea2a6271f50adb645826dcce032cc20c, type: 3}

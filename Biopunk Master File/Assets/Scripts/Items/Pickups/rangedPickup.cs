@@ -65,6 +65,7 @@ public class rangedPickup : MonoBehaviour
 
             leftStats._magSize = _magSize;
         }
+        ObjectPooler.Despawn(this.gameObject);
     }
 
     public void SwapRight(GameObject player)
@@ -112,6 +113,7 @@ public class rangedPickup : MonoBehaviour
 
             rightStats._magSize = _magSize;
         }
+        ObjectPooler.Despawn(this.gameObject);
     }
 
 }

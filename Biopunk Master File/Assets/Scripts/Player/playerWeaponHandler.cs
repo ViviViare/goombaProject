@@ -35,12 +35,14 @@ public class playerWeaponHandler : MonoBehaviour
     // Thank you Levi :)
     public void LeftWeapon()
     {
+        if (GlobalVariables._gamePaused == true) return;
         _leftOrRight = LeftOrRight.Left;
         _triggerAction.Invoke(LeftOrRight.Left);
     }
 
     public void RightWeapon()
     {
+        if (GlobalVariables._gamePaused == true) return;
         _leftOrRight = LeftOrRight.Right;
         _triggerAction.Invoke(LeftOrRight.Right);
     }

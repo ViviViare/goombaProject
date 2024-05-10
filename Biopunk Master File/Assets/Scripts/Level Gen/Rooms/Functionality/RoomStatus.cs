@@ -35,7 +35,7 @@ public class RoomStatus : MonoBehaviour
     [ShowOnly] public bool _isActive;
     [ShowOnly] public bool _beenVisited;
     [ShowOnly] public bool _adjacentVisited;
-    public bool _isItemRoom;
+    [ShowOnly] public bool _isItemRoom;
 
     #endregion
 
@@ -99,27 +99,35 @@ public class RoomStatus : MonoBehaviour
         _itemHandler?.GenerateItems();
         PrepareNeighbours();
         
+        MiniMapHandler._instance.UpdateIconStatus(_cell);
+        if (_data is IrregularRoomData) {}
+        else
+        {
+            MiniMapHandler._instance.MoveRoomToCenter(_cell);
+        }
         if (_enemyHandler == null || _enemyHandler.enabled == false || _enemyHandler._allEnemiesDead) NoEnemiesRemaining();
     }
 
     public void NoEnemiesRemaining()
     {
         ToggleDoors();
-        GlobalVariables._roomsCleared++;
-
+        
         if (GlobalVariables._inCombat)
         {
             GlobalVariables._musicManager.GetComponent<MusicManager>().FadeToSecondary();
+            
+            // Only incerase the rooms cleared if the player had just cleared it
+            GlobalVariables._roomsCleared++;
+            GlobalVariables.TickCooldowns();
+            ActiveFillUpdate._instance.UpdateChargeAmount(GlobalVariables._player.GetComponent<playerActiveItem>()._activeItemCharge);
         }
 
         GlobalVariables._inCombat = false;
 
-        GlobalVariables._player.GetComponent<playerActiveItem>()._activeItemCharge++;
-        GlobalVariables._player.GetComponent<playerStatusEffects>()._amplifierDuration--;
-        GlobalVariables._player.GetComponent<playerStatusEffects>()._serumDuration--;
-        GlobalVariables._stimulant.GetComponent<StimulantScript>()._stimulantTimer++;
-
-        _pickupHandler?.GeneratePickups();
+        if(_pickupHandler?._hasGenerated == false)
+        {
+            _pickupHandler?.GeneratePickups();
+        }
     }
     
     public void PlayerLeft()
@@ -146,6 +154,7 @@ public class RoomStatus : MonoBehaviour
     private void DeactivateRoom()
     {
         _isActive = false;
+        MiniMapHandler._instance.UpdateIconStatus(_cell);
         ToggleDoors();
         UnprepareNeighbours();
     }
@@ -176,6 +185,10 @@ public class RoomStatus : MonoBehaviour
                 IrregularRoomData convertedOwnData = (IrregularRoomData)_data;
 
                 if (convertedNeighbourData._irregularRoomNumber == convertedOwnData._irregularRoomNumber) continue;
+            }
+            else
+            {
+                MiniMapHandler._instance.UpdateIconStatus(neighbour);
             }
             
             // Only affect the neighbours that are not the newly activated one
@@ -208,6 +221,7 @@ public class RoomStatus : MonoBehaviour
         foreach (GridCell neighbour in _roomNeighbours)
         {
             RoomStatus neighbourStatus = neighbour._roomData.GetComponent<RoomStatus>();
+            neighbourStatus._adjacentVisited = true;
             
             // Do not affect neighbours which are part of the same irregular room set.
             if (neighbourStatus._data is IrregularRoomData)
@@ -217,8 +231,12 @@ public class RoomStatus : MonoBehaviour
 
                 if (convertedNeighbourData._irregularRoomNumber == convertedOwnData._irregularRoomNumber) continue;
             }
+            else
+            {
+                MiniMapHandler._instance.UpdateIconStatus(neighbour);
+            }
 
-            neighbourStatus._adjacentVisited = true;
+            
 
             // If there is an EnemyHandler script on the adjacent rooms then generate their enemies.
             EnemyHandler enemyHandler = neighbourStatus.GetComponent<EnemyHandler>();

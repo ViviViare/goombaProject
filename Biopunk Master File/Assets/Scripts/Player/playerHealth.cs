@@ -58,7 +58,6 @@ public class playerHealth : MonoBehaviour, IDamageable
     // Likely will be updated to instead bring up a death screen when the required UI elements are implemented.
     private void DeathSequence()
     {
-        ObjectPooler.ClearAllPools();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

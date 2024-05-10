@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class MedipakScript : MonoBehaviour
 {
@@ -19,6 +21,10 @@ public class MedipakScript : MonoBehaviour
 
     private void UseActive()
     {
-        GlobalVariables._player.gameObject.GetComponent<playerHealth>()._playerHealth += _medkitHeal;
+        playerHealth playhealth = GlobalVariables._player.GetComponent<playerHealth>();
+        playhealth._playerHealth += _medkitHeal;
+        playhealth._playerHealthBar.GetComponent<Slider>().value = playhealth._playerHealth;
+        playhealth._playerHealthText.GetComponent<TextMeshProUGUI>().text = ("Health: " + playhealth._playerHealth + "/" + playhealth._playerMaxHealth);
+
     }
 }

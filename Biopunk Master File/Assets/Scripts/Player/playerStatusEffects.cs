@@ -10,8 +10,8 @@ public class playerStatusEffects : MonoBehaviour
     [SerializeField] public int _amplifierDuration;
     [SerializeField] public int _serumDuration;
 
-    [SerializeField] bool _ampActive = false;
-    [SerializeField] bool _serumActive = false;
+    [SerializeField] public bool _ampActive = false;
+    [SerializeField] public bool _serumActive = false;
 
     private void Update()
     {
@@ -20,6 +20,8 @@ public class playerStatusEffects : MonoBehaviour
             _ampActive = false;
             playerStats PlayerStats = this.gameObject.GetComponent<playerStats>();
             PlayerStats._playerDamageMultiplier -= _amplifierMultiplier;
+
+            PassiveItemManager._instance.PassiveRanOut(PickupType.Amplifier);
         }
 
         if(_serumDuration == 0 && _serumActive)
@@ -28,6 +30,8 @@ public class playerStatusEffects : MonoBehaviour
             playerStats PlayerStats = this.gameObject.GetComponent<playerStats>();
             PlayerStats._playerSpeedMultiplier -= _serumMultiplier;
             PlayerStats._playerAttackSpeedMultiplier -= _serumMultiplier;
+
+            PassiveItemManager._instance.PassiveRanOut(PickupType.Serum);
         }
     }
 

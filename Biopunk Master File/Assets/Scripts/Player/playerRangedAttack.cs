@@ -40,6 +40,8 @@ public class playerRangedAttack : MonoBehaviour
     [SerializeField] public Vector3 _targetPoint;
     [SerializeField] public bool _useTargetPoint;
 
+    [SerializeField] public ParticleSystem muzzleVFX;
+
     public LeftOrRight _weaponsSide;
 
     private void OnEnable()
@@ -60,6 +62,7 @@ public class playerRangedAttack : MonoBehaviour
 
     public virtual void FireRangedWeapon(LeftOrRight direction)
     {
+        if (GlobalVariables._gamePaused == true) return;
         if (_canFire && _weaponsSide == direction)
         {
             StartCoroutine(RangedCoroutine());
@@ -77,6 +80,7 @@ public class playerRangedAttack : MonoBehaviour
     // Weapons have a natural "between-shot" cooldown as well, which is shorter than the reloading cooldown. This is to prevent a player from firing too many bullets too quickly.
     public IEnumerator RangedCoroutine()
     {
+        muzzleVFX.Play();
         _canFire = false;
         Vector3 rayOrigin = _playerCam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
         RaycastHit hit;

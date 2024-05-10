@@ -29,7 +29,7 @@ public class enemyBullet : MonoBehaviour
 
     // Below method checks to see if the collided object has an IDamageable component; if so, it deals damage based on the _bulletDamage stat and despawns itself.
     // If the collided object doesn't have an IDamageable component, the bullet simply despawns.
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider collision)
     {
         IDamageable damageable = collision.gameObject.GetComponent<IDamageable>();
         if (damageable != null)

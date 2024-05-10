@@ -80,7 +80,7 @@ MonoBehaviour:
   _roomsGenerated: 0
   _irregularRoomsGenerated: 0
   _addOnsGenerated: 0
-  _gridBounds: {x: 10, y: 2, z: 10}
+  _gridBounds: {x: 10, y: 3, z: 10}
   _cellDistanceHorizontal: 150
   _cellDistanceVertical: 45
   _cellDistanceConnected: 60

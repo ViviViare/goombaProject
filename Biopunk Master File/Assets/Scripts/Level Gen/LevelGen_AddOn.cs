@@ -8,7 +8,7 @@ public class LevelGen_AddOn : MonoBehaviour
     #region variables
     [Tooltip("Name of this level gen add on. This is not used by any method")]
     [SerializeField] private string _name = "New LVLGEN_AddOn Component";
-    
+
     [Header("Generated Rooms")]
     [ShowOnly] public int _roomsMade;
     private List<GridCell> _reservedCells = new List<GridCell>();
@@ -47,25 +47,25 @@ public class LevelGen_AddOn : MonoBehaviour
     [Tooltip("If enabled then only one room of this type can spawn on a floor, regardless of _roomsToMake's value")]
     [SerializeField] private bool _allowMultipleOnFloor;
     [SerializeField] private List<int> _allowedFloors = new List<int>();
-    
+
     [Space]
     [Header("Debugging")]
     [SerializeField] [Range(1, 100)] private int _maxAttemptsPerSlot = 40;
     [SerializeField] private Color _debugColour = Color.white;
     #endregion
-    
-    // Subscribe to the level generator events 
+
+    // Subscribe to the level generator events
     private void OnEnable()
     {
         Level_Generator._addOnReserveSlots += ReserveGridSlots;
         Level_Generator._addOnGenerateReserves += GenerateRooms;
     }
-    
+
     // Unsubscribe from the level generator events
     private void OnDisable()
     {
         Level_Generator._addOnReserveSlots -= ReserveGridSlots;
-        Level_Generator._addOnGenerateReserves -= GenerateRooms; 
+        Level_Generator._addOnGenerateReserves -= GenerateRooms;
     }
 
     private void ReserveGridSlots()
@@ -76,13 +76,13 @@ public class LevelGen_AddOn : MonoBehaviour
             ReserveSlot();
         }
     }
-    
+
     private void ReserveSlot()
     {
         //Find valid slots.
         Level_Generator levelGen = Level_Generator._instance;
         List<GridCell> validNeighbours = Level_Generator._totalPath.ToList();
-        
+
         if (!_allowAllFloors)
         {
             validNeighbours.RemoveAll(valid => !IsOnAllowedFloor(valid));
@@ -94,17 +94,17 @@ public class LevelGen_AddOn : MonoBehaviour
         }
 
         if (validNeighbours.Count == 0) return;
-        
+
 
         GridCell addOnCell = validNeighbours[0];
-        
+
         bool checkAgain = false;
         int madeAttempts = 0;
         // Find a new room position that has not already been set as a room
         do
         {
             // If a cell could not be found in X tries, return.
-            if (madeAttempts >= _maxAttemptsPerSlot) 
+            if (madeAttempts >= _maxAttemptsPerSlot)
             {
                 Debug.Log("Could not find a valid room to make an add-on");
                 continue;
@@ -113,33 +113,33 @@ public class LevelGen_AddOn : MonoBehaviour
             madeAttempts++;
             checkAgain = false;
 
-            // Get all rooms which have not been set as addons 
+            // Get all rooms which have not been set as addons
             int randNeighbour = UnityEngine.Random.Range(0, validNeighbours.Count);
             GridCell suggestedNeighbour = levelGen._cellDictionary[validNeighbours[randNeighbour]._positionInGrid];
 
             List<GridCell> possibleAddOnCells = levelGen.GetCellNeighbours2D(suggestedNeighbour).FindAll(valid => !valid._setAsAddOn && !valid._setAsRoom);
 
             // If there are no valid cells then return
-            if (possibleAddOnCells.Count == 0) continue;            
+            if (possibleAddOnCells.Count == 0) continue;
             int randAddOnCell = UnityEngine.Random.Range(0, possibleAddOnCells.Count);
             addOnCell = possibleAddOnCells[randAddOnCell];
 
             if (!_distanceFrom._denyNearEnd
-            && levelGen.GetManhattanDistance(addOnCell, levelGen._endRoom) > _distanceFrom._maxDistanceFromEnd) 
-                checkAgain = true;
-            
-            if (!_distanceFrom._denyNearStart
-            && levelGen.GetManhattanDistance(addOnCell, levelGen._startRoom) > _distanceFrom._maxDistanceFromStart) 
+            && levelGen.GetManhattanDistance(addOnCell, levelGen._endRoom) > _distanceFrom._maxDistanceFromEnd)
                 checkAgain = true;
 
-            if (!_distanceFrom._denyNearSelf && _reservedCells.Count > 0  
-            && LowestDistanceFromSiblings(addOnCell) > _distanceFrom._maxDistanceFromStart) 
+            if (!_distanceFrom._denyNearStart
+            && levelGen.GetManhattanDistance(addOnCell, levelGen._startRoom) > _distanceFrom._maxDistanceFromStart)
                 checkAgain = true;
-        } 
+
+            if (!_distanceFrom._denyNearSelf && _reservedCells.Count > 0
+            && LowestDistanceFromSiblings(addOnCell) > _distanceFrom._maxDistanceFromStart)
+                checkAgain = true;
+        }
         while (checkAgain || addOnCell._setAsRoom
         || _distanceFrom._denyNearEnd && levelGen.GetManhattanDistance(addOnCell, levelGen._endRoom) < _distanceFrom._minDistanceFromEnd
         || _distanceFrom._denyNearStart && levelGen.GetManhattanDistance(addOnCell, levelGen._startRoom) < _distanceFrom._minDistanceFromStart
-        || _distanceFrom._denyNearSelf && LowestDistanceFromSiblings(addOnCell) < _distanceFrom._minDistanceFromSelf 
+        || _distanceFrom._denyNearSelf && LowestDistanceFromSiblings(addOnCell) < _distanceFrom._minDistanceFromSelf
         || levelGen.GetNeighbouringRooms(addOnCell).Count > _maxNeighbours );
 
         // A valid cell would've been found at this stage.
@@ -154,7 +154,7 @@ public class LevelGen_AddOn : MonoBehaviour
     {
         // Loop through each allowed floor and check to see if the current cell is on it
         if (_allowedFloors.Contains(cell._positionInGrid.y)) return true;
-        
+
         return false;
     }
 
@@ -164,7 +164,7 @@ public class LevelGen_AddOn : MonoBehaviour
         {
             if (cell._positionInGrid.y == reservedCell._positionInGrid.y) return true;
         }
-        
+
         return false;
     }
 
@@ -174,13 +174,13 @@ public class LevelGen_AddOn : MonoBehaviour
         foreach (GridCell cell in _reservedCells)
         {
             int distance = Level_Generator._instance.GetManhattanDistance(checkingCell, cell);
-            if (distance < lowestInt) lowestInt = distance; 
+            if (distance < lowestInt) lowestInt = distance;
         }
 
         return lowestInt;
     }
     #endregion
-    
+
     private void GenerateRooms()
     {
         // Reserve all the slots
@@ -191,14 +191,14 @@ public class LevelGen_AddOn : MonoBehaviour
     }
 
     private void GenerateRoom(GridCell thisCell)
-    {    
+    {
         Level_Generator lvlGen = Level_Generator._instance;
         List<GridCell> neighbouringRooms = lvlGen.GetNeighbouringRooms(thisCell);
 
         // Check if connected to the end room
         if (neighbouringRooms.Contains(lvlGen._endRoom))
         {
-            neighbouringRooms.Remove(lvlGen._endRoom);   
+            neighbouringRooms.Remove(lvlGen._endRoom);
         }
 
         foreach (GridCell neighbourCell in neighbouringRooms)
@@ -215,7 +215,7 @@ public class LevelGen_AddOn : MonoBehaviour
         List<GameObject> totalRooms = new List<GameObject>();
 
         totalRooms = _roomPrefabs.FindAll(valid => valid.GetComponent<RoomData>().GetDoorConfiguration() == thisCell._neededDoorConfiguration);
-        
+
         // Pick one of the rooms out of all the possible rooms.
         int randRoom = UnityEngine.Random.Range(0, totalRooms.Count);
         GameObject chosenRoom = totalRooms[randRoom];
@@ -238,7 +238,7 @@ public class LevelGen_AddOn : MonoBehaviour
         // Finalize the room
         _roomsMade++;
         lvlGen._addOnsGenerated++;
-
+        Level_Generator._totalPath.Add(thisCell);
         lvlGen.FinalizeRoom(thisCell, newRoom, chosenRoomData);
     }
 

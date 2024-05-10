@@ -29,6 +29,7 @@ public class meleePickup : MonoBehaviour
 
             leftStats._meleeDamage = _meleeDamage;
             leftStats._meleeRange = _meleeRange;
+            ObjectPooler.Despawn(this.gameObject);
         }
         else
         {
@@ -41,6 +42,7 @@ public class meleePickup : MonoBehaviour
 
             leftStats._meleeDamage = _meleeDamage;
             leftStats._meleeRange = _meleeRange;
+            ObjectPooler.Despawn(this.gameObject);
         }
     }
 
@@ -62,6 +64,7 @@ public class meleePickup : MonoBehaviour
 
             rightStats._meleeDamage = _meleeDamage;
             rightStats._meleeRange = _meleeRange;
+            ObjectPooler.Despawn(this.gameObject);
         }
         else
         {
@@ -74,6 +77,7 @@ public class meleePickup : MonoBehaviour
 
             rightStats._meleeDamage = _meleeDamage;
             rightStats._meleeRange = _meleeRange;
+            ObjectPooler.Despawn(this.gameObject);
         }
     }
 }

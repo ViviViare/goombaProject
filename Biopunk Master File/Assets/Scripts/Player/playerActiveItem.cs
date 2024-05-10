@@ -12,13 +12,12 @@ public class playerActiveItem : MonoBehaviour
     [SerializeField] public int _activeItemCharge;
 
     public static event Action _activeAction;
-    private int _cachedRoomsCleared;
 
-    
     public void OnActiveUsage()
     {
         if (_activeItemCharge < _activeItemMaxCharge || _hasActiveItem == false) return;
         _activeAction?.Invoke();
         _activeItemCharge = 0;
+        ActiveFillUpdate._instance.UpdateChargeAmount(_activeItemCharge);
     }
 }

@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 2047594201240384744}
   - component: {fileID: 2047594201240384750}
   - component: {fileID: 287818619196907909}
-  m_Layer: 0
+  - component: {fileID: -7946863477719599618}
+  m_Layer: 10
   m_Name: StimulantPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,6 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _activeIndex: 3
   _activeMaxCharge: 4
+  _sprite: {fileID: 21300000, guid: 20e866a134d209343a1aaaf6e6868ea6, type: 3}
 --- !u!114 &287818619196907909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +78,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemWeight: 2
   _genreBias: 0
+--- !u!114 &-7946863477719599618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047594201240384751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48e58f4160731fe468b307eeec05acc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Stimulants
+  _isActive: 1
 --- !u!1001 &5471341586291097620
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -162,6 +178,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stimulant Model
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 245cd026ba8fe474bb973754bc992e6c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 245cd026ba8fe474bb973754bc992e6c, type: 3}

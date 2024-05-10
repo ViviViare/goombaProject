@@ -32,6 +32,7 @@ public class playerQuadra : playerRangedAttack
 
     public override void FireRangedWeapon(LeftOrRight direction)
     {
+        if (GlobalVariables._gamePaused == true) return;
         if(_weaponsSide == direction)
         {
             FireQuarda();

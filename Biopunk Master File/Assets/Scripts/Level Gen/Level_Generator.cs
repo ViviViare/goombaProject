@@ -99,6 +99,7 @@ public class Level_Generator : MonoBehaviour
     public static event Action _spawnPlayer;
     public static event Action _addOnReserveSlots;
     public static event Action _addOnGenerateReserves;
+    public static event Action _finishedGeneratingRooms;
 
 
     #endregion
@@ -203,8 +204,8 @@ public class Level_Generator : MonoBehaviour
         // End room cannot be within X grid spaces of the X Z of the start room.
         // End room cannot be in a straight line to the start room
 
-        while (distanceToStart <= _endMinDistance || distanceToStart > _endMaxDistance
-        || randX == _startRoom._positionInGrid.x && randZ == _startRoom._positionInGrid.z )
+        int attempts = 0;
+        do
         {
             randX = RandomGridPosition(_gridBounds.x);
             randZ = RandomGridPosition(_gridBounds.z);
@@ -212,7 +213,11 @@ public class Level_Generator : MonoBehaviour
             suggestedEndRoom2D = new Vector3Int(randX, _startRoom._positionInGrid.y, randZ);
 
             distanceToStart = GetManhattanDistance(_startRoom, _cellDictionary[suggestedEndRoom2D]);
-        }
+
+            if (attempts >= 40) Abort(); break;
+
+        } while (distanceToStart <= _endMinDistance || distanceToStart > _endMaxDistance
+        || randX == _startRoom._positionInGrid.x && randZ == _startRoom._positionInGrid.z);
 
 
         Debug.Log("End room distance from start: " + distanceClone + " ==> " + distanceToStart + " || Start room pos is: " + _startRoom._positionInGrid);
@@ -401,6 +406,8 @@ public class Level_Generator : MonoBehaviour
         if (_useAddOns) _addOnGenerateReserves?.Invoke();
 
         Debug.Log("Finished spawning <color=#f5bd3b><b>rooms</b></color> after " + GetElapsedTime() + " seconds.");
+
+        _finishedGeneratingRooms?.Invoke();
         _spawnPlayer();
         GlobalVariables.GenerateNavMesh();
     }
@@ -461,7 +468,7 @@ public class Level_Generator : MonoBehaviour
 
             int rand = UnityEngine.Random.Range(0, cellOnThisFloor.Count);
             //Debug.Log($"Current floor is: {floor}. Random cell is: <b>{rand}</b>. The total number of cells on this floor are: <b>{cellOnThisFloor.Count}</b>");
-            
+
             if (cellOnThisFloor.Count == 0) Abort();
             GridCell cellExtendingFrom = cellOnThisFloor[rand]; // NOTE: ERROR HAPPENS HERE. "ArgumentOutOfRangeException: Index was out of range"
 
@@ -540,14 +547,6 @@ public class Level_Generator : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
         #endif
         Application.Quit();
-    }
-
-    private void ImplementAddOnReserves(List<GridCell> reservedCells)
-    {
-        foreach (GridCell newCell in reservedCells)
-        {
-            _totalPath.Add(newCell);
-        }
     }
 
     #endregion

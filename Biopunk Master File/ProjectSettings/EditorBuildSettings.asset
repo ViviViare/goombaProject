@@ -9,12 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Testing Scenes/TestMainMenu.unity
     guid: 3554ca2538043e848995ef3347db5d1f
   - enabled: 1
-    path: Assets/Scenes/Testing Scenes/TestScene.unity
-    guid: a2e1afa27fd3c394db9101d34d6f859a
-  - enabled: 1
     path: Assets/Scenes/Testing Scenes/TestLevelGen.unity
     guid: ae9c8d33617d44e4eb2d37e001ecfa1f
   - enabled: 0
-    path: Assets/Scenes/Testing Scenes/TestBoss.unity
-    guid: 48f81ec965ba92b49843cc693f96e16a
+    path: Assets/Scenes/Testing Scenes/TestScene.unity
+    guid: a2e1afa27fd3c394db9101d34d6f859a
   m_configObjects: {}

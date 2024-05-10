@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4370471874326029659}
   - component: {fileID: 4370471874326029661}
   - component: {fileID: 8888575472978152965}
-  m_Layer: 0
+  - component: {fileID: -8243332554085142579}
+  m_Layer: 10
   m_Name: MedipakPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,6 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _activeIndex: 2
   _activeMaxCharge: 3
+  _sprite: {fileID: 21300000, guid: e6d186fd2a999e3439749814cf9d2b67, type: 3}
 --- !u!114 &8888575472978152965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +78,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _itemWeight: 2
   _genreBias: 0
+--- !u!114 &-8243332554085142579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4370471874326029662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48e58f4160731fe468b307eeec05acc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Medipak
+  _isActive: 1
 --- !u!1001 &4100034991630216285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -162,6 +178,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Medi Pac Model - LocationCorrected
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7e0a49f47fc2d2d469260a760ddb8136,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e0a49f47fc2d2d469260a760ddb8136, type: 3}

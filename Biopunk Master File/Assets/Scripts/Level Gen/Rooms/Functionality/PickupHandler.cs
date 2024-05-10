@@ -127,7 +127,7 @@ public class PickupHandler : MonoBehaviour
             // Get the absolute value of the weight difference between the difficulty preference and the possible enemy
             float weightDifference = Mathf.Abs(pickupData._pickupWeight - _weightPreference);
             float inclusionChance = 1f - Mathf.Clamp01(weightDifference);
-
+            
             // Random chance between 0 and 1
             float randChance = Random.value;
 

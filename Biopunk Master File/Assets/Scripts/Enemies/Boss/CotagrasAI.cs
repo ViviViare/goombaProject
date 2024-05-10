@@ -47,17 +47,11 @@ public class CotagrasAI : MonoBehaviour
     [SerializeField] private float _leapHighPointDistance;
     private int _directLeapChance;
 
-    [Header("Textures")]
-    private Material _mainTexture;
-    private bool _isShiny;    
-    [SerializeField] private Material _shinyTexture;
-    [SerializeField] private GameObject _enemyModel;
-
     #endregion
 
     private void Start()
     {
-        SetupCotagras();
+        //SetupCotagras();
         //ActivateAI(); // Temp call, delete after.
         //StartCoroutine(CheckForWalls());
         //LeapTowards();
@@ -65,7 +59,7 @@ public class CotagrasAI : MonoBehaviour
 
     private void Update()
     {
-        ChargeForward();
+        //ChargeForward();
     }
 
     private void SetupCotagras()
@@ -77,8 +71,6 @@ public class CotagrasAI : MonoBehaviour
         _aiActivated = false;
 
         _controller = GetComponent<CharacterController>();
-
-        Shiny();
     }
 
     public void ActivateAI()
@@ -89,23 +81,25 @@ public class CotagrasAI : MonoBehaviour
     #region Charge Attack
     private void ChargeForward()
     {
-        CheckForWalls();
-
         Vector3 moveDirection = (Vector3.forward * _chargeSpeed) * Time.deltaTime;
+
         _controller.Move(moveDirection);
     }
 
-    private void CheckForWalls()
+    private IEnumerator CheckForWalls()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(_raycastOrigin.position, Vector3.forward, out hit, _raycastLength ) )
+        while (true)
         {
-            // If it cannot find a wall continue the loop
-            if (!hit.collider.gameObject.CompareTag("Wall")) return;
-            transform.rotation = Quaternion.Euler(0, -transform.rotation.y, 0);
+            yield return new WaitForSeconds(0.1f);
 
+            RaycastHit hit;
+            if (Physics.Raycast(_raycastOrigin.position, Vector3.forward, out hit, _raycastLength ) )
+            {
+                // If it cannot find a wall continue the loop
+                if (!hit.collider.gameObject.CompareTag("Wall")) continue;
+
+            }
         }
-        
     }
 
     #endregion
@@ -117,7 +111,6 @@ public class CotagrasAI : MonoBehaviour
         Vector3 target = FindLeapTarget();
 
         Vector3 startPoint = transform.position;
-        Debug.Log(startPoint);
         
         Vector3 midpointOfTarget = (transform.position + target) / 2;
         Vector3 highPoint = midpointOfTarget + Vector3.up * _leapHighPointDistance;
@@ -141,7 +134,7 @@ public class CotagrasAI : MonoBehaviour
         else
         {
             // Increase chance to hit player each jump
-            _directLeapChance += Mathf.FloorToInt(chanceToHitPlayer);
+            _directLeapChance += Mathf.FloorToInt(chanceToHitPlayer / 100);
         }
 
         float newX;
@@ -149,8 +142,8 @@ public class CotagrasAI : MonoBehaviour
 
         do 
         {
-            newX = Random.Range(-_maxLeapDistance, _maxLeapDistance);
-            newZ = Random.Range(-_maxLeapDistance, _maxLeapDistance);
+            newX = Random.Range(_minLeapDistance, _maxLeapDistance);
+            newZ = Random.Range(_minLeapDistance, _maxLeapDistance);
             target.x = newX;
             target.z = newZ;
         }
@@ -163,9 +156,8 @@ public class CotagrasAI : MonoBehaviour
     
     private bool TargetIsValid(Vector3 target)
     {
-        if (Vector3.Distance(target, transform.position) < _minLeapDistance ) return false;
-
         RaycastHit hit;
+        
         if (Physics.Raycast(target + (Vector3.up * 2), Vector3.down, out hit, Mathf.Infinity) )
         {
             return true;
@@ -216,23 +208,6 @@ public class CotagrasAI : MonoBehaviour
 
 
     #endregion
-
-    private void Shiny()
-    {
-        // Decide if this enemy should be a shiny
-        int shinyChance = Random.Range(0, 10);
-        Material textureToUse = _mainTexture;
-        if (shinyChance <= 0 && _shinyTexture != null) textureToUse = _shinyTexture;
-
-        // If this enemy is not to be shiny and was not shiny already, stop running the code
-        if (textureToUse == _mainTexture && !_isShiny) return;
-
-        // Change the material on the enemy to be either shiny or revert from shiny back to normal
-        foreach (Renderer child in _enemyModel.GetComponentsInChildren<Renderer>() )
-        {
-            child.material = _shinyTexture;
-        }
-    }
 
     private void OnDrawGizmos()
     {

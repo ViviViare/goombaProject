@@ -12,13 +12,20 @@ public class StimulantScript : MonoBehaviour
 
     private void Update()
     {
+        if (GlobalVariables._roomsCleared == GlobalVariables._roomsCleared++)
+        {
+            _stimulantTimer++;
+        }
+
         if (_stimulantTimer == _stimulantTimer + 1 && _usedStimulants)
         {
             GameObject player = GameObject.FindGameObjectWithTag("Player");
             playerStats PlayerStats = player.gameObject.GetComponent<playerStats>();
             PlayerStats._playerSpeedMultiplier -= _stimulantMultiplier;
             PlayerStats._playerAttackSpeedMultiplier -= _stimulantMultiplier;
-            _stimulantTimer = 0;
+
+            StatIncreaseUIHandler._instance.DecreaseDamageStat(_stimulantMultiplier * 100);
+            StatIncreaseUIHandler._instance.DecreaseSpeedStat(_stimulantMultiplier * 100);
         }
     }
 
@@ -36,5 +43,10 @@ public class StimulantScript : MonoBehaviour
         playerStats PlayerStats = GlobalVariables._player.gameObject.GetComponent<playerStats>();
         PlayerStats._playerSpeedMultiplier += _stimulantMultiplier;
         PlayerStats._playerAttackSpeedMultiplier += _stimulantMultiplier;
+        
+        StatIncreaseUIHandler._instance.IncreaseDamageStat(_stimulantMultiplier * 100);
+        StatIncreaseUIHandler._instance.IncreaseSpeedStat(_stimulantMultiplier * 100);
+           
+        
     }
 }

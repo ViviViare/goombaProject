@@ -27,9 +27,7 @@ public class GlobalVariables : MonoBehaviour
     [SerializeField] public static GameObject _player;
     [SerializeField] public GameObject _Player;
 
-
-    [SerializeField] public static GameObject _stimulant;
-    [SerializeField] public GameObject _Stimulant;
+    [SerializeField] public static bool _gamePaused;
 
 
     private void Awake()
@@ -41,7 +39,6 @@ public class GlobalVariables : MonoBehaviour
         _navMeshSurface = GetComponent<NavMeshSurface>();
         _pickupCanvas = _PickupCanvas;
         _player = _Player;
-        _stimulant = _Stimulant;
 
         _musicManager = GameObject.FindGameObjectWithTag("Musicmanager");
     }
@@ -49,5 +46,25 @@ public class GlobalVariables : MonoBehaviour
     {
         _navMeshSurface.BuildNavMesh();
     }
-    
+
+    public static void TickCooldowns()
+    {
+        playerStatusEffects playerstat = _player.GetComponent<playerStatusEffects>();
+        playerActiveItem playeractive = _player.GetComponent<playerActiveItem>();
+        if (playerstat._amplifierDuration > 0)
+        {
+            playerstat._amplifierDuration--;
+            PassiveItemManager._instance.UpdatePassive(PickupType.Amplifier, playerstat._amplifierDuration);
+        }
+        if (playerstat._serumDuration > 0)
+        {
+            playerstat._serumDuration--;
+            PassiveItemManager._instance.UpdatePassive(PickupType.Serum, playerstat._serumDuration);
+        }
+
+        if (playeractive._activeItemCharge < playeractive._activeItemMaxCharge)
+        {
+            playeractive._activeItemCharge++;
+        }
+    }
 }

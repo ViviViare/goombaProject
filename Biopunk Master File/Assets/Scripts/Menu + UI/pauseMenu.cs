@@ -37,6 +37,7 @@ public class pauseMenu : MonoBehaviour
 
     public void OpenPauseMenu(InputAction.CallbackContext obj)
     {
+        GlobalVariables._gamePaused = true;
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 0;
 
@@ -51,6 +52,7 @@ public class pauseMenu : MonoBehaviour
 
     public void ClosePauseMenu()
     {
+        GlobalVariables._gamePaused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1;
 
@@ -60,6 +62,7 @@ public class pauseMenu : MonoBehaviour
  
     public void OpenDeathMenu()
     {
+        GlobalVariables._gamePaused = true;
         Cursor.lockState = CursorLockMode.None;
         
         Time.timeScale = 0;
@@ -77,16 +80,19 @@ public class pauseMenu : MonoBehaviour
 
     public void ExitToDesktop()
     {
+        GlobalVariables._gamePaused = false;
         Application.Quit();
     }
 
     public void ExitToMenu()
     {
+        GlobalVariables._gamePaused = false;
         SceneManager.LoadScene(0);
     }
 
     public void RestartLevel()
     {
+        GlobalVariables._gamePaused = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 

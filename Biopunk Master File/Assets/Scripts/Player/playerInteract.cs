@@ -40,10 +40,12 @@ public class playerInteract : MonoBehaviour
                 actInv._currentActive.SetActive(true);
                 actInv._currentActiveIndex = interactable.collider.gameObject.GetComponent<activePickup>()._activeIndex;
 
-
                 this.gameObject.GetComponent<playerActiveItem>()._activeItemMaxCharge = interactable.collider.GetComponent<activePickup>()._activeMaxCharge;
                 this.gameObject.GetComponent<playerActiveItem>()._activeItemCharge = interactable.collider.GetComponent<activePickup>()._activeMaxCharge;
                 this.gameObject.GetComponent<playerActiveItem>()._hasActiveItem = true;
+
+                ActiveFillUpdate._instance.UpdateActive(interactable.collider.gameObject.GetComponent<activePickup>()._sprite, interactable.collider.GetComponent<activePickup>()._activeMaxCharge);
+                ActiveFillUpdate._instance.UpdateChargeAmount(interactable.collider.GetComponent<activePickup>()._activeMaxCharge);
 
                 ObjectPooler.Despawn(interactable.collider.gameObject);
             }

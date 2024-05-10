@@ -34,6 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2953821814962889725}
+  - {fileID: 951184763698611414}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -67,11 +68,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7f4b30597252b946be3cdf39f92be9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyHealth: 5
-  _enemyDamage: 5
-  _enemySpeed: 9
+  _enemyHealth: 15
+  _enemyDamage: 10
+  _enemySpeed: 5
   _enemySpawnWeight: 0
-  _enemyRange: 1.51
+  _enemyRange: 3
   _attackCooldown: 0.5
   _aiActivated: 0
   _aiSetup: 0
@@ -88,15 +89,15 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.50000006
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 1079.46
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 5
+  m_AngularSpeed: 500
+  m_StoppingDistance: 2.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
   m_Height: 0.23
-  m_BaseOffset: 0
+  m_BaseOffset: 0.15
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!65 &3128207100141293075
@@ -110,8 +111,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.4, y: 1.4, z: 1.4}
-  m_Center: {x: 0, y: 0.2, z: 0}
+  m_Size: {x: 1.4, y: 1.0392941, z: 1.4}
+  m_Center: {x: 0, y: 0.38035294, z: 0}
 --- !u!54 &1609943557282183721
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -120,7 +121,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7766165836651377578}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 9999
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
@@ -128,6 +129,81 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1001 &1379517799319447188
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7766165836651377579}
+    m_Modifications:
+    - target: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.21
+      objectReference: {fileID: 0}
+    - target: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8481479174394863575, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+        type: 3}
+      propertyPath: m_Name
+      value: EnemyLighting 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb, type: 3}
+--- !u!4 &951184763698611414 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2167992434158903874, guid: a7b33c12fcfef284aa6fc7f3a49a8aeb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1379517799319447188}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4951708137110778576
 PrefabInstance:
   m_ObjectHideFlags: 0

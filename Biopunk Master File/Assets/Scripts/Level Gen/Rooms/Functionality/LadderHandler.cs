@@ -65,6 +65,10 @@ public class LadderHandler : MonoBehaviour
         player.position = _connectedLadder._spawnPoint.position;
         _connectedRoom.GetComponent<RoomStatus>()?.PlayerEntered();
 
+        int floorIncrement = _connectedCell._positionInGrid.y;
+
+        MiniMapHandler._instance.MoveIconFloor(floorIncrement);
+
         // Let the room this door is attatched to know that the player has left.
         _roomData.GetComponent<RoomStatus>()?.PlayerLeft();
     }

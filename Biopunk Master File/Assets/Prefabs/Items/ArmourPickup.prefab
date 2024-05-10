@@ -14,7 +14,8 @@ GameObject:
   - component: {fileID: 382105246363857643}
   - component: {fileID: 382105246363857642}
   - component: {fileID: 382105246363857655}
-  m_Layer: 0
+  - component: {fileID: -1326002494641260571}
+  m_Layer: 10
   m_Name: ArmourPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,6 +134,22 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1326002494641260571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382105246363857645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48e58f4160731fe468b307eeec05acc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: Armour Stack
+  _details: Gain +1 armour stack, each stack gives a 1 time 100% damage resistance
+    for 3 seconds on hit.
+  _fluff: 
 --- !u!1001 &7996033235284936477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -219,6 +236,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Armour Plating Model
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 57651b4baa3b5e842ba0a4a85b5e6649,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57651b4baa3b5e842ba0a4a85b5e6649, type: 3}

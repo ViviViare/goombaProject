@@ -45,7 +45,6 @@ public class enemyBaseAI : MonoBehaviour
         _spawnData = GetComponent<EnemySpawnData>();
         _enemyAgent = this.gameObject.GetComponent<NavMeshAgent>();
         _target = GlobalVariables._player;
-        _enemyAgent.stoppingDistance = _enemyRange;
         _mainTexture = _enemyModel.GetComponentInChildren<Renderer>(true).material;
     }
 
@@ -82,7 +81,7 @@ public class enemyBaseAI : MonoBehaviour
     private void Shiny()
     {
         // Decide if this enemy should be a shiny
-        int shinyChance = Random.Range(0, 10);
+        int shinyChance = Random.Range(0, 5);
         Material textureToUse = _mainTexture;
         if (shinyChance <= 0 && _shinyTexture != null) textureToUse = _shinyTexture;
 
