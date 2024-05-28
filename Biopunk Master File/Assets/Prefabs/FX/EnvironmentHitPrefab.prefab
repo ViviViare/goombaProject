@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _particle: {fileID: 1737370201451596998}
   _despawnTimer: 0.6
+  _clipToPlay: {fileID: 8300000, guid: 82d7a135b74e61c48b345f529fbd1d6d, type: 3}
 --- !u!1001 &6972425662190645840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -133,6 +134,11 @@ PrefabInstance:
         type: 3}
       propertyPath: TrailModule.sizeAffectsLifetime
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8709795431979155094, guid: 3d879167a6b354d45b70a02e2e84a1e9,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d879167a6b354d45b70a02e2e84a1e9, type: 3}

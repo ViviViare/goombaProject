@@ -10,6 +10,7 @@ public class StimulantScript : MonoBehaviour
 
     [SerializeField] public static float _stimulantMultiplier = 0.2f;
 
+    // Keeps track of the stimulant's cooldowns and durations. If the player clears a room, it will increment the _stimulantTimer, which will revert the speed buffs it provides to the player.
     private void Update()
     {
         if (GlobalVariables._roomsCleared == GlobalVariables._roomsCleared++)
@@ -23,9 +24,6 @@ public class StimulantScript : MonoBehaviour
             playerStats PlayerStats = player.gameObject.GetComponent<playerStats>();
             PlayerStats._playerSpeedMultiplier -= _stimulantMultiplier;
             PlayerStats._playerAttackSpeedMultiplier -= _stimulantMultiplier;
-
-            StatIncreaseUIHandler._instance.DecreaseDamageStat(_stimulantMultiplier * 100);
-            StatIncreaseUIHandler._instance.DecreaseSpeedStat(_stimulantMultiplier * 100);
         }
     }
 
@@ -38,15 +36,11 @@ public class StimulantScript : MonoBehaviour
         playerActiveItem._activeAction -= UseActive;
     }
 
+    // Multiplies the player's speed mulitplier found within playerStats by _stimulantMultiplier.
     private void UseActive()
     {
         playerStats PlayerStats = GlobalVariables._player.gameObject.GetComponent<playerStats>();
         PlayerStats._playerSpeedMultiplier += _stimulantMultiplier;
         PlayerStats._playerAttackSpeedMultiplier += _stimulantMultiplier;
-        
-        StatIncreaseUIHandler._instance.IncreaseDamageStat(_stimulantMultiplier * 100);
-        StatIncreaseUIHandler._instance.IncreaseSpeedStat(_stimulantMultiplier * 100);
-           
-        
     }
 }

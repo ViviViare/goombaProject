@@ -1,3 +1,14 @@
+/*  Class created by: Leviathan Vi Amare / ViviViare
+//  Creation date: 09/05/24
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  StatIncreaseUIHandler.cs
+//
+//  Script that updates the stat UI: Damage and Speed stats.
+//  
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +41,7 @@ public class StatIncreaseUIHandler : MonoBehaviour
 
     private void Start()
     {
+        // Default the stats
         UpdateText(_speedStat._textIncrease, 0);
         UpdateText(_damageStat._textIncrease, 0);
     }
@@ -65,6 +77,8 @@ public class StatIncreaseUIHandler : MonoBehaviour
         
         float targetAlpha = goingUp ? 1f : 0f;
         arrow.rotation = goingUp ? Quaternion.Euler(0f, 0f, 0f) : Quaternion.Euler(0f, 0f, 180f);
+
+        // If the goingUp bool is equal to true then use colourIncrease, otherwise use colourDecrease
         arrow.GetComponent<Image>().color = goingUp ? _colourIncrease : _colourDecrease;
         float trueOffset = goingUp ? _arrowOffset : -_arrowOffset;
 

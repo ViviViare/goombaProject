@@ -36,6 +36,7 @@ public class RoomStatus : MonoBehaviour
     [ShowOnly] public bool _beenVisited;
     [ShowOnly] public bool _adjacentVisited;
     [ShowOnly] public bool _isItemRoom;
+    [SerializeField] public bool _isSpawnRoom;
 
     #endregion
 
@@ -105,11 +106,14 @@ public class RoomStatus : MonoBehaviour
         {
             MiniMapHandler._instance.MoveRoomToCenter(_cell);
         }
+
+        if (_cell == Level_Generator._instance._startRoom && !GlobalVariables._startingItemGrabbed) return;
         if (_enemyHandler == null || _enemyHandler.enabled == false || _enemyHandler._allEnemiesDead) NoEnemiesRemaining();
     }
 
     public void NoEnemiesRemaining()
     {
+
         ToggleDoors();
         
         if (GlobalVariables._inCombat)
@@ -159,7 +163,7 @@ public class RoomStatus : MonoBehaviour
         UnprepareNeighbours();
     }
 
-    private void ToggleDoors()
+    public void ToggleDoors()
     {
         // Disable each door in this room when a player enters
         foreach (Door door in _validDoors)
@@ -209,8 +213,6 @@ public class RoomStatus : MonoBehaviour
         if (ladderStatus._isActive || ladderStatus._beenVisited) return;
 
         ladderEnemyHandler.DegenerateEnemies();
-
-
     }
 
     private void PrepareNeighbours()
@@ -234,9 +236,7 @@ public class RoomStatus : MonoBehaviour
             else
             {
                 MiniMapHandler._instance.UpdateIconStatus(neighbour);
-            }
-
-            
+            }          
 
             // If there is an EnemyHandler script on the adjacent rooms then generate their enemies.
             EnemyHandler enemyHandler = neighbourStatus.GetComponent<EnemyHandler>();

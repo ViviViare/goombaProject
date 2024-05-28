@@ -2,7 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
+/*
+// Class created by Mateusz Korcipa / Forkguy13
+// Creation date: 24/02/24
 
+// Handles item interaction.
+
+//
+*/
 public class playerInteract : MonoBehaviour
 {
     [SerializeField] public float _interactRange = 5f;
@@ -17,6 +24,10 @@ public class playerInteract : MonoBehaviour
         _player = this.gameObject;
     }
 
+
+    // Below method executes when the player presses the interact button.
+    // Fires a raycast from the player's camera, which upon colliding with an object executes different methods based on what object it is.
+
     public void OnInteract()
     {
         Vector3 rayOrigin = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
@@ -25,14 +36,19 @@ public class playerInteract : MonoBehaviour
         {
             if (interactable.collider.gameObject.GetComponent<rangedPickup>() != null || interactable.collider.gameObject.GetComponent<meleePickup>() != null)
             {
+                // If the raycast hits an object with the rangedPickup script attached, it will execute the SwapRightWeapon method.
                 _currentInteractable = interactable.collider.gameObject;
-                GlobalVariables._pickupCanvas.SetActive(true);
-                Cursor.lockState = CursorLockMode.None;
-                Time.timeScale = 0;
-                _playerCam.enabled = false;
+                SwapRightWeapon();
+                //GlobalVariables._pickupCanvas.SetActive(true);
+                //Cursor.lockState = CursorLockMode.None;
+                //Time.timeScale = 0;
+                //_playerCam.enabled = false;
             }
             else if (interactable.collider.gameObject.GetComponent<activePickup>() != null)
             {
+                // If the raycast hits an object with the activePickup script attached, it will swap the player's current active item for whatever active item the player has just 
+                // interacted with.
+
                 if (interactable.collider.gameObject.GetComponent<activePickup>()._activeIndex == _player.gameObject.GetComponent<playerActiveInventory>()._currentActiveIndex) return;
                 playerActiveInventory actInv = _player.GetComponent<playerActiveInventory>();
                 actInv._currentActive.SetActive(false);
@@ -52,26 +68,27 @@ public class playerInteract : MonoBehaviour
         }
     }
 
-    public void SwapLeftWeapon()
-    {
-        if (_currentInteractable.GetComponent<rangedPickup>() != null)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Time.timeScale = 1;
-            GlobalVariables._pickupCanvas.SetActive(false);
-            _playerCam.enabled = true;
-            _currentInteractable.GetComponent<rangedPickup>().SwapLeft(_player);
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Time.timeScale = 1;
-            GlobalVariables._pickupCanvas.SetActive(false);
-            _playerCam.enabled = true;
-            _currentInteractable.GetComponent<meleePickup>().SwapLeft(_player);
-        }
-    }
+    //public void SwapLeftWeapon()
+    //{
+    //    if (_currentInteractable.GetComponent<rangedPickup>() != null)
+    //    {
+    //        Cursor.lockState = CursorLockMode.Locked;
+    //        Time.timeScale = 1;
+    //        GlobalVariables._pickupCanvas.SetActive(false);
+    //        _playerCam.enabled = true;
+    //        _currentInteractable.GetComponent<rangedPickup>().SwapLeft(_player);
+    //    }
+    //    else
+    //    {
+    //        Cursor.lockState = CursorLockMode.Locked;
+    //        Time.timeScale = 1;
+    //        GlobalVariables._pickupCanvas.SetActive(false);
+    //        _playerCam.enabled = true;
+    //        _currentInteractable.GetComponent<meleePickup>().SwapLeft(_player);
+    //    }
+    //}
 
+    // Executes the swap method found on the weapon pickup object the player has just interacted with.
     public void SwapRightWeapon()
     {
         if (_currentInteractable.GetComponent<rangedPickup>() != null)

@@ -1,3 +1,14 @@
+/*  Class created by: Leviathan Vi Amare / ViviViare
+//  Creation date: 18/04/24
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  ExtensionMethods.cs
+//
+//  An extender to unity's default method functionality for specific use cases
+//  
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+*/
 using System;
 using System.Collections.Generic;
 using UnityEngine;

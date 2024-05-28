@@ -1,3 +1,16 @@
+/*  Class created by: Leviathan Vi Amare / ViviViare
+//  Creation date: 02/05/24
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  ActiveFillUpdate.cs
+//
+//  This script updates the active fill UI elements to show how many cleared rooms it will be until
+//  the active item can be used
+//
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  Edits since script finished:
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +22,7 @@ public class ActiveFillUpdate : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        _rectTransform = _activeItemCharge.GetComponent<RectTransform>();
     }
 
     [SerializeField] private Slider _activeItemCharge;
@@ -30,7 +44,7 @@ public class ActiveFillUpdate : MonoBehaviour
         UpdateChargeAmount(0);
         UpdateActive(null, 100);
         ToggleActiveSprite(false);
-        _rectTransform = _activeItemCharge.GetComponent<RectTransform>();
+        
     }
 
     private void Update()
@@ -69,7 +83,9 @@ public class ActiveFillUpdate : MonoBehaviour
     {
         float elapsedTime = 0f;
 
+        // Cache the starting size of the UI element
         Vector3 startSize = _rectTransform.localScale;
+        // Cache the end goal size for the UI element
         Vector3 targetSize = _rectTransform.localScale * _iconSizeOffset;
 
         while (elapsedTime < _iconAnimDuration)
@@ -77,6 +93,8 @@ public class ActiveFillUpdate : MonoBehaviour
             float time = Mathf.Clamp01(elapsedTime / _iconAnimDuration);
             float curveValue = _iconEasing.Evaluate(time);
 
+            // Lerp between the start size and the target size while comparing it to the defined curve value
+            // the curve esentially acts to make the animation more interesting via Ease in and out.
             Vector2 currentSize = Vector2.Lerp(startSize, targetSize, curveValue);
             
             _rectTransform.localScale = currentSize;

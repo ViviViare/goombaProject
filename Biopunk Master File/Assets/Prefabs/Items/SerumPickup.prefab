@@ -52,6 +52,7 @@ MonoBehaviour:
   _armourAmount: 1
   _effectDuration: 2
   _pickupWeight: 2
+  _clipToPlay: {fileID: 8300000, guid: 66406f27696b8b14d874331c053a69a7, type: 3}
 --- !u!65 &6731770353367114816
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -78,8 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Speed Serum
-  _details: Boost your movement speed by 40%
-  _fluff: 
+  _isActive: 0
 --- !u!1001 &6064714958515728467
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -24,7 +24,7 @@ public partial class @PCInputs : IInputActionCollection2, IDisposable
     ""name"": ""PCInputs"",
     ""maps"": [
         {
-            ""name"": ""Player Actions"",
+            ""name"": ""Actions"",
             ""id"": ""dc95d0a3-839d-4cd9-8ce0-beea964334b3"",
             ""actions"": [
                 {
@@ -82,16 +82,16 @@ public partial class @PCInputs : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Left Weapon"",
+                    ""name"": ""Use Weapon"",
                     ""type"": ""Button"",
                     ""id"": ""edfd3102-259f-45be-ada2-79e85d19f54e"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press"",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Right Weapon"",
+                    ""name"": ""Weapon Ability"",
                     ""type"": ""Button"",
                     ""id"": ""7b88fb9c-5652-4e73-90cd-e2e6ea9afe22"",
                     ""expectedControlType"": ""Button"",
@@ -213,23 +213,23 @@ public partial class @PCInputs : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""fac76bc3-9176-458c-a394-cd26a1f881a1"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""Left Weapon"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""47ec9078-9942-4971-9854-bd88ff88e12c"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Right Weapon"",
+                    ""action"": ""Weapon Ability"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fac76bc3-9176-458c-a394-cd26a1f881a1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Use Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -255,16 +255,16 @@ public partial class @PCInputs : IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // Player Actions
-        m_PlayerActions = asset.FindActionMap("Player Actions", throwIfNotFound: true);
-        m_PlayerActions_Move = m_PlayerActions.FindAction("Move", throwIfNotFound: true);
-        m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
-        m_PlayerActions_Look = m_PlayerActions.FindAction("Look", throwIfNotFound: true);
-        m_PlayerActions_Pause = m_PlayerActions.FindAction("Pause", throwIfNotFound: true);
-        m_PlayerActions_Dash = m_PlayerActions.FindAction("Dash", throwIfNotFound: true);
-        m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
-        m_PlayerActions_LeftWeapon = m_PlayerActions.FindAction("Left Weapon", throwIfNotFound: true);
-        m_PlayerActions_RightWeapon = m_PlayerActions.FindAction("Right Weapon", throwIfNotFound: true);
+        // Actions
+        m_Actions = asset.FindActionMap("Actions", throwIfNotFound: true);
+        m_Actions_Move = m_Actions.FindAction("Move", throwIfNotFound: true);
+        m_Actions_Interact = m_Actions.FindAction("Interact", throwIfNotFound: true);
+        m_Actions_Look = m_Actions.FindAction("Look", throwIfNotFound: true);
+        m_Actions_Pause = m_Actions.FindAction("Pause", throwIfNotFound: true);
+        m_Actions_Dash = m_Actions.FindAction("Dash", throwIfNotFound: true);
+        m_Actions_Jump = m_Actions.FindAction("Jump", throwIfNotFound: true);
+        m_Actions_UseWeapon = m_Actions.FindAction("Use Weapon", throwIfNotFound: true);
+        m_Actions_WeaponAbility = m_Actions.FindAction("Weapon Ability", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -321,64 +321,64 @@ public partial class @PCInputs : IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Player Actions
-    private readonly InputActionMap m_PlayerActions;
-    private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
-    private readonly InputAction m_PlayerActions_Move;
-    private readonly InputAction m_PlayerActions_Interact;
-    private readonly InputAction m_PlayerActions_Look;
-    private readonly InputAction m_PlayerActions_Pause;
-    private readonly InputAction m_PlayerActions_Dash;
-    private readonly InputAction m_PlayerActions_Jump;
-    private readonly InputAction m_PlayerActions_LeftWeapon;
-    private readonly InputAction m_PlayerActions_RightWeapon;
-    public struct PlayerActionsActions
+    // Actions
+    private readonly InputActionMap m_Actions;
+    private IActionsActions m_ActionsActionsCallbackInterface;
+    private readonly InputAction m_Actions_Move;
+    private readonly InputAction m_Actions_Interact;
+    private readonly InputAction m_Actions_Look;
+    private readonly InputAction m_Actions_Pause;
+    private readonly InputAction m_Actions_Dash;
+    private readonly InputAction m_Actions_Jump;
+    private readonly InputAction m_Actions_UseWeapon;
+    private readonly InputAction m_Actions_WeaponAbility;
+    public struct ActionsActions
     {
         private @PCInputs m_Wrapper;
-        public PlayerActionsActions(@PCInputs wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_PlayerActions_Move;
-        public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
-        public InputAction @Look => m_Wrapper.m_PlayerActions_Look;
-        public InputAction @Pause => m_Wrapper.m_PlayerActions_Pause;
-        public InputAction @Dash => m_Wrapper.m_PlayerActions_Dash;
-        public InputAction @Jump => m_Wrapper.m_PlayerActions_Jump;
-        public InputAction @LeftWeapon => m_Wrapper.m_PlayerActions_LeftWeapon;
-        public InputAction @RightWeapon => m_Wrapper.m_PlayerActions_RightWeapon;
-        public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
+        public ActionsActions(@PCInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Actions_Move;
+        public InputAction @Interact => m_Wrapper.m_Actions_Interact;
+        public InputAction @Look => m_Wrapper.m_Actions_Look;
+        public InputAction @Pause => m_Wrapper.m_Actions_Pause;
+        public InputAction @Dash => m_Wrapper.m_Actions_Dash;
+        public InputAction @Jump => m_Wrapper.m_Actions_Jump;
+        public InputAction @UseWeapon => m_Wrapper.m_Actions_UseWeapon;
+        public InputAction @WeaponAbility => m_Wrapper.m_Actions_WeaponAbility;
+        public InputActionMap Get() { return m_Wrapper.m_Actions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerActionsActions set) { return set.Get(); }
-        public void SetCallbacks(IPlayerActionsActions instance)
+        public static implicit operator InputActionMap(ActionsActions set) { return set.Get(); }
+        public void SetCallbacks(IActionsActions instance)
         {
-            if (m_Wrapper.m_PlayerActionsActionsCallbackInterface != null)
+            if (m_Wrapper.m_ActionsActionsCallbackInterface != null)
             {
-                @Move.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMove;
-                @Move.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMove;
-                @Move.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMove;
-                @Interact.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
-                @Interact.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
-                @Interact.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInteract;
-                @Look.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLook;
-                @Look.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLook;
-                @Look.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLook;
-                @Pause.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
-                @Pause.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
-                @Pause.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPause;
-                @Dash.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDash;
-                @Dash.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDash;
-                @Dash.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDash;
-                @Jump.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
-                @Jump.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
-                @Jump.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnJump;
-                @LeftWeapon.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLeftWeapon;
-                @LeftWeapon.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLeftWeapon;
-                @LeftWeapon.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnLeftWeapon;
-                @RightWeapon.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightWeapon;
-                @RightWeapon.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightWeapon;
-                @RightWeapon.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnRightWeapon;
+                @Move.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnMove;
+                @Interact.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnInteract;
+                @Look.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnLook;
+                @Pause.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnPause;
+                @Dash.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnDash;
+                @Jump.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnJump;
+                @UseWeapon.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUseWeapon;
+                @UseWeapon.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUseWeapon;
+                @UseWeapon.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnUseWeapon;
+                @WeaponAbility.started -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWeaponAbility;
+                @WeaponAbility.performed -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWeaponAbility;
+                @WeaponAbility.canceled -= m_Wrapper.m_ActionsActionsCallbackInterface.OnWeaponAbility;
             }
-            m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
+            m_Wrapper.m_ActionsActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Move.started += instance.OnMove;
@@ -399,16 +399,16 @@ public partial class @PCInputs : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @LeftWeapon.started += instance.OnLeftWeapon;
-                @LeftWeapon.performed += instance.OnLeftWeapon;
-                @LeftWeapon.canceled += instance.OnLeftWeapon;
-                @RightWeapon.started += instance.OnRightWeapon;
-                @RightWeapon.performed += instance.OnRightWeapon;
-                @RightWeapon.canceled += instance.OnRightWeapon;
+                @UseWeapon.started += instance.OnUseWeapon;
+                @UseWeapon.performed += instance.OnUseWeapon;
+                @UseWeapon.canceled += instance.OnUseWeapon;
+                @WeaponAbility.started += instance.OnWeaponAbility;
+                @WeaponAbility.performed += instance.OnWeaponAbility;
+                @WeaponAbility.canceled += instance.OnWeaponAbility;
             }
         }
     }
-    public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
+    public ActionsActions @Actions => new ActionsActions(this);
     private int m_PCSchemeIndex = -1;
     public InputControlScheme PCScheme
     {
@@ -418,7 +418,7 @@ public partial class @PCInputs : IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_PCSchemeIndex];
         }
     }
-    public interface IPlayerActionsActions
+    public interface IActionsActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
@@ -426,7 +426,7 @@ public partial class @PCInputs : IInputActionCollection2, IDisposable
         void OnPause(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnLeftWeapon(InputAction.CallbackContext context);
-        void OnRightWeapon(InputAction.CallbackContext context);
+        void OnUseWeapon(InputAction.CallbackContext context);
+        void OnWeaponAbility(InputAction.CallbackContext context);
     }
 }

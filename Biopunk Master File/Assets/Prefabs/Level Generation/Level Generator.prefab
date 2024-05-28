@@ -82,7 +82,7 @@ MonoBehaviour:
   _addOnsGenerated: 0
   _gridBounds: {x: 10, y: 3, z: 10}
   _cellDistanceHorizontal: 150
-  _cellDistanceVertical: 45
+  _cellDistanceVertical: 60
   _cellDistanceConnected: 60
   _floorFolders: []
   _endMinDistance: 4

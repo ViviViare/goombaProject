@@ -118,6 +118,7 @@ MonoBehaviour:
   _armourAmount: 1
   _effectDuration: 0
   _pickupWeight: 2
+  _clipToPlay: {fileID: 8300000, guid: 66406f27696b8b14d874331c053a69a7, type: 3}
 --- !u!54 &6295646422944041389
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -147,8 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Full Heart
-  _details: Heal 30 health points
-  _fluff: 
+  _isActive: 0
 --- !u!1001 &6948819997876814280
 PrefabInstance:
   m_ObjectHideFlags: 0

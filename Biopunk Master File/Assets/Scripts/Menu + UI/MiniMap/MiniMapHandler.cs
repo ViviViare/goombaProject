@@ -1,3 +1,17 @@
+/*  Class created by: Leviathan Vi Amare / ViviViare
+//  Creation date: 06/05/24
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  MiniMapHandler.cs
+//
+//  Script to handle the minimap by reading the level generation and generating an icon for every room
+//  As the player moves through the rooms it changes the visbility and colour of the icons to visualize their relation to the player (Such as: Visited, Not visited but adjacent or Currently active)
+//  The room the player is currently in will always be centered.
+//  
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+*/
+
 using System;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -32,6 +46,7 @@ public class MiniMapHandler : MonoBehaviour
     [SerializeField] private iconConfig _ladderUpIcon, _ladderDownIcon;
     
 
+    // Serializeable class to hold the configuration for each icon
     [System.Serializable]
     public class iconConfig
     {
@@ -39,9 +54,10 @@ public class MiniMapHandler : MonoBehaviour
         public Color _colour;
         [Range(0, 1)] public float _transparency;
     }
-
+    
     private void OnEnable()
     {
+        // Subscribe the event _finishedGeneratingRooms to the GenerateMiniMap method.
         Level_Generator._finishedGeneratingRooms += GenerateMiniMap;
     }
 
@@ -53,6 +69,7 @@ public class MiniMapHandler : MonoBehaviour
 
     private void Update()
     {
+        // In update read the player's current rotation to correctly rotate the minimap player icon so that it always points in the direction the player is looking
         Vector3 camTransform = Camera.main.transform.forward;
         Vector3 forwardDirection = new Vector3(camTransform.x, 0f, camTransform.z);
         float angle = Mathf.Atan2(camTransform.x, camTransform.z) * Mathf.Rad2Deg;
@@ -80,8 +97,7 @@ public class MiniMapHandler : MonoBehaviour
         {
             RoomData cellData = cell._roomData;
 
-            if (cellData is IrregularRoomData) GenerateIrregularIcon(cell, cellData);
-            else GenerateRegularIcon(cell, cellData);
+            GenerateRegularIcon(cell, cellData);
         }
 
         MoveIconFloor(0);
@@ -139,11 +155,6 @@ public class MiniMapHandler : MonoBehaviour
         
     }
 
-    private void GenerateIrregularIcon(GridCell cell, RoomData data)
-    {
-
-    }
-
     public void MoveRoomToCenter(GridCell cell)
     {
         Vector3 newIcoPosition = _allIcons[cell._positionInGrid].transform.position;
@@ -151,11 +162,6 @@ public class MiniMapHandler : MonoBehaviour
         Vector3 direction = centerPositon - newIcoPosition;
 
         _miniMapHolder.transform.position += direction;
-    }
-
-    private void RotateIcon()
-    {
-
     }
 
     public void MoveIconFloor(int floorNo)

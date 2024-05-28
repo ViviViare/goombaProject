@@ -250,4 +250,5 @@ MonoBehaviour:
   _player: {fileID: 0}
   _environmentHitVFX: {fileID: 6248796136807729827, guid: 22cf49d1fb2c23547894b779fb60e34a,
     type: 3}
-  _enemyHitVFX: {fileID: 0}
+  _enemyHitVFX: {fileID: 6248796136807729827, guid: 5c8116f7da31a7d4f8da253493c71efb,
+    type: 3}

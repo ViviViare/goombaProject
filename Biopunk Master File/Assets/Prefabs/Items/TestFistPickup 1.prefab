@@ -118,6 +118,7 @@ MonoBehaviour:
   _meleeRange: 4
   _meleeIndex: 0
   _clawOrFist: 1
+  _clipToPlay: {fileID: 8300000, guid: b21e698a855f9fc43a28f5737968acda, type: 3}
 --- !u!114 &-7607081168530981840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +229,17 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 0b7d0e3c460be374ab98bbe1efd941c9, type: 2}
+    - target: {fileID: -7511558181221131132, guid: cee7d55d35a96604aa7940fb09abd635,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 09823399a0ad8a64f8f07c4388a399dc, type: 2}
+    - target: {fileID: -5754084199372789682, guid: cee7d55d35a96604aa7940fb09abd635,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -751762905026838574, guid: efe1bd42f9a133b48aef9cbdcc51a6b8,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: cee7d55d35a96604aa7940fb09abd635,
         type: 3}
       propertyPath: m_Name

@@ -1,3 +1,15 @@
+/*  Class created by: Leviathan Vi Amare / ViviViare
+//  Creation date: 27/04/24
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  ItemDescReader.cs
+//
+//  A reader script which will check to see if the player is currently looking at an interactable object
+//  and if valid it will display a UI element of its name and whether or not it can be interacted with
+//  
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+*/
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -29,6 +41,7 @@ public class ItemDescReader : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(_raycastOrigin.position, _raycastOrigin.forward, out hit, _raycastLength, _itemMask))
         {  
+            // Debounce so that the LookingAtItem() method only runs one time while it is being looked at.
             if (!_lookingAtItem) LookingAtItem(hit);
             _lookingAtItem = true;
             _itemLock = false;
@@ -71,7 +84,8 @@ public class ItemDescReader : MonoBehaviour
         _crosshairText.enabled = value;
     }
 
-
+    
+    // Unity editor debug to visualize the raycast length for the interaction script
     #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

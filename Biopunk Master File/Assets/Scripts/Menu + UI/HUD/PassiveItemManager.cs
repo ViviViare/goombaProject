@@ -1,3 +1,15 @@
+/*  Class created by: Leviathan Vi Amare / ViviViare
+//  Creation date: 02/05/24
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  PassiveItemManager.cs
+//
+//  This script manages the passive items so that when the player picks up a new passive item it 
+//  slots itself into one of the possible two slots.
+//  
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+*/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,6 +77,8 @@ public class PassiveItemManager : MonoBehaviour
         currentFill.UpdateChargeAmount(amount);
     }
 
+
+    // Setup the passive item UI based on whether it is an Amplifier or a Serum.
     private void SetupPassive(PassiveItemFill itemHolder, Sprite image, PickupType pickupType)
     {
         float maxDuration = default;
@@ -82,6 +96,7 @@ public class PassiveItemManager : MonoBehaviour
 
     private Sprite GetDictionaryValue(PickupType type)
     {
+        // Loop through every entry in the pickup images list until the correct image is found
         foreach (var entry in _pickupImages)
         {
             if (entry._key != type) continue;

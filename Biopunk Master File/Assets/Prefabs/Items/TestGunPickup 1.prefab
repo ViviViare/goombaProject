@@ -122,6 +122,7 @@ MonoBehaviour:
   _magSize: 8
   _gunIndex: 0
   _gunOrQuadra: 0
+  _clipToPlay: {fileID: 8300000, guid: b21e698a855f9fc43a28f5737968acda, type: 3}
 --- !u!114 &-8695451879012786660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,7 +232,13 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0eb15958016429c458750b364e2901b7, type: 2}
+      objectReference: {fileID: 2100000, guid: 01602c2994a817a468b4e26cfcb63ae2, type: 2}
+    - target: {fileID: -5754084199372789682, guid: fa9226b8ebc111f43977b67934eb9f4a,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -5011578690162585720, guid: 5386dc89ad5480748a1883043f2cb70c,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: fa9226b8ebc111f43977b67934eb9f4a,
         type: 3}
       propertyPath: m_Name

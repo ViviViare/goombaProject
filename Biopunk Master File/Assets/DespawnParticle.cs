@@ -7,6 +7,8 @@ public class DespawnParticle : MonoBehaviour
     [SerializeField] private ParticleSystem _particle;
     [SerializeField] private float _despawnTimer = 0.6f;
 
+    [SerializeField] public AudioClip _clipToPlay;
+
     private void OnEnable()
     {
         StartCoroutine(DespawnTimer());
@@ -21,6 +23,8 @@ public class DespawnParticle : MonoBehaviour
 
     private IEnumerator DespawnTimer()
     {
+        AudioSource.PlayClipAtPoint(_clipToPlay, this.gameObject.transform.position);
+
         yield return new WaitForSeconds(_despawnTimer);
         ObjectPooler.Despawn(this.gameObject);
     }

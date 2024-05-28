@@ -8,7 +8,7 @@ public class MedipakScript : MonoBehaviour
 {
     [SerializeField] public int _medkitHeal = 30;
 
-
+    // Used to detect when a player uses their active item
     private void OnEnable()
     {
         playerActiveItem._activeAction += UseActive;
@@ -18,7 +18,7 @@ public class MedipakScript : MonoBehaviour
         playerActiveItem._activeAction -= UseActive;
     }
 
-
+    // Heals the player up to (but not over) their max health upon use, and updates the player's health UI accordingly.
     private void UseActive()
     {
         playerHealth playhealth = GlobalVariables._player.GetComponent<playerHealth>();

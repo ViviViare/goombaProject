@@ -1,0 +1,79 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1786409078818744813
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8852355344227255595, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2d06acef92efe71449d070a0ac452c12, type: 2}
+    - target: {fileID: -8679921383154817045, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 164.68773
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.021168122
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 185.68462
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8462843712342644542, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2d06acef92efe71449d070a0ac452c12, type: 2}
+    - target: {fileID: 352017197298166820, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8bc09c68601e4144cb78eec2769364f7, type: 2}
+    - target: {fileID: 919132149155446097, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_Name
+      value: 'Mechancial amplfier Model '
+      objectReference: {fileID: 0}
+    - target: {fileID: 6277920938997098320, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2d06acef92efe71449d070a0ac452c12, type: 2}
+    - target: {fileID: 7928717467604556044, guid: 22dd750c885e603488cf508f507e4c22, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8bc09c68601e4144cb78eec2769364f7, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 22dd750c885e603488cf508f507e4c22, type: 3}

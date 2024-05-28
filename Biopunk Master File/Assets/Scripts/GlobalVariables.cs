@@ -2,7 +2,15 @@ using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
 using Unity.AI.Navigation;
+/*
+// Class created by Mateusz Korcipa / Forkguy13
+// Creation date: 24/02/24
 
+// Keeps track of any variables, gameobjects and other such components that are widely referenced within scripts, to make them easier to reference.
+
+// Edits since script completion:
+// 05/03/24: Cut down script bloat by a lot, also making the script more modular.
+*/
 public class GlobalVariables : MonoBehaviour
 {
     [Header("Statics")]
@@ -29,6 +37,8 @@ public class GlobalVariables : MonoBehaviour
 
     [SerializeField] public static bool _gamePaused;
 
+    [SerializeField] public static bool _startingItemGrabbed;
+    [SerializeField] public static bool __startingDoorsOpened;
 
     private void Awake()
     {
@@ -47,6 +57,7 @@ public class GlobalVariables : MonoBehaviour
         _navMeshSurface.BuildNavMesh();
     }
 
+    // Handles incramenting/decramenting the timers for the various boost items. Runs every time the player clears a room with enemies within it.
     public static void TickCooldowns()
     {
         playerStatusEffects playerstat = _player.GetComponent<playerStatusEffects>();

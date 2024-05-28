@@ -1,4 +1,17 @@
 ﻿#if UNITY_EDITOR
+/*  Class created by: Leviathan Vi Amare / ViviViare
+//  Creation date: 01/02/24
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  ShowOnlyDrawer.cs
+//
+//  Exclusively for use in the unity editor (Hence the #if UNITY_EDITOR)
+//  Adds custom functionality to show public methods in the inspector but not allowing inspector modification
+//  
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+//  -=-=-=-=-=-=-=-=-=-=-=-=-=-
+*/
+
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;

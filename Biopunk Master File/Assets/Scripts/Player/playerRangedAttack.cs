@@ -31,16 +31,24 @@ public class playerRangedAttack : MonoBehaviour
     [SerializeField] public int _magSize = 5;
 
 
-    [SerializeField] Camera _playerCam;
+    [SerializeField] public Camera _playerCam;
 
     [SerializeField] public bool _canFire = true;
+    [SerializeField] public bool _canUseSpecial;
+
+    [SerializeField] public float _specialDuration;
+    [SerializeField] public float _specialCooldown;
 
     [SerializeField] public GameObject _gunBarrel;
 
     [SerializeField] public Vector3 _targetPoint;
     [SerializeField] public bool _useTargetPoint;
+    [SerializeField] public bool _bulletHasTracking;
 
     [SerializeField] public ParticleSystem muzzleVFX;
+
+    [SerializeField] public AudioClip _clipToPlay;
+    [SerializeField] public AudioClip _specialSound;
 
     public LeftOrRight _weaponsSide;
 
@@ -67,6 +75,10 @@ public class playerRangedAttack : MonoBehaviour
         {
             StartCoroutine(RangedCoroutine());
         }
+        else if (_weaponsSide != direction)
+        {
+            StartSpecial();
+        }
     }
 
     // Handles the actual firing of the player's ranged weapon. First, it fires a raycast from the player's camera; if this raycast collides with any object, it sets the
@@ -81,12 +93,16 @@ public class playerRangedAttack : MonoBehaviour
     public IEnumerator RangedCoroutine()
     {
         muzzleVFX.Play();
+        AudioSource.PlayClipAtPoint(_clipToPlay, this.gameObject.transform.position);
         _canFire = false;
         Vector3 rayOrigin = _playerCam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
         RaycastHit hit;
         if (Physics.Raycast(rayOrigin, _playerCam.transform.forward, out hit))
         {
-            _useTargetPoint = true;
+            if (_bulletHasTracking == true)
+            {
+                _useTargetPoint = true;
+            }
             _targetPoint = hit.point;
             ObjectPooler.Spawn(_playerBullet, _gunBarrel.transform.position, _gunBarrel.transform.rotation);
         }
@@ -98,7 +114,7 @@ public class playerRangedAttack : MonoBehaviour
         _shotsFired++;
 
         yield return new WaitForSeconds(_gunCoolDown);
-        
+
         if (_shotsFired >= _magSize)
         {
             StartCoroutine(ReloadCooldown());
@@ -107,6 +123,45 @@ public class playerRangedAttack : MonoBehaviour
         {
             _canFire = true;
         }
+    }
+
+    // Below methods handle the base gun's special attack.
+
+    // If the special attack is off-cooldown, starts the RangedSpecial coroutine.
+    private void StartSpecial()
+    {
+        if (_canUseSpecial == false) return;
+        _canUseSpecial = false;
+        StartCoroutine(RangedSpecial());
+    }
+
+    // Resets the player's _shotsFired variable, increases the gun's magazine size and reduces the gun's cooldown between shots.
+    // This special essentially acts as an "overcharge" for the gun.
+    public IEnumerator RangedSpecial()
+    {
+        float origGunCooldown = _gunCoolDown;
+        int origMagSize = _magSize;
+
+        AudioSource.PlayClipAtPoint(_specialSound, this.transform.position, 100);
+
+        _shotsFired = 0;
+
+        _gunCoolDown = _gunCoolDown / 2;
+        _magSize = _magSize * 2;
+
+        yield return new WaitForSeconds(_specialDuration);
+
+        _gunCoolDown = origGunCooldown;
+        _magSize = origMagSize;
+
+        StartCoroutine(SpecialCooldown());
+        StartCoroutine(ReloadCooldown());
+    }
+
+    private IEnumerator SpecialCooldown()
+    {
+        yield return new WaitForSeconds(_specialCooldown);
+        _canUseSpecial = true;
     }
 
     private IEnumerator ReloadCooldown()

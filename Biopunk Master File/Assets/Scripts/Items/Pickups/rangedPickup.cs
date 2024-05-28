@@ -20,7 +20,11 @@ public class rangedPickup : MonoBehaviour
     [SerializeField] public int _gunIndex;
     [SerializeField] public bool _gunOrQuadra;
 
-    public void SwapLeft(GameObject player)
+    [SerializeField] public AudioClip _clipToPlay;
+
+    // Deprecated code; used to swap the player's left weapon. Became obsolete when switching to our new single-weapon system.
+
+    /*public void SwapLeft(GameObject player)
     {
         if(_gunOrQuadra == false)
         {
@@ -66,19 +70,29 @@ public class rangedPickup : MonoBehaviour
             leftStats._magSize = _magSize;
         }
         ObjectPooler.Despawn(this.gameObject);
-    }
+    }*/
 
+    // When interacting with a ranged pickup, it will replace the player's currently equipped weapon with whatever weapon pickup they just interacted with.
     public void SwapRight(GameObject player)
     {
+        // Plays a nice pickup sound effect
+        AudioSource.PlayClipAtPoint(_clipToPlay, this.gameObject.transform.position);
+
+        // The below code essentially uses indexes to figure out what weapon the player currently has and what to swap.
         if (_gunOrQuadra == false)
         {
-            _gunIndex = 1;
+            _gunIndex = 0;
         }
         else
         {
-            _gunIndex = 3;
+            _gunIndex = 1;
         }
 
+
+
+        // If the player's currently equipped weapon is different to whatever they're picking up, it will disable the current weapon and enable the new weapon on the player.
+        // Otherwise, if the two weapons are the same (so for example, if a player has a Quadra and tries to pick up a Quadra), it will simply update the Quadra's stats to match the 
+        // stats cached in the Quadra Pickup prefab.
         playerWeaponInventory wepInv = player.GetComponent<playerWeaponInventory>();
         if (wepInv._currentRightIndex == _gunIndex)
         {
@@ -113,6 +127,7 @@ public class rangedPickup : MonoBehaviour
 
             rightStats._magSize = _magSize;
         }
+        GlobalVariables._startingItemGrabbed = true;
         ObjectPooler.Despawn(this.gameObject);
     }
 

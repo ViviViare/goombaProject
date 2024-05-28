@@ -65,6 +65,7 @@ MonoBehaviour:
   _armourAmount: 1
   _effectDuration: 2
   _pickupWeight: 2
+  _clipToPlay: {fileID: 8300000, guid: 66406f27696b8b14d874331c053a69a7, type: 3}
 --- !u!114 &1311425447760970405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,8 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Mechanical Amplifier
-  _details: Boost your damage by 40%
-  _fluff: 
+  _isActive: 0
 --- !u!1001 &5321086695856013509
 PrefabInstance:
   m_ObjectHideFlags: 0

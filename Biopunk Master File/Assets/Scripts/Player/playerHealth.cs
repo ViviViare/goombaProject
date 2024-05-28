@@ -32,14 +32,16 @@ public class playerHealth : MonoBehaviour, IDamageable
     [SerializeField] public GameObject _playerArmourBar;
     [SerializeField] public GameObject _playerArmourText;
 
+    [SerializeField] public AudioClip _deathSound;
+
     void Start()
     {
         _playerHealthBar = GameObject.FindGameObjectWithTag("Healthbar");
         _playerHealthBar.GetComponent<Slider>().maxValue = _playerMaxHealth;
         _playerHealthBar.GetComponent<Slider>().value = _playerHealth;
          
-        _playerHealthText = GameObject.FindGameObjectWithTag("Healthtext");
-        _playerHealthText.GetComponent<TextMeshProUGUI>().text = ("Health: " + _playerHealth + "/" + _playerMaxHealth);
+        //_playerHealthText = GameObject.FindGameObjectWithTag("Healthtext");
+       // _playerHealthText.GetComponent<TextMeshProUGUI>().text = ("Health: " + _playerHealth + "/" + _playerMaxHealth);
 
         _playerArmourBar = GameObject.FindGameObjectWithTag("Armourbar");
         _playerArmourBar.GetComponent<Slider>().maxValue = _playerMaxArmourStacks;
@@ -58,7 +60,12 @@ public class playerHealth : MonoBehaviour, IDamageable
     // Likely will be updated to instead bring up a death screen when the required UI elements are implemented.
     private void DeathSequence()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        MusicManager musicman = GameObject.FindGameObjectWithTag("Musicmanager").GetComponent<MusicManager>();
+        musicman.DeathFade();
+        AudioSource.PlayClipAtPoint(_deathSound, this.transform.position);
+        this.gameObject.GetComponent<pauseMenu>().OpenDeathMenu();
+        ObjectPooler.Clear();
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     // This method is from the IDamageable interface. When called by another script, it will reduce the _playerHealth variable by whatever damageAmount is passed into the method.
@@ -76,7 +83,7 @@ public class playerHealth : MonoBehaviour, IDamageable
             StartCoroutine(ImmunityTimer());
             _playerHealth -= damageAmount;
             _playerHealthBar.GetComponent<Slider>().value = _playerHealth;
-            _playerHealthText.GetComponent<TextMeshProUGUI>().text = ("Health: " + _playerHealth + "/" + _playerMaxHealth);
+            //_playerHealthText.GetComponent<TextMeshProUGUI>().text = ("Health: " + _playerHealth + "/" + _playerMaxHealth);
             if (_playerHealth <= 0)
             {
                 DeathSequence();
@@ -84,6 +91,7 @@ public class playerHealth : MonoBehaviour, IDamageable
         }
     }
 
+    // Serves to prevent the player from taking damage if they have just recently taken damage (so that the player does not get overwhelmed and killed instantly)
     IEnumerator ImmunityTimer()
     {
         _canBeDamaged = false;

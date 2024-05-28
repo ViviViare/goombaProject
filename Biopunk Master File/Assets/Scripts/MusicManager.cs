@@ -1,7 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+/*
+// Class created by Mateusz Korcipa / Forkguy13
+// Creation date: 24/02/24
 
+// Handles music and the switching of music.
+
+// Edits since script completion:
+// 05/03/24: Cut down script bloat by a lot, also making the script more modular.
+*/
 public class MusicManager : MonoBehaviour
 {
     [SerializeField] public AudioClip _caveExploreMusic;
@@ -27,13 +35,14 @@ public class MusicManager : MonoBehaviour
         _primarySource.Play(0);
         _secondarySource.Play(0);
 
-        _primarySource.volume = 100;
+        _primarySource.volume = 70;
         _secondarySource.volume = 0;
 
         _currentlyActiveSource = 0;
     }
 
-
+    // When called, it will crossfade between the currently active music track and the "secondary" music track.
+    // Allows us to have combat music that fades in when entering a room populated with enemies.
     public void FadeToSecondary()
     {
         StartCoroutine(StartFade(_audioSources[_currentlyActiveSource], _fadeDuration, 0));
@@ -45,9 +54,17 @@ public class MusicManager : MonoBehaviour
         {
             _currentlyActiveSource = 0;
         }
-        StartCoroutine(StartFade(_audioSources[_currentlyActiveSource], _fadeDuration, 100));
+        StartCoroutine(StartFade(_audioSources[_currentlyActiveSource], _fadeDuration, 70));
     }
 
+    // Cuts off the music when the player dies
+    public void DeathFade()
+    {
+        _primarySource.enabled = false;
+        _secondarySource.enabled = false;
+    }
+
+    // Below method is there to allow a smooth crossfade instead of abrupt transition between our two music tracks
     public static IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)
     {
         float currentTime = 0;

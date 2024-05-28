@@ -11,6 +11,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
+
 
 public class playerController : MonoBehaviour
 {
@@ -24,7 +26,7 @@ public class playerController : MonoBehaviour
 
     [SerializeField] private float _dashCooldown = 2f;
     [SerializeField] private float _dashSpeed = 20f;
-    [SerializeField] private float _dashLength = 0.4f;
+    [SerializeField] public float _dashLength = 0.4f;
     [SerializeField] public bool _isDashing = false;
     [SerializeField] public bool _canDash = true;
 
@@ -33,6 +35,10 @@ public class playerController : MonoBehaviour
 
     [SerializeField] private float _playerGravity = 9.8f;
     [SerializeField] private float _verticalVelocity = 0f;
+
+    [SerializeField] public CinemachineVirtualCamera _playerCam;
+
+    [SerializeField] public AudioClip _dashSound;
 
     // When first ran, this script locks the mouse cursor and gets references for objects and variables that are needed for the script to allow for player movement.
 
@@ -99,15 +105,18 @@ public class playerController : MonoBehaviour
             StartCoroutine(DashCoroutine());
         }
     }
-    private IEnumerator DashCoroutine()
+    public IEnumerator DashCoroutine()
     {
         if(!_isDashing)
         {
+            AudioSource.PlayClipAtPoint(_dashSound, this.gameObject.transform.position, 100);
+            _playerCam.m_Lens.FieldOfView = 90;
             float OriginalSpeed = _playerSpeed;
             _playerSpeed = _dashSpeed;
             this.GetComponent<playerHealth>()._canBeDamaged = false;
             _isDashing = true;
             yield return new WaitForSeconds(_dashLength);
+            _playerCam.m_Lens.FieldOfView = 85;
             _playerSpeed = OriginalSpeed;
             _isDashing = false;
             this.GetComponent<playerHealth>()._canBeDamaged = true;

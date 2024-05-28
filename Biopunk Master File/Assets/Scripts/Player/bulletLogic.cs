@@ -94,7 +94,7 @@ public class bulletLogic : MonoBehaviour
         IDamageable damageable = other.gameObject.GetComponent<IDamageable>();
         if (damageable != null)
         {
-            //ObjectPooler.Spawn(_enemyHitVFX, this.gameObject.transform.position, Quaternion.identity);
+            ObjectPooler.Spawn(_enemyHitVFX, this.gameObject.transform.position, Quaternion.identity);
             _player = GameObject.FindGameObjectWithTag("Player");
             int calculatedDamage = (int)(_bulletDamage * _player.GetComponent<playerStats>()._playerDamageMultiplier);
             damageable.Damage(calculatedDamage);

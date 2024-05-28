@@ -2,7 +2,7 @@
     "name": "PCInputs",
     "maps": [
         {
-            "name": "Player Actions",
+            "name": "Actions",
             "id": "dc95d0a3-839d-4cd9-8ce0-beea964334b3",
             "actions": [
                 {
@@ -11,7 +11,8 @@
                     "id": "3b2a4429-0c46-4ad4-b9f1-a94273d99f36",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Interact",
@@ -19,7 +20,8 @@
                     "id": "7b3a4438-10d3-4d72-8843-224c043d71d0",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Look",
@@ -27,7 +29,8 @@
                     "id": "1afdb638-d52c-49cc-a4e6-6483e04d3470",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Pause",
@@ -35,7 +38,8 @@
                     "id": "bdcc5152-d235-426c-ba83-df286bbc6d0b",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Dash",
@@ -43,7 +47,8 @@
                     "id": "dd1e0f55-694f-4b43-8c39-e65427bc1a16",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Jump",
@@ -51,23 +56,26 @@
                     "id": "ea34fddf-1249-4f50-96b1-dcca46a3f145",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 },
                 {
-                    "name": "Left Weapon",
+                    "name": "Use Weapon",
                     "type": "Button",
                     "id": "edfd3102-259f-45be-ada2-79e85d19f54e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press(behavior=2)",
+                    "initialStateCheck": false
                 },
                 {
-                    "name": "Right Weapon",
+                    "name": "Weapon Ability",
                     "type": "Button",
                     "id": "7b88fb9c-5652-4e73-90cd-e2e6ea9afe22",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -183,23 +191,23 @@
                 },
                 {
                     "name": "",
-                    "id": "fac76bc3-9176-458c-a394-cd26a1f881a1",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "PC",
-                    "action": "Left Weapon",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "47ec9078-9942-4971-9854-bd88ff88e12c",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Right Weapon",
+                    "action": "Weapon Ability",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fac76bc3-9176-458c-a394-cd26a1f881a1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "PC",
+                    "action": "Use Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

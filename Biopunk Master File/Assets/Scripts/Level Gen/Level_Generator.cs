@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Level_Generator : MonoBehaviour
 {
@@ -106,11 +107,8 @@ public class Level_Generator : MonoBehaviour
 
     private void Awake()
     {
-        if (Level_Generator._instance != null) Destroy(this);
-        else
-        {
-            _instance = this;
-        }
+        _instance = this;
+        
     }
 
     // This may need to be replaced with an event call. Depends on how loading is handled
@@ -460,7 +458,7 @@ public class Level_Generator : MonoBehaviour
         for (int cell = 0; cell < amountOfTimes; cell++)
         {
             List<GridCell> cellOnThisFloor = _totalPath.FindAll(valid => valid._positionInGrid.y == floor);
-            if (cellOnThisFloor.Count == 0) return;
+            if (cellOnThisFloor.Count == 0) Abort();
 
             // Room the end room if it is in current list of floors.
             // This means that a room cannot be next to the end room unless it is also next to another room
@@ -469,8 +467,9 @@ public class Level_Generator : MonoBehaviour
             int rand = UnityEngine.Random.Range(0, cellOnThisFloor.Count);
             //Debug.Log($"Current floor is: {floor}. Random cell is: <b>{rand}</b>. The total number of cells on this floor are: <b>{cellOnThisFloor.Count}</b>");
 
-            if (cellOnThisFloor.Count == 0) Abort();
-            GridCell cellExtendingFrom = cellOnThisFloor[rand]; // NOTE: ERROR HAPPENS HERE. "ArgumentOutOfRangeException: Index was out of range"
+            if (rand > cellOnThisFloor.Count-1) rand = 0;
+
+            GridCell cellExtendingFrom = cellOnThisFloor[rand]; 
 
             List<GridCell> cellNeighbours = GetCellNeighbours2D(cellExtendingFrom).FindAll(valid => !valid._setAsRoom);
 
@@ -544,9 +543,10 @@ public class Level_Generator : MonoBehaviour
     private void Abort()
     {
         #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+        //UnityEditor.EditorApplication.isPlaying = false;
         #endif
-        Application.Quit();
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
     }
 
     #endregion

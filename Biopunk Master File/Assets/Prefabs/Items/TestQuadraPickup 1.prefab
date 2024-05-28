@@ -113,15 +113,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5603551dcc9e2648a547980435f5b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gunBulletSpeed: 100
+  _gunBulletSpeed: 70
   _gunDamage: 5
   _bulletLifetime: 0.15
   _gunBulletSize: 0.25
-  _gunCoolDown: 1
-  _reloadCooldown: 2
-  _magSize: 12
+  _gunCoolDown: 0.88
+  _reloadCooldown: 2.5
+  _magSize: 36
   _gunIndex: 0
   _gunOrQuadra: 1
+  _clipToPlay: {fileID: 8300000, guid: b21e698a855f9fc43a28f5737968acda, type: 3}
 --- !u!114 &1026849307178143743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,7 +232,13 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0eb15958016429c458750b364e2901b7, type: 2}
+      objectReference: {fileID: 2100000, guid: 732ae2d00c81edb4bb77e34872256519, type: 2}
+    - target: {fileID: -5754084199372789682, guid: de5befdf6692ffb4f96ab7cee9f9c870,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 8800786737421610531, guid: ac97d854cf80af94eb4511107b774d71,
+        type: 3}
     - target: {fileID: 919132149155446097, guid: de5befdf6692ffb4f96ab7cee9f9c870,
         type: 3}
       propertyPath: m_Name

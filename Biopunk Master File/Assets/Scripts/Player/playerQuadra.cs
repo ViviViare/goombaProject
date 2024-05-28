@@ -18,6 +18,17 @@ public class playerQuadra : playerRangedAttack
     [SerializeField] private List<GameObject> _gunBarrels = new List<GameObject>();
     [SerializeField] private int _gunBarrelsCount = 6;
 
+    [SerializeField] public float _railgunCooldown;
+    [SerializeField] public GameObject _railgunBullet;
+    [SerializeField] public bool _railgunOnCooldown;
+
+    [SerializeField] public float _railBulletSpeed = 200f;
+    [SerializeField] public int _railDamage = 10;
+    [SerializeField] public float _railLifetime = 3f;
+    [SerializeField] public float _railBulletSize;
+
+    [SerializeField] public GameObject _quadraObject;
+
     // Start populates a "_gunBarrels" list with a for loop, that goes through every child gameobject of the quadra gameobject and adds them to the list.
     // The only children of the quadra should be its multiple gun barrels, meaning that the list should be filled with each of the quadra's gun barrels.
 
@@ -30,12 +41,19 @@ public class playerQuadra : playerRangedAttack
         }
     }
 
+    // Handles firing. If the playerWeaponHandler broadcasts a "left", it will make the Quadra fire normally.
+    // If it broadcasts a "right", it will make the Quadra fire its special move.
+
     public override void FireRangedWeapon(LeftOrRight direction)
     {
         if (GlobalVariables._gamePaused == true) return;
         if(_weaponsSide == direction)
         {
             FireQuarda();
+        }
+        else
+        {
+            FireRailgun();
         }
     }
 
@@ -63,5 +81,35 @@ public class playerQuadra : playerRangedAttack
         }
     }
 
+    // The Quadra's special attack; a longer-ranged single shot attack with a long cooldown that prevents the player from firing at all for a few seconds.
+    // Serves as an option for the player to attack from further away, not having to risk taking damage from coming closer, at the cost of lower damage per second and a high cooldown.
+    public void FireRailgun()
+    {
+        if (_railgunOnCooldown == true) return;
+        if (_canFire == false) return;
+        StartCoroutine(RailgunCooldown());
+        _railgunOnCooldown = true;
+        _canFire = false;
+        muzzleVFX.Play();
+        Vector3 rayOrigin = _playerCam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0.0f));
+        RaycastHit hit;
+        if (Physics.Raycast(rayOrigin, _playerCam.transform.forward, out hit))
+        {
+            _useTargetPoint = true;
+            _targetPoint = hit.point;
+            ObjectPooler.Spawn(_railgunBullet, _gunBarrel.transform.position, _gunBarrel.transform.rotation);
+        }
+        else
+        {
+            _useTargetPoint = false;
+            ObjectPooler.Spawn(_railgunBullet, _gunBarrel.transform.position, _gunBarrel.transform.rotation);
+        }
+    }
 
+    IEnumerator RailgunCooldown()
+    {
+        yield return new WaitForSeconds(_railgunCooldown);
+        _railgunOnCooldown = false;
+        _canFire = true;
+    }
 }

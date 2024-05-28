@@ -118,6 +118,7 @@ MonoBehaviour:
   _armourAmount: 1
   _effectDuration: 0
   _pickupWeight: 2
+  _clipToPlay: {fileID: 8300000, guid: 66406f27696b8b14d874331c053a69a7, type: 3}
 --- !u!54 &382105246363857655
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -147,9 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: Armour Stack
-  _details: Gain +1 armour stack, each stack gives a 1 time 100% damage resistance
-    for 3 seconds on hit.
-  _fluff: 
+  _isActive: 0
 --- !u!1001 &7996033235284936477
 PrefabInstance:
   m_ObjectHideFlags: 0
